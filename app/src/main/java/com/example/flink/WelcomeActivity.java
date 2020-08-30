@@ -81,7 +81,7 @@ public class WelcomeActivity extends FlinkBaseActivity implements EasyPermission
 
 
     @Override
-    public boolean handleMessage(@NonNull Message message) {
-        return false;
+    public void flinkMessageCallBack(Message msg) {
+        //to nothing
     }
 }

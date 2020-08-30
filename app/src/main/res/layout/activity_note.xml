@@ -22,7 +22,12 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
-
+        <TextView
+            android:id="@+id/testTextView"
+            android:textSize="20sp"
+            android:text="请点击下方按钮测试Handler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <!--  底部部分，用于显示底部操作栏  -->
@@ -31,6 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+        <com.example.flink.view.SwitchDateView
+            android:id="@+id/switchDateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </LinearLayout>

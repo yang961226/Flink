@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -14,14 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.flink.Builder.MsgBuilder;
 import com.example.flink.item.ActivityControl;
+import com.example.flink.tools.HandlerUtils;
 
 import butterknife.ButterKnife;
 
 /**
  * 此项目所有Activity的基类
  */
-public abstract class FlinkBaseActivity extends AppCompatActivity implements Handler.Callback {
+public abstract class FlinkBaseActivity extends AppCompatActivity implements HandlerUtils.HandlerHolder.FlinkHandleMessageCallBack {
     //获取TAG的activity名称
     protected final String TAG = this.getClass().getSimpleName();
     //是否显示标题栏
@@ -32,12 +34,16 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
     private boolean isAllowScreenRoate = false;
     //封装Toast对象
     private static Toast toast;
+    //上下文
     public Context mContext;
-
+    //消息处理工具
+    protected HandlerUtils.HandlerHolder mHandler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        //绑定handler
+        mHandler = new HandlerUtils.HandlerHolder(this,this);
         //activity管理
         ActivityControl.getInstance().addActivity(this);
         if (!isShowActionBar && getSupportActionBar() != null) {
@@ -69,6 +75,8 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
         ActivityControl.getInstance().removeActivity(this);
     }
 
+
+
     /**
      * 初始化布局
      *
@@ -84,7 +92,9 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
     /**
      * 设置数据
      */
-    protected abstract void initData();
+    protected void initData(){
+
+    }
 
     /**
      * 设置是否显示标题栏（子类如要调用，一定要在super.onCreate(savedInstanceState) 方法之前调用此方法）
