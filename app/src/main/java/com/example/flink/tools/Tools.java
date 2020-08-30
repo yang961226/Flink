@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.example.flink.FlinkBaseActivity;
 import com.example.flink.R;
+import com.example.flink.item.ActivityControl;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -69,16 +70,27 @@ public class Tools {
     }
 
     public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, int delaySec) {
-        redirectDelay(from, to, new Bundle(), (long) delaySec * 1000);
+        redirectDelay(from, to, new Bundle(), delaySec,false);
+    }
+
+    public static void redirectDelay(Activity from,Class<? extends FlinkBaseActivity> to,int delaySec,boolean isKillSelf){
+        redirectDelay(from,to,new Bundle(),(long) delaySec * 1000,true);
     }
 
     public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, Bundle bundle, long delayMs) {
+        redirectDelay(from,to,bundle,delayMs,false);
+    }
+
+    public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, Bundle bundle, long delayMs,boolean isKillSelf){
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 redirect(from, to, bundle);
                 timer.cancel();
+                from.finish();
+                //activity管理
+                ActivityControl.getInstance().removeActivity(from);
             }
         }, delayMs);
     }

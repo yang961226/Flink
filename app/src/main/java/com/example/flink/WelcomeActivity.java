@@ -6,6 +6,7 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 
 import com.example.flink.common.MyConstants;
+import com.example.flink.item.ActivityControl;
 import com.example.flink.note.NoteActivity;
 import com.example.flink.tools.Tools;
 
@@ -51,7 +52,7 @@ public class WelcomeActivity extends FlinkBaseActivity implements EasyPermission
     @AfterPermissionGranted(REQUEST_CODE)
     private void requestPermissions() {
         if (EasyPermissions.hasPermissions(this, MyConstants.NEED_PERMISSIONS)) {
-            Tools.redirectDelay(this, NoteActivity.class, 2);
+            Tools.redirectDelay(this, NoteActivity.class, 2,true);
         } else {
             // 没有获得全部权限，申请权限
             EasyPermissions.requestPermissions(this, PERMISSIONS_TIPS, REQUEST_CODE, MyConstants.NEED_PERMISSIONS);
