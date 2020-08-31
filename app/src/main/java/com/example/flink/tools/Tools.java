@@ -1,6 +1,7 @@
 package com.example.flink.tools;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -74,7 +75,7 @@ public class Tools {
     }
 
     public static void redirectDelay(Activity from,Class<? extends FlinkBaseActivity> to,int delaySec,boolean isKillSelf){
-        redirectDelay(from,to,new Bundle(),(long) delaySec * 1000,true);
+        redirectDelay(from,to,new Bundle(),(long) delaySec * 1000,isKillSelf);
     }
 
     public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, Bundle bundle, long delayMs) {
@@ -89,9 +90,15 @@ public class Tools {
                 redirect(from, to, bundle);
                 timer.cancel();
                 from.finish();
-                //activity管理
-                ActivityControl.getInstance().removeActivity(from);
+                if(isKillSelf){
+                    //activity管理
+                    ActivityControl.getInstance().removeActivity(from);
+                }
             }
         }, delayMs);
+    }
+
+    public static String getString(Context context,int strId){
+        return context.getResources().getString(strId);
     }
 }

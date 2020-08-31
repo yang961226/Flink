@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_horizontal"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
     android:paddingLeft="30dp"
     android:paddingRight="30dp">
     <ImageView
@@ -13,7 +15,8 @@
         android:src="@drawable/arrow_double_left"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        />
     <ImageView
         android:id="@+id/btn_lastDay"
         android:scaleType="centerInside"

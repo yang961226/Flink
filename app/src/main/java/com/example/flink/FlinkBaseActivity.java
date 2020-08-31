@@ -2,6 +2,7 @@ package com.example.flink;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Looper;
@@ -35,12 +36,27 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
     //封装Toast对象
     private static Toast toast;
     //上下文
-    public Context mContext;
+    protected Context mContext;
     //消息处理工具
     protected HandlerUtils.HandlerHolder mHandler;
+
+    private long lastBackBtnClickTime= 0L;//上一次返回键点击的时间（仅记录只有最后一个activity时点击返回键的情况）
+
+    private static final String CLICK_MORE_TIME_AND_EXIT="再点一次退出程序";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //如果本页不是任务栈最顶的页面，则取消掉
+        if (!isTaskRoot()) {
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && action != null && action.equals(Intent.ACTION_MAIN)) {
+                finish();
+                ActivityControl.getInstance().removeActivity(this);
+                return;
+            }
+        }
+
         mContext = this;
         //绑定handler
         mHandler = new HandlerUtils.HandlerHolder(this,this);
@@ -155,8 +171,22 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //点击手机上的返回键，返回上一层
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            this.finish();
-            ActivityControl.getInstance().removeActivity(this);
+            //如果只有一个activity的情况，则准备退出
+            if(isTaskRoot()){
+                long nowTime=System.currentTimeMillis();
+                if(lastBackBtnClickTime==0L){
+                    lastBackBtnClickTime=nowTime;
+                    showToast(CLICK_MORE_TIME_AND_EXIT);
+                }else if(nowTime-lastBackBtnClickTime>2000){
+                    showToast(CLICK_MORE_TIME_AND_EXIT);
+                    lastBackBtnClickTime=nowTime;
+                }else{
+                    ActivityControl.getInstance().exit();
+                }
+            }else{
+                this.finish();
+            }
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }

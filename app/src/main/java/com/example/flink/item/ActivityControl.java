@@ -26,14 +26,23 @@ public class ActivityControl {
             mActivityControl = new ActivityControl();
         }
         mActivityList.add(activity);
-        Log.d("TAG", "activity处理工具:添加" + activity.getClass().getName());
+        Log.d(TAG, "添加" + activity.getClass().getName());
     }
 
     public void removeActivity(Activity activity) {
         if (mActivityList != null) {
             mActivityList.remove(activity);
+            Log.d(TAG, "删除" + activity.getClass().getName());
         }
-        Log.d("TAG", "activity处理工具:删除" + activity.getClass().getName());
+
+    }
+
+    /**
+     * 退出程序
+     */
+    public void exit(){
+        clearAllActivity();
+        System.exit(0);
     }
 
     private void clearAllActivity() {
@@ -41,9 +50,11 @@ public class ActivityControl {
             for (Activity activity : mActivityList) {
                 if (activity != null) {
                     activity.finish();
+                    mActivityList.remove(activity);
+                    Log.d(TAG, "删除" + activity.getClass().getName());
                 }
             }
-            Log.d("TAG", "activity处理工具:清空所有Activity");
+            Log.d(TAG, "已清空所有Activity");
         }
     }
 }

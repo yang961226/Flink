@@ -5,11 +5,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.tools.HandlerUtils;
+import com.example.flink.common.MyConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +34,9 @@ public class SwitchDateView extends LinearLayout {
 
     private OnSwitchDateBtnClickListener mOnSwitchDateBtnClickListener;
 
-    //消息处理工具
-    private HandlerUtils.HandlerHolder myHandler;
-
     public SwitchDateView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.switchdate_view, this);
+        View.inflate(context, R.layout.switch_date_view, this);
         //绑定处理
         ButterKnife.bind(this);
     }
@@ -51,6 +49,7 @@ public class SwitchDateView extends LinearLayout {
     @OnClick({R.id.btn_lastDay,R.id.btn_lastMonth,R.id.btn_today,R.id.btn_nextDay,R.id.btn_nextMonth})
     public void onViewClick(View view){
         if(mOnSwitchDateBtnClickListener==null){
+            Toast.makeText(getContext(), MyConstants.UNBIND_LISTENER,Toast.LENGTH_LONG).show();
             return;
         }
         switch (view.getId()) {

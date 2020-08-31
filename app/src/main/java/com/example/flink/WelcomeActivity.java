@@ -52,7 +52,7 @@ public class WelcomeActivity extends FlinkBaseActivity implements EasyPermission
     @AfterPermissionGranted(REQUEST_CODE)
     private void requestPermissions() {
         if (EasyPermissions.hasPermissions(this, MyConstants.NEED_PERMISSIONS)) {
-            Tools.redirectDelay(this, NoteActivity.class, 2,true);
+            Tools.redirectDelay(this, NoteActivity.class, 2,false);
         } else {
             // 没有获得全部权限，申请权限
             EasyPermissions.requestPermissions(this, PERMISSIONS_TIPS, REQUEST_CODE, MyConstants.NEED_PERMISSIONS);

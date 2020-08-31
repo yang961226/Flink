@@ -11,4 +11,16 @@ public abstract class NoteBaseActivity extends FlinkBaseActivity {
         return R.layout.activity_note;
     }
 
+    @Override
+    protected void initView() {
+        initTop();
+        initCenter();
+        initBottom();
+    }
+
+    protected abstract void initTop();
+
+    protected abstract void initCenter();
+
+    protected abstract void initBottom();
 }

@@ -19,4 +19,7 @@ public class MyConstants {
     public static final String CLICK_BTN_LAST_MONTH="点击上一个月按钮";
     public static final String CLICK_BTN_NEXT_DAY="点击下一天按钮";
     public static final String CLICK_BTN_NEXT_MONTH="点击下一个月按钮";
+
+    public static final String UNBIND_LISTENER="该按钮未配置点击事件，请联系管理员";
+    public static final String CLASS_CONFIG_ERROR="类文件配置错误，请联系管理员";
 }
