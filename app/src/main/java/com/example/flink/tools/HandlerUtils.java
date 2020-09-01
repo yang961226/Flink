@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import androidx.annotation.NonNull;
-import com.example.flink.Builder.MsgBuilder;
+
 import java.lang.ref.WeakReference;
 
 public class HandlerUtils {
@@ -43,24 +43,7 @@ public class HandlerUtils {
             void flinkMessageCallBack(Message msg);
         }
 
-        protected void sendMessage(MsgBuilder msgBuilder){
-            if(msgBuilder==null || msgBuilder.getWhat()==-1){
-                return;
-            }
 
-            Message msg=new Message();
-            msg.what=msgBuilder.getWhat();
-            if(msgBuilder.getArg1()!=-1){
-                msg.arg1=msgBuilder.getArg1();
-            }
-            if(msgBuilder.getArg2()!=-1){
-                msg.arg2=msgBuilder.getArg2();
-            }
-            if(msgBuilder.getObj()!=null){
-                msg.obj=msgBuilder.getObj();
-            }
-            sendMessage(msg);
-        }
     }
 
 

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Looper;
-import android.os.Message;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.flink.Builder.MsgBuilder;
 import com.example.flink.item.ActivityControl;
 import com.example.flink.tools.HandlerUtils;
 
@@ -90,7 +88,6 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
         //activity管理
         ActivityControl.getInstance().removeActivity(this);
     }
-
 
 
     /**

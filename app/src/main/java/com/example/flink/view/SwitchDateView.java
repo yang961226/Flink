@@ -32,7 +32,7 @@ public class SwitchDateView extends LinearLayout {
     @BindView(R.id.btn_nextMonth)
     ImageView btn_nextMonth;
 
-    private OnSwitchDateBtnClickListener mOnSwitchDateBtnClickListener;
+    private OnSwitchDateListener mOnSwitchDateListener;
 
     public SwitchDateView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -42,40 +42,44 @@ public class SwitchDateView extends LinearLayout {
     }
 
     //设置回调
-    public void setmOnSwitchDateBtnClickListener(OnSwitchDateBtnClickListener mOnSwitchDateBtnClickListener){
-        this.mOnSwitchDateBtnClickListener=mOnSwitchDateBtnClickListener;
+    public void setmOnSwitchDateListener(OnSwitchDateListener mOnSwitchDateListener) {
+        this.mOnSwitchDateListener = mOnSwitchDateListener;
     }
 
     @OnClick({R.id.btn_lastDay,R.id.btn_lastMonth,R.id.btn_today,R.id.btn_nextDay,R.id.btn_nextMonth})
     public void onViewClick(View view){
-        if(mOnSwitchDateBtnClickListener==null){
-            Toast.makeText(getContext(), MyConstants.UNBIND_LISTENER,Toast.LENGTH_LONG).show();
+        if (mOnSwitchDateListener == null) {
+            Toast.makeText(getContext(), MyConstants.UNBIND_LISTENER, Toast.LENGTH_LONG).show();
             return;
         }
         switch (view.getId()) {
             case R.id.btn_lastDay:
-                mOnSwitchDateBtnClickListener.onLastDayBtnClick();
+                mOnSwitchDateListener.onLastDayBtnClick();
                 break;
             case R.id.btn_lastMonth:
-                mOnSwitchDateBtnClickListener.onLastMonthBtnClick();
+                mOnSwitchDateListener.onLastMonthBtnClick();
                 break;
             case R.id.btn_today:
-                mOnSwitchDateBtnClickListener.onTodayBtnClick();
+                mOnSwitchDateListener.onTodayBtnClick();
                 break;
             case R.id.btn_nextDay:
-                mOnSwitchDateBtnClickListener.onNextDayBtnClick();
+                mOnSwitchDateListener.onNextDayBtnClick();
                 break;
             case R.id.btn_nextMonth:
-                mOnSwitchDateBtnClickListener.onNextMonthBtnClick();
+                mOnSwitchDateListener.onNextMonthBtnClick();
                 break;
         }
     }
 
-    public interface OnSwitchDateBtnClickListener {
+    public interface OnSwitchDateListener {
         void onLastDayBtnClick();
+
         void onLastMonthBtnClick();
+
         void onTodayBtnClick();
+
         void onNextDayBtnClick();
+
         void onNextMonthBtnClick();
     }
 }

@@ -147,7 +147,22 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    public static Date addDay(Date date){
-        return addDay(date,1);
+    public static Date addDay(Date date) {
+        return addDay(date, 1);
+    }
+
+    public static boolean checkDate(String dateStr) {
+        return checkDate(dateStr, getDefaultDatePattern());
+    }
+
+    public static boolean checkDate(String dateStr, String pattern) {
+        SimpleDateFormat sd = new SimpleDateFormat(pattern, Locale.getDefault());
+        try {
+            sd.setLenient(false);
+            sd.parse(dateStr);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
