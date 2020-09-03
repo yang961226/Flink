@@ -13,6 +13,7 @@ import com.example.flink.common.MyConstants;
 import com.example.flink.mInterface.AfterDateSelectCallBack;
 import com.example.flink.mInterface.CalendarSelectEvent;
 import com.example.flink.mInterface.DateChangeEvent;
+import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.Tools;
 import com.example.flink.tools.ViewBuilder;
 import com.example.flink.view.CalendarSelectView;
@@ -104,7 +105,7 @@ public class NoteActivity extends NoteBaseActivity {
 
             @Override
             public void onTodayBtnClick() {
-                mCalendarSelectEvent.selectDateTo(new Date());
+                mCalendarSelectEvent.selectDateTo(DateUtil.getNowDate());
             }
 
             @Override

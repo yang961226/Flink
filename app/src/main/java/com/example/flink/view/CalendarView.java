@@ -32,9 +32,8 @@ public class CalendarView extends LinearLayout implements DateChangeEvent {
     }
 
     @Override
-    public boolean changeTo(Date date) {
+    public void changeTo(Date date) {
         mDate=date;
         tvTestDate.setText(DateUtil.format(mDate));
-        return true;
     }
 }

@@ -10,6 +10,8 @@ import java.util.Locale;
 
 public class DateUtil {
 
+    private static Date mDate;
+
     /**
      * 英文简写（默认）如：2010-12-01
      */
@@ -44,6 +46,8 @@ public class DateUtil {
      */
     public static String FORMAT_FULL_CN = "yyyy年MM月dd日  HH时mm分ss秒SSS毫秒";
 
+    public static String[] WEEK_DAYS_STR = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+
     /**
      * 获得默认的 date pattern
      */
@@ -51,16 +55,24 @@ public class DateUtil {
         return FORMAT_SHORT;
     }
 
+    public static String[] getDefaultWeekDaysStr(){
+        return WEEK_DAYS_STR;
+    }
+
     /**
      * 根据预设格式返回当前日期
      * @return 对应的日期
      */
-    public static String getNow() {
-        return format(new Date());
+    public static String getNowDateStr() {
+        return format(getNowDate());
     }
 
-    public static Date getDate(){
-        return new Date();
+    public static Date getNowDate(){
+        if(mDate==null){
+            mDate=new Date();
+        }
+        mDate.setTime(System.currentTimeMillis());
+        return mDate;
     }
 
     /**
@@ -155,6 +167,12 @@ public class DateUtil {
         return checkDate(dateStr, getDefaultDatePattern());
     }
 
+    /**
+     * 检查字符串日期是否符合格式
+     * @param dateStr 日期对应的字符串
+     * @param pattern 格式
+     * @return true:符合
+     */
     public static boolean checkDate(String dateStr, String pattern) {
         SimpleDateFormat sd = new SimpleDateFormat(pattern, Locale.getDefault());
         try {
@@ -164,5 +182,27 @@ public class DateUtil {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 获取当前date对应的星期几的字符串
+     * @param date 日期
+     * @param weekDays 星期1到7对应的字符串
+     * @return 星期几对应的字符串
+     */
+    public static String getWeekOfDateStr(Date date,String [] weekDays){
+        if(date==null || weekDays==null || weekDays.length!=7){
+            return "";
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (dayOfWeek < 0)
+            dayOfWeek = 0;
+        return weekDays[dayOfWeek];
+    }
+
+    public static String getWeekOfDateStr(Date date){
+        return getWeekOfDateStr(date,getDefaultWeekDaysStr());
     }
 }
