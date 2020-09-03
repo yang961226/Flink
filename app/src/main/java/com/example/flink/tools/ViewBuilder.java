@@ -20,8 +20,8 @@ public class ViewBuilder {
      * 生成日历布局
      * @return 布局
      */
-    public static LinearLayout buildCalendarSelectView(Context context) {
-        LinearLayout calendarSelectView=new LinearLayout(context,null);
+    public static ViewGroup buildCalendarSelectView(Context context) {
+        ViewGroup calendarSelectView=new LinearLayout(context,null);
         try{
             Class<?> clazz=Class.forName(Tools.getString(context, R.string.CalendarSelectView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
@@ -38,12 +38,12 @@ public class ViewBuilder {
      * 生成日期布局
      * @return 布局
      */
-    public static LinearLayout buildCalendarView(Context context) {
-        LinearLayout topLeftView = new LinearLayout(context, null);
+    public static ViewGroup buildCalendarView(Context context) {
+        ViewGroup topLeftView=new LinearLayout(context,null);
         try {
             Class<?> clazz = Class.forName(Tools.getString(context, R.string.CalendarView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             topLeftView = (LinearLayout) constructor.newInstance(context, null);
             topLeftView.setLayoutParams(layoutParams);
         } catch (Exception e) {
@@ -53,15 +53,15 @@ public class ViewBuilder {
     }
 
     /**
-     * 生成顶部右边的布局
+     * 生成时钟的布局
      * @return 布局
      */
-    public static  LinearLayout buildClockView(Context context) {
-        LinearLayout topRightView = new LinearLayout(context, null);
+    public static  ViewGroup buildClockView(Context context) {
+        ViewGroup topRightView=new LinearLayout(context,null);
         try {
             Class<?> clazz = Class.forName(Tools.getString(context, R.string.ClockView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             topRightView = (LinearLayout) constructor.newInstance(context, null);
             topRightView.setLayoutParams(layoutParams);
         } catch (Exception e) {

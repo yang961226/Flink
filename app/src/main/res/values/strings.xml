@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Flink</string>
+    <string name="app_version">1.0</string>
 
     <!--  这里面写需要反射的类名  -->
     <string name="ClockView">com.example.flink.view.ClockView</string>
     <string name="CalendarView">com.example.flink.view.CalendarView</string>
     <string name="CalendarSelectView">com.example.flink.view.CalendarSelectView</string>
+    <string name="button_setting">设置按钮</string>
 </resources>
