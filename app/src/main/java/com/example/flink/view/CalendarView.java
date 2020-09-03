@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.mInterface.OnDateChangeListener;
+import com.example.flink.mInterface.DateChangeEvent;
 import com.example.flink.tools.DateUtil;
 
 import java.util.Date;
@@ -17,7 +17,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CalendarView extends LinearLayout implements OnDateChangeListener {
+public class CalendarView extends LinearLayout implements DateChangeEvent {
 
     @BindView(R.id.tv_testDate)
     TextView tvTestDate;

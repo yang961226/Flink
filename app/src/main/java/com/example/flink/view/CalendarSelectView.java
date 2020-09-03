@@ -1,6 +1,8 @@
 package com.example.flink.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 import com.example.flink.mInterface.AfterDateSelectCallBack;
-import com.example.flink.mInterface.OnCalendarSelectListener;
+import com.example.flink.mInterface.CalendarSelectEvent;
 import com.example.flink.tools.DateUtil;
 
 import java.util.Date;
@@ -25,7 +27,7 @@ import butterknife.OnClick;
 /**
  * 显示日历、选择日期的View
  */
-public class CalendarSelectView extends LinearLayout implements OnCalendarSelectListener {
+public class CalendarSelectView extends LinearLayout implements CalendarSelectEvent {
 
     @BindView(R.id.btn_changeDate)
     Button btnChangeDate;
@@ -53,12 +55,13 @@ public class CalendarSelectView extends LinearLayout implements OnCalendarSelect
 
     @OnClick({R.id.btn_changeDate})
     void onViewClick(View view) {
-        String dateInput = tvTestDate.getText().toString();
+        String dateInput = etTest.getText().toString();
         if (!DateUtil.checkDate(dateInput)) {
             Toast.makeText(getContext(), "日期不合法", Toast.LENGTH_LONG).show();
             return;
         }
-        onDateChange(DateUtil.parse(dateInput));
+        Date date=DateUtil.parse(dateInput);
+        selectDateTo(date);
     }
 
 
@@ -67,28 +70,25 @@ public class CalendarSelectView extends LinearLayout implements OnCalendarSelect
     }
 
     @Override
-    public boolean onDateChange(Date date) {
+    public void selectDateTo(Date date) {
         mDate = date;//更新当前日期
         tvTestDate.setText(DateUtil.format(mDate));
         mAfterDateSelectCallBack.selectTo(date);//调用更新日期后的方法
-        return true;
     }
 
     @Override
-    public boolean onDayChange(int changeDays) {
-        onDateChange(DateUtil.addDay(mDate, changeDays));
-        return true;
+    public void onDayChange(int changeDays) {
+        selectDateTo(DateUtil.addDay(mDate, changeDays));
     }
 
     @Override
-    public boolean onMonthChange(int changeMonths) {
-        onDateChange(DateUtil.addMonth(mDate, changeMonths));
-        return true;
+    public void onMonthChange(int changeMonths) {
+        selectDateTo(DateUtil.addMonth(mDate, changeMonths));
     }
 
     @Override
-    public void setAfterDateChangeCallBack(AfterDateSelectCallBack afterDateSelectCallBack) {
-        this.mAfterDateSelectCallBack = afterDateSelectCallBack;
+    public void setAfterDateSelectCallBack(AfterDateSelectCallBack afterDateSelectCallBack) {
+        mAfterDateSelectCallBack=afterDateSelectCallBack;
     }
 
 }
