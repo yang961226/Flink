@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.example.flink.FlinkBaseActivity;
 import com.example.flink.R;
-import com.example.flink.item.ActivityControl;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,7 +15,7 @@ import java.util.TimerTask;
 /**
  * 这个工具类存放通用的方法
  */
-public class Tools {
+public class CommonTools {
 
     /**
      * 带参数跳转

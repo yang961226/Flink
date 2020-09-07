@@ -10,8 +10,6 @@ import java.util.Locale;
 
 public class DateUtil {
 
-    private static Date mDate;
-
     /**
      * 英文简写（默认）如：2010-12-01
      */
@@ -68,11 +66,7 @@ public class DateUtil {
     }
 
     public static Date getNowDate(){
-        if(mDate==null){
-            mDate=new Date();
-        }
-        mDate.setTime(System.currentTimeMillis());
-        return mDate;
+        return new Date();
     }
 
     /**

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
+import com.example.flink.mInterface.AfterDateChangeCallBack;
 import com.example.flink.mInterface.DateChangeEvent;
 import com.example.flink.tools.DateUtil;
 
@@ -35,5 +36,10 @@ public class CalendarView extends LinearLayout implements DateChangeEvent {
     public void changeTo(Date date) {
         mDate=date;
         tvTestDate.setText(DateUtil.format(mDate));
+    }
+
+    @Override
+    public void setAfterDateChangeCallBack(AfterDateChangeCallBack afterDateChangeCallBack) {
+        //do nothing
     }
 }

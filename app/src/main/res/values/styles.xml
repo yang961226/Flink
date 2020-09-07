@@ -7,4 +7,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--PopupWindow从底部弹出-->
+    <style name="PopupWindowTranslateThemeFromBottom">
+        <item name="android:windowEnterAnimation">@anim/popup_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_bottom_out</item>
+    </style>
+
+    <style name="PopupWindowScaleTheme">
+        <item name="android:windowEnterAnimation">@anim/popup_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_scale_out</item>
+    </style>
+
 </resources>

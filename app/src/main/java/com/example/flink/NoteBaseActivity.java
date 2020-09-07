@@ -18,6 +18,7 @@ public abstract class NoteBaseActivity extends FlinkBaseActivity {
         initTop();
         initCenter();
         initBottom();
+        initOther();
     }
 
     protected abstract void onBtnClick(View view);
@@ -27,4 +28,6 @@ public abstract class NoteBaseActivity extends FlinkBaseActivity {
     protected abstract void initCenter();
 
     protected abstract void initBottom();
+
+    protected abstract void initOther();
 }

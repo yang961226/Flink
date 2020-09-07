@@ -2,16 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="200dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
     <!--  根布局的高度是临时加的，最终要改成wrap_content  -->
-    <EditText
-        android:id="@+id/et_test"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
     <Button
         android:id="@+id/btn_changeDate"
-        android:text="修改日期"
+        android:text="随机日期（模拟点击日期某天）"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView

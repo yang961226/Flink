@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.flink.item.ActivityControl;
+import com.example.flink.tools.ActivityControl;
 import com.example.flink.tools.HandlerUtils;
 
 import butterknife.ButterKnife;
@@ -76,10 +76,10 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
         if (isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        //初始化控件
-        initView();
         //设置数据
         initData();
+        //初始化控件
+        initView();
     }
 
     @Override
@@ -103,7 +103,7 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
     protected abstract void initView();
 
     /**
-     * 设置数据
+     * 初始化数据
      */
     protected void initData(){
 
