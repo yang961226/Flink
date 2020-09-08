@@ -7,4 +7,6 @@
     <string name="CalendarView">com.example.flink.view.CalendarView</string>
     <string name="CalendarSelectView">com.example.flink.view.CalendarSelectView</string>
     <string name="button_setting">设置按钮</string>
+    <string name="buton_popupCalendar">弹出日历按钮</string>
+
 </resources>

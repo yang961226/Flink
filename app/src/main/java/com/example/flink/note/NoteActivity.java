@@ -3,27 +3,31 @@ package com.example.flink.note;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Message;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.flink.Builder.MsgBuilder;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.flink.adapter.NotePagerAdapter;
+import com.example.flink.builder.MsgBuilder;
 import com.example.flink.NoteBaseActivity;
 import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
-import com.example.flink.mInterface.AfterDateChangeCallBack;
+import com.example.flink.fragment.FlinkBaseFragment;
 import com.example.flink.mInterface.ClockEvent;
 import com.example.flink.mInterface.DateChangeEvent;
 import com.example.flink.tools.DateUtil;
+import com.example.flink.tools.FragmentTools;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
 import com.example.flink.view.SwitchDateView;
 
 import java.util.Date;
+import java.util.List;
 import java.util.TimerTask;
 
 import butterknife.BindView;
@@ -52,6 +56,8 @@ public class NoteActivity extends NoteBaseActivity {
     @BindView(R.id.btn_calendarSelectPopUp)
     ImageView btn_calendarSelectPopUp;
 
+    private static final int VIEW_PAGER_ID=5242;
+
     private DateChangeEvent mCalendarDateChangeEvent;
     private DateChangeEvent mTopLeftLLDateChangeEvent;
     private ClockEvent mTopRightLLDateChangeEvent;
@@ -61,16 +67,18 @@ public class NoteActivity extends NoteBaseActivity {
 
     private Date mDate;
 
-    private java.util.Timer clockTimer;
-
     private PopUpWindowHelper popUpWindowHelper;
 
     private boolean isPopupCalendar;
+
+    private ViewPager mViewPager;
+    private NotePagerAdapter mNotePagerAdapter;
 
     @Override
     protected void initData() {
         mDate=DateUtil.getNowDate();
         isPopupCalendar=false;
+        initViewPager();
     }
 
     @Override
@@ -102,7 +110,7 @@ public class NoteActivity extends NoteBaseActivity {
      */
     private void startToTick(){
         //每秒更新一次时钟View
-        clockTimer = new java.util.Timer(true);
+        java.util.Timer clockTimer = new java.util.Timer(true);
         TimerTask clockTask = new TimerTask() {
             public void run() {
                 mHandler.sendMessage(MsgBuilder.build().setWhat(MyConstants.CLOCK_TICK.hashCode()).setObj(DateUtil.getNowDate()).makeMsg());
@@ -137,12 +145,42 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initCenter() {
-
+        llCenter.addView(mViewPager);
     }
 
     @Override
     protected void initBottom() {
 
+    }
+
+    private void initViewPager(){
+        mViewPager=buildViewPager();
+        mViewPager.setId(VIEW_PAGER_ID);
+        mNotePagerAdapter=new NotePagerAdapter(getSupportFragmentManager(),FragmentTools.getFunctionFragments(this));
+        mViewPager.setAdapter(mNotePagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private ViewPager buildViewPager(){
+        ViewPager viewPager=new ViewPager(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0,1);
+        viewPager.setLayoutParams(layoutParams);
+        return viewPager;
     }
 
     @Override
@@ -163,11 +201,6 @@ public class NoteActivity extends NoteBaseActivity {
                 .setOutsideTouchable(false)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
-        mCalendarDateChangeEvent.setAfterDateChangeCallBack(date -> {
-            mTopLeftLLDateChangeEvent.changeTo(date);
-            mCalendarDateChangeEvent.changeTo(date);
-            mDate=date;
-        });
     }
 
     private void popupCalendar(boolean isPopupCalendar){
@@ -221,7 +254,11 @@ public class NoteActivity extends NoteBaseActivity {
                 mDate=tmpDate;
             }
         });
-
+        mCalendarDateChangeEvent.setAfterDateChangeCallBack(date -> {
+            mTopLeftLLDateChangeEvent.changeTo(date);
+            mCalendarDateChangeEvent.changeTo(date);
+            mDate=date;
+        });
     }
 
     @Override

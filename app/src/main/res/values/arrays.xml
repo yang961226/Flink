@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="note_function">
+        <item>@string/StickyNote</item>
+        <item>@string/TestNote1</item>
+        <item>@string/TestNote2</item>
+    </string-array>
+
+    <!--  日记功能  -->
+    <string name="StickyNote">com.example.flink.fragment.StickyNoteFragment</string>
+    <string name="TestNote1">com.example.flink.fragment.TestNoteFragment1</string>
+    <string name="TestNote2">com.example.flink.fragment.TestNoteFragment2</string>
+</resources>

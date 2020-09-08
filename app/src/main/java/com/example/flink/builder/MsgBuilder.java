@@ -1,4 +1,4 @@
-package com.example.flink.Builder;
+package com.example.flink.builder;
 
 import android.os.Message;
 
