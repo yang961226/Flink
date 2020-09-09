@@ -47,6 +47,13 @@ public class DateUtil {
     public static String[] WEEK_DAYS_STR = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
     /**
+     * 英文的周和月
+     */
+    public static String[] WEEK_DAYS_ENGLISH = { "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY" };
+
+    public static String[] MONTH_NAME_ENGLISH = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+    /**
      * 获得默认的 date pattern
      */
     public static String getDefaultDatePattern() {
@@ -199,4 +206,41 @@ public class DateUtil {
     public static String getWeekOfDateStr(Date date){
         return getWeekOfDateStr(date,getDefaultWeekDaysStr());
     }
+
+    /**
+     * 获取当前date对应的日期数字的字符串
+     * @param date 日期
+     * @return 日期数字对应的字符串
+     */
+    public static String getDayOfMonth(Date date) {
+        if(date == null) return "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+    }
+
+    /**
+     * 获取当前date对应的月份英文的字符串
+     * @param date 日期
+     * @return 月份英文对应的字符串
+     */
+    public static String getMonthEnglish(Date date) {
+        if(date == null) return "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return MONTH_NAME_ENGLISH[cal.get(Calendar.MONTH)];
+    }
+
+    /**
+     * 获取当前date对应的年份的字符串
+     * @param date 日期
+     * @return 年份对应的字符串
+     */
+    public static String getYear(Date date) {
+        if(date == null) return "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return String.valueOf(cal.get(Calendar.YEAR));
+    }
+
 }
