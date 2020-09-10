@@ -25,6 +25,7 @@ import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.FragmentTools;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
+import com.example.flink.view.NavigationBarView;
 import com.example.flink.view.SwitchDateView;
 
 import java.util.Date;
@@ -63,8 +64,9 @@ public class NoteActivity extends NoteBaseActivity {
     private DateChangeEvent mTopLeftLLDateChangeEvent;
     private ClockEvent mTopRightLLDateChangeEvent;
 
-    ViewGroup topLeftLL;
-    ViewGroup topRightLL;
+    private ViewGroup topLeftLL;
+    private ViewGroup topRightLL;
+    private NavigationBarView navBarView;
 
     private Date mDate;
 
@@ -145,7 +147,14 @@ public class NoteActivity extends NoteBaseActivity {
     @Override
     protected void initCenter() {
         initViewPager();
+        navBarView=ViewTools.buildNavBarView(this);
+        navBarView.init(NavigationBarView.NavigationBarViewConfig
+                .create()
+                .setItemNum(3)// TODO: 2020/9/10 现在是写死3个，后面这个值要改成根据实际页数来填写 
+                .setDefaultSelectIndex(0));
+        llCenter.addView(navBarView);
         llCenter.addView(mViewPager);
+
     }
 
     @Override
@@ -166,7 +175,7 @@ public class NoteActivity extends NoteBaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d("onPageSelected",position+"");
+               navBarView.selectTo(position);
             }
 
             @Override

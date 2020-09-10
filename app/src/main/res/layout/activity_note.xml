@@ -9,6 +9,7 @@
     android:padding="10dp">
     <!--  顶部，用于显示时间日期等  -->
     <LinearLayout
+        android:padding="5dp"
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="0dp"

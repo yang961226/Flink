@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
+import com.example.flink.view.NavigationBarView;
 
 import java.lang.reflect.Constructor;
 
@@ -21,13 +22,13 @@ public class ViewTools {
      * 生成日历布局
      * @return 布局
      */
-    public static ViewGroup buildCalendarSelectView(Context context) {
-        ViewGroup calendarSelectView;
+    public static LinearLayout buildCalendarSelectView(Context context) {
+        LinearLayout calendarSelectView;
         try{
             Class<?> clazz=Class.forName(CommonTools.getString(context, R.string.CalendarSelectView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            calendarSelectView=(ViewGroup)constructor.newInstance(context,null);
+            calendarSelectView=(LinearLayout)constructor.newInstance(context,null);
             calendarSelectView.setLayoutParams(layoutParams);
         }catch (Exception e){
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
@@ -39,14 +40,15 @@ public class ViewTools {
      * 生成日期布局
      * @return 布局
      */
-    public static ViewGroup buildCalendarView(Context context) {
-        ViewGroup topLeftView;
+    public static LinearLayout buildCalendarView(Context context) {
+        LinearLayout topLeftView;
         try {
             Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-            topLeftView = (ViewGroup) constructor.newInstance(context, null);
+            topLeftView = (LinearLayout) constructor.newInstance(context, null);
             topLeftView.setLayoutParams(layoutParams);
+
         } catch (Exception e) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
@@ -57,13 +59,13 @@ public class ViewTools {
      * 生成时钟的布局
      * @return 布局
      */
-    public static  ViewGroup buildClockView(Context context) {
-        ViewGroup topRightView;
+    public static  LinearLayout buildClockView(Context context) {
+        LinearLayout topRightView;
         try {
             Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-            topRightView = (ViewGroup) constructor.newInstance(context, null);
+            topRightView = (LinearLayout) constructor.newInstance(context, null);
             topRightView.setLayoutParams(layoutParams);
         } catch (Exception e) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
@@ -78,7 +80,7 @@ public class ViewTools {
      * @param layoutParams 参数
      * @return 生成的ViewGroup
      */
-    public static ViewGroup buildViewGroup(Context context,Class<? extends ViewGroup>clazz,LinearLayout.LayoutParams layoutParams){
+    public static ViewGroup buildViewGroup(Context context,Class<? extends ViewGroup>clazz,ViewGroup.LayoutParams layoutParams){
         ViewGroup viewGroup;
         try{
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
@@ -96,5 +98,11 @@ public class ViewTools {
         return buildViewGroup(context,clazz,layoutParams);
     }
 
-
+    public static NavigationBarView buildNavBarView(Context context){
+        NavigationBarView navBarView=new NavigationBarView(context,null);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                , ViewGroup.LayoutParams.WRAP_CONTENT);
+        navBarView.setLayoutParams(layoutParams);
+        return navBarView;
+    }
 }
