@@ -40,13 +40,13 @@ public class ViewTools {
      * 生成日期布局
      * @return 布局
      */
-    public static LinearLayout buildCalendarView(Context context) {
-        LinearLayout topLeftView;
+    public static ViewGroup buildCalendarView(Context context) {
+        ViewGroup topLeftView;
         try {
             Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-            topLeftView = (LinearLayout) constructor.newInstance(context, null);
+            topLeftView = (ViewGroup) constructor.newInstance(context, null);
             topLeftView.setLayoutParams(layoutParams);
 
         } catch (Exception e) {
@@ -59,13 +59,13 @@ public class ViewTools {
      * 生成时钟的布局
      * @return 布局
      */
-    public static  LinearLayout buildClockView(Context context) {
-        LinearLayout topRightView;
+    public static  ViewGroup buildClockView(Context context) {
+        ViewGroup topRightView;
         try {
             Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-            topRightView = (LinearLayout) constructor.newInstance(context, null);
+            topRightView = (ViewGroup) constructor.newInstance(context, null);
             topRightView.setLayoutParams(layoutParams);
         } catch (Exception e) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
