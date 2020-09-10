@@ -3,6 +3,7 @@ package com.example.flink.note;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -78,7 +79,7 @@ public class NoteActivity extends NoteBaseActivity {
     protected void initData() {
         mDate=DateUtil.getNowDate();
         isPopupCalendar=false;
-        initViewPager();
+
     }
 
     @Override
@@ -125,8 +126,7 @@ public class NoteActivity extends NoteBaseActivity {
         topLeftLL= ViewTools.buildCalendarView(this);
         //如果没有继承这个接口，说明这个View没有按要求去做
         if(!(topLeftLL instanceof DateChangeEvent)){
-            showToast(MyConstants.CLASS_CONFIG_ERROR);
-            return;
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
         llTop.addView(topLeftLL);
         mTopLeftLLDateChangeEvent = (DateChangeEvent) topLeftLL;
@@ -135,8 +135,7 @@ public class NoteActivity extends NoteBaseActivity {
         //初始化右上角
         topRightLL= ViewTools.buildClockView(this);
         if(!(topRightLL instanceof ClockEvent)){
-            showToast(MyConstants.CLASS_CONFIG_ERROR);
-            return;
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
         llTop.addView(topRightLL);
         mTopRightLLDateChangeEvent =(ClockEvent)topRightLL;
@@ -145,6 +144,7 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initCenter() {
+        initViewPager();
         llCenter.addView(mViewPager);
     }
 
@@ -166,7 +166,7 @@ public class NoteActivity extends NoteBaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-
+                Log.d("onPageSelected",position+"");
             }
 
             @Override

@@ -1,13 +1,9 @@
 package com.example.flink.adapter;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-
 import com.example.flink.R;
 import com.example.flink.fragment.FlinkBaseFragment;
 
