@@ -11,4 +11,5 @@
     <string name="button_setting">设置按钮</string>
     <string name="buton_popupCalendar">弹出日历按钮</string>
 
+    <dimen name="sticky_note_font_size">18</dimen>
 </resources>

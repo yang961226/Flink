@@ -1,6 +1,7 @@
 package com.example.flink.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,54 +10,52 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import butterknife.ButterKnife;
+
 /**
- * 本项目通用的碎片
+ * 本项目通用的碎片（懒加载）
  */
 public abstract class FlinkBaseFragment extends Fragment {
 
-    protected boolean isInit = false;//是否已经初始化
-    protected boolean isLoad = false;//是否已经加载了内容
+    protected boolean isViewCreated;//Fragment的View加载完毕的标记
+
+    private boolean isUIVisible=false;//Fragment对用户可见的标记
+
     private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
-        isInit = true;
-        /**初始化的时候去加载数据**/
-        isCanLoadData();
+        ButterKnife.bind(this, view);
         return view;
     }
 
-    /**
-     * 视图销毁的时候讲Fragment是否初始化的状态变为false
-     */
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        isInit = false;
-        isLoad = false;
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        isViewCreated = true;
+        lazyLoad();
+        super.onViewCreated(view, savedInstanceState);
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见
+        if (isVisibleToUser) {
+            isUIVisible = true;
+            lazyLoad();
+        } else {
+            isUIVisible = false;
+        }
     }
 
     /**
-     * 是否可以加载数据
-     * 可以加载数据的条件：
-     * 1.视图已经初始化
-     * 2.视图对用户可见
+     * 这个碎片是否使用ViewPager，如果子类使用了Fragment+ViewPager的结合，一定要重写这个方法并返回true
+     * @return
      */
-    private void isCanLoadData() {
-        if (!isInit) {
-            return;
-        }
-        if (getUserVisibleHint()) {
-            lazyLoad();
-            isLoad = true;
-        } else {
-            if (isLoad) {
-                stopLoad();
-            }
-        }
+    protected boolean isUseViewPager(){
+        return false;
     }
 
     /**
@@ -87,14 +86,19 @@ public abstract class FlinkBaseFragment extends Fragment {
         return (T) getContentView().findViewById(id);
     }
 
+    protected abstract void loadData();
 
     /**
-     * 当视图初始化并且对用户可见的时候去真正的加载数据
+     * 当视图初始化并且对用户可见的时候加载数据
      */
-    protected abstract void lazyLoad();
+    protected void lazyLoad(){
+        //这里进行双重标记判断,是因为setUserVisibleHint会多次回调,并且会在onCreateView执行前回调,必须确保onCreateView加载完毕且页面可见,才加载数据
+        if (isViewCreated && (isUIVisible || !isUseViewPager())) {//之所以加一个isUseViewPager是因为如果不结合ViewPager，isUIVisible会永远为false
+            loadData();
+            //数据加载完毕,恢复标记,防止重复加载
+            isViewCreated = false;
+            isUIVisible = false;
+        }
+    }
 
-    /**
-     * 当视图已经对用户不可见并且加载过数据，如果需要在切换到其他页面时停止加载数据，可以调用此方法
-     */
-    protected void stopLoad(){};
 }

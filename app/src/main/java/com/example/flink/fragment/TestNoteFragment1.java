@@ -9,6 +9,11 @@ public class TestNoteFragment1 extends FlinkBaseFragment {
     }
 
     @Override
+    protected void loadData() {
+
+    }
+
+    @Override
     protected void lazyLoad() {
 
     }

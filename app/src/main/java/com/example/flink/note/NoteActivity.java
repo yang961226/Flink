@@ -189,6 +189,7 @@ public class NoteActivity extends NoteBaseActivity {
         ViewPager viewPager=new ViewPager(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0,1);
         viewPager.setLayoutParams(layoutParams);
+        viewPager.setOffscreenPageLimit(NavigationBarView.MAX_ITEM_NUM);//设置回收缓存，不要让ViewPager回收里面的碎片
         return viewPager;
     }
 

@@ -31,6 +31,11 @@ public class NotePagerAdapter extends FragmentPagerAdapter {
             }
 
             @Override
+            protected void loadData() {
+
+            }
+
+            @Override
             protected void lazyLoad() {
 
             }
