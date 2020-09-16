@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -20,7 +19,7 @@ import butterknife.ButterKnife;
 public class ClockView extends LinearLayout implements ClockEvent {
 
     @BindView(R.id.testNowTime)
-    TextView tvNowTime;
+    HeightAdaptationTextView tvNowTime;
 
     public ClockView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

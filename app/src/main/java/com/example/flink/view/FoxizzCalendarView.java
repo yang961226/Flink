@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 public class FoxizzCalendarView extends LinearLayout implements DateChangeEvent {
 
     @BindView(R.id.day_of_week)
-    TextView dayOfWeek;
+    HeightAdaptationTextView dayOfWeek;
     @BindView(R.id.day_month_year)
     TextView dayMonthYear;
 
