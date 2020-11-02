@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,6 +11,7 @@ import com.example.flink.R;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.mInterface.UnregisterEventBus;
 import com.example.flink.tools.DateUtil;
+import com.example.flink.view.AdaptationTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,7 +22,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoxizzCalendarView extends LinearLayout implements UnregisterEventBus {
+public class FoxizzCalendarLayout extends LinearLayout implements UnregisterEventBus {
 
     @BindView(R.id.day_of_week)
     AdaptationTextView dayOfWeek;
@@ -30,7 +31,7 @@ public class FoxizzCalendarView extends LinearLayout implements UnregisterEventB
 
     private Date mDate;
 
-    public FoxizzCalendarView(Context context, @Nullable AttributeSet attrs) {
+    public FoxizzCalendarLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_foxizz_calendar_view, this);
         //绑定处理

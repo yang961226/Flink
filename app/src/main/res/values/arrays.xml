@@ -8,7 +8,7 @@
     </string-array>
 
     <!--  日记功能  -->
-    <string name="StickyNote">com.example.flink.view.StickyNoteView</string>
-    <string name="TestNote1">com.example.flink.view.TestNoteView1</string>
-    <string name="TestNote2">com.example.flink.view.TestNoteView2</string>
+    <string name="StickyNote">com.example.flink.layout.StickyNoteLayout</string>
+    <string name="TestNote1">com.example.flink.layout.TestNoteLayout1</string>
+    <string name="TestNote2">com.example.flink.layout.TestNoteLayout2</string>
 </resources>

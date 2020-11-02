@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * 底部导航条
  */
-public class NavigationBarView extends LinearLayout {
+public class NavigationBarLayout extends LinearLayout {
 
     public static final int MAX_ITEM_NUM=10;//本View支持的最大的导航页数
     private int itemNum;//设置的导航页数
@@ -34,7 +34,7 @@ public class NavigationBarView extends LinearLayout {
     @BindView(R.id.ll_root)
     LinearLayout llRoot;
 
-    public NavigationBarView(Context context, @Nullable AttributeSet attrs){
+    public NavigationBarLayout(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
         View.inflate(context, R.layout.layout_navigation_bar_view, this);
         //绑定处理

@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -22,9 +22,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 显示日历、选择日期的View
+ * 显示日历
  */
-public class CalendarSelectView extends LinearLayout {
+public class CalendarSelectLayout extends LinearLayout {
 
     @BindView(R.id.btn_changeDate)
     Button btnChangeDate;
@@ -33,7 +33,7 @@ public class CalendarSelectView extends LinearLayout {
 
     private Date mDate;//目前的日期
 
-    public CalendarSelectView(Context context, @Nullable AttributeSet attrs) {
+    public CalendarSelectLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_calendar_select_view, this);
         //绑定处理

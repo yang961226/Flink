@@ -2,7 +2,6 @@ package com.example.flink.tools;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -10,7 +9,7 @@ import android.widget.LinearLayout;
 import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
-import com.example.flink.view.NavigationBarView;
+import com.example.flink.layout.NavigationBarLayout;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -25,10 +24,10 @@ public class ViewTools {
      * 生成日历布局
      * @return 布局
      */
-    public static ViewGroup buildCalendarSelectView(Context context) {
+    public static ViewGroup buildCalendarSelectLayout(Context context) {
         ViewGroup calendarSelectView;
         try{
-            Class<?> clazz=Class.forName(CommonTools.getString(context, R.string.CalendarSelectView));
+            Class<?> clazz=Class.forName(CommonTools.getString(context, R.string.CalendarSelectLayout));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             calendarSelectView=(ViewGroup) constructor.newInstance(context,null);
         }catch (Exception e){
@@ -41,10 +40,10 @@ public class ViewTools {
      * 生成日期布局
      * @return 布局
      */
-    public static ViewGroup buildCalendarView(Context context) {
+    public static ViewGroup buildCalendarLayout(Context context) {
         ViewGroup topLeftView;
         try {
-            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarView));
+            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarLayout));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             topLeftView = (ViewGroup) constructor.newInstance(context, null);
@@ -60,10 +59,10 @@ public class ViewTools {
      * 生成时钟的布局
      * @return 布局
      */
-    public static  ViewGroup buildClockView(Context context) {
+    public static  ViewGroup buildClockLayout(Context context) {
         ViewGroup topRightView;
         try {
-            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockView));
+            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockLayout));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             topRightView = (ViewGroup) constructor.newInstance(context, null);
@@ -99,8 +98,8 @@ public class ViewTools {
         return buildViewGroup(context,clazz,layoutParams);
     }
 
-    public static NavigationBarView buildNavBarView(Context context){
-        NavigationBarView navBarView=new NavigationBarView(context,null);
+    public static NavigationBarLayout buildNavBarView(Context context){
+        NavigationBarLayout navBarView=new NavigationBarLayout(context,null);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.WRAP_CONTENT);
         navBarView.setLayoutParams(layoutParams);

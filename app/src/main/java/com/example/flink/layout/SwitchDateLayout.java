@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
 /**
  * 底部切换日期的View
  */
-public class SwitchDateView extends LinearLayout {
+public class SwitchDateLayout extends LinearLayout {
 
     @BindView(R.id.btn_lastDay)
     ImageView btn_lastDay;
@@ -34,7 +34,7 @@ public class SwitchDateView extends LinearLayout {
 
     private OnSwitchDateListener mOnSwitchDateListener;
 
-    public SwitchDateView(Context context, @Nullable AttributeSet attrs) {
+    public SwitchDateLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_switch_date_view, this);
         //绑定处理

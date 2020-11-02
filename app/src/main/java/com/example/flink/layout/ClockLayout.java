@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,6 +11,7 @@ import com.example.flink.R;
 import com.example.flink.event.TickEvent;
 import com.example.flink.mInterface.UnregisterEventBus;
 import com.example.flink.tools.DateUtil;
+import com.example.flink.view.AdaptationTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,12 +20,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ClockView extends LinearLayout implements UnregisterEventBus {
+public class ClockLayout extends LinearLayout implements UnregisterEventBus {
 
     @BindView(R.id.testNowTime)
-    HeightAdaptationTextView tvNowTime;
+    AdaptationTextView tvNowTime;
 
-    public ClockView(Context context, @Nullable AttributeSet attrs) {
+    public ClockLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_clock_view, this);
         //绑定处理

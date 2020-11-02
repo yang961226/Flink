@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:background="@color/gainsboro">
+        android:background="@color/seashell">
 
     </LinearLayout>
 
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:background="@color/gainsboro"
+        android:background="@color/seashell"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -38,8 +38,8 @@
         android:orientation="vertical">
 
     </LinearLayout>
-    <com.example.flink.view.SwitchDateView
-        android:id="@+id/switchDateView"
+    <com.example.flink.layout.SwitchDateLayout
+        android:id="@+id/switchDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +52,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/button_setting" />
+        <ImageView
+            android:id="@+id/btn_add"
+            android:src="@drawable/square_grey"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:scaleType="centerInside"

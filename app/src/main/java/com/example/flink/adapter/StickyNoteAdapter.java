@@ -1,6 +1,7 @@
 package com.example.flink.adapter;
 
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.flink.R;
@@ -19,9 +20,11 @@ public class StickyNoteAdapter extends CommenAdapter<StickyNoteItem> {
     protected void setUI(ViewHolder holder, int position, Context context) {
         StickyNoteItem item= (StickyNoteItem) getItem(position);
 
-        TextView tvNoteContet=holder.getItemViewById(R.id.tv_note_content);
-        tvNoteContet.setText(item.getmNoteContent());
+        ImageView iv=holder.getItemViewById(R.id.iv_status);
+        iv.setImageResource(item.getStatus().getScrId());
 
+        TextView tvNoteContet=holder.getItemViewById(R.id.tv_note_content);
+        tvNoteContet.setText(item.getNoteContent());
     }
 
     @Override

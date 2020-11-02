@@ -3,12 +3,13 @@
     <string name="app_version">1.0</string>
 
     <!--  这里面写需要反射的类名  -->
-    <string name="ClockView">com.example.flink.view.ClockView</string>
-    <string name="CalendarView">com.example.flink.view.FoxizzCalendarView</string>
-    <string name="CalendarSelectView">com.example.flink.view.CalendarSelectView</string>
+    <string name="ClockLayout">com.example.flink.layout.ClockLayout</string>
+    <string name="CalendarLayout">com.example.flink.layout.FoxizzCalendarLayout</string>
+    <string name="CalendarSelectLayout">com.example.flink.layout.CalendarSelectLayout</string>
 
     <!--  字符串映射  -->
     <string name="button_setting">设置按钮</string>
+    <string name="button_add">增加按钮</string>
     <string name="buton_popupCalendar">弹出日历按钮</string>
 
     <dimen name="sticky_note_font_size">18</dimen>

@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -22,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StickyNoteView extends LinearLayout {
+public class StickyNoteLayout extends LinearLayout {
 
     @BindView(R.id.lv)
     ListView lv;
@@ -30,7 +31,7 @@ public class StickyNoteView extends LinearLayout {
     private List<StickyNoteItem> mNoteItemList = new ArrayList<>();
     private StickyNoteAdapter mNoteAdapter;
 
-    public StickyNoteView(Context context, @Nullable AttributeSet attrs) {
+    public StickyNoteLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -42,6 +43,11 @@ public class StickyNoteView extends LinearLayout {
         ButterKnife.bind(this);
         mNoteAdapter=new StickyNoteAdapter(getContext(), mNoteItemList);
         lv.setAdapter(mNoteAdapter);
+        lv.setOnItemClickListener((parent, view, position, id) -> {
+            StickyNoteItem item=mNoteItemList.get(position);
+            item.moveToNextStatus();
+            mNoteAdapter.notifyDataSetChanged();
+        });
         initTestNote();
     }
 

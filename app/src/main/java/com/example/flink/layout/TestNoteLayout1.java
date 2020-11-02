@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,15 +9,15 @@ import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 
-public class TestNoteView2 extends LinearLayout {
+public class TestNoteLayout1 extends LinearLayout {
 
 
-    public TestNoteView2(Context context, @Nullable AttributeSet attrs) {
+    public TestNoteLayout1(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
     private void init(Context context){
-        View.inflate(context, R.layout.layout_testnote2, this);
+        View.inflate(context, R.layout.layout_testnote1, this);
     }
 }
