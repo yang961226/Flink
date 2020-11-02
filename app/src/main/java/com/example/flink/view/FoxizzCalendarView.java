@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -21,9 +20,9 @@ import butterknife.ButterKnife;
 public class FoxizzCalendarView extends LinearLayout implements DateChangeEvent {
 
     @BindView(R.id.day_of_week)
-    HeightAdaptationTextView dayOfWeek;
+    AdaptationTextView dayOfWeek;
     @BindView(R.id.day_month_year)
-    TextView dayMonthYear;
+    AdaptationTextView dayMonthYear;
 
     private Date mDate;
 
