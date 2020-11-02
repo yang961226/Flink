@@ -36,7 +36,7 @@ public class SwitchDateView extends LinearLayout {
 
     public SwitchDateView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.switch_date_view, this);
+        View.inflate(context, R.layout.layout_switch_date_view, this);
         //绑定处理
         ButterKnife.bind(this);
     }

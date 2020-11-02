@@ -10,9 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.mInterface.AfterDateChangeCallBack;
-import com.example.flink.mInterface.DateChangeEvent;
+import com.example.flink.event.DateChangeEvent;
 import com.example.flink.tools.DateUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 
@@ -23,7 +24,7 @@ import butterknife.OnClick;
 /**
  * 显示日历、选择日期的View
  */
-public class CalendarSelectView extends LinearLayout implements DateChangeEvent {
+public class CalendarSelectView extends LinearLayout {
 
     @BindView(R.id.btn_changeDate)
     Button btnChangeDate;
@@ -31,18 +32,12 @@ public class CalendarSelectView extends LinearLayout implements DateChangeEvent 
     TextView tvTestDate;
 
     private Date mDate;//目前的日期
-    private AfterDateChangeCallBack mAfterDateChangeCallBack;
 
     public CalendarSelectView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.calendar_select_view, this);
+        View.inflate(context, R.layout.layout_calendar_select_view, this);
         //绑定处理
         ButterKnife.bind(this);
-        init();
-    }
-
-    private void init() {
-
     }
 
     @OnClick({R.id.btn_changeDate})
@@ -55,19 +50,9 @@ public class CalendarSelectView extends LinearLayout implements DateChangeEvent 
         long year = day * 365;
         long year2020Start  = (2020-1970) * year;
         long randomTime = (long) (Math.random()*(year-1) + year2020Start);
-        Date dRandom = new Date(randomTime);
-        mAfterDateChangeCallBack.notifyDateHasChange(dRandom);
-    }
-
-    @Override
-    public void changeTo(Date date) {
-        mDate=date;
+        mDate = new Date(randomTime);
         tvTestDate.setText(DateUtil.format(mDate));
-    }
-
-    @Override
-    public void setAfterDateChangeCallBack(AfterDateChangeCallBack afterDateChangeCallBack) {
-        mAfterDateChangeCallBack = afterDateChangeCallBack;
+        EventBus.getDefault().post(new DateChangeEvent(mDate));
     }
 
 }

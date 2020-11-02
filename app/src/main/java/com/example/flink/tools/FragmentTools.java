@@ -9,7 +9,6 @@ import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
 import com.example.flink.fragment.FlinkBaseFragment;
-import com.example.flink.fragment.StickyNoteFragment;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -18,19 +17,6 @@ public class FragmentTools {
 
     private FragmentTools(){
         //屏蔽
-    }
-
-    /**
-     * 这个方法返回了笔记的功能页
-     * @return 功能页的碎片列表
-     */
-    public static ArrayList<FlinkBaseFragment> getFunctionFragments(Context context){
-        ArrayList<FlinkBaseFragment> arrayList=new ArrayList<>();
-        String [] functions=context.getResources().getStringArray(R.array.note_function);
-        for (String function : functions) {
-            arrayList.add(buildFragment(function));
-        }
-        return arrayList;
     }
 
     private static FlinkBaseFragment buildFragment(Class<? extends FlinkBaseFragment>clazz){

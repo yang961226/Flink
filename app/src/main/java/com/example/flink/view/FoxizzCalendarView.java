@@ -8,16 +8,20 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.mInterface.AfterDateChangeCallBack;
-import com.example.flink.mInterface.DateChangeEvent;
+import com.example.flink.event.DateChangeEvent;
+import com.example.flink.mInterface.UnregisterEventBus;
 import com.example.flink.tools.DateUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoxizzCalendarView extends LinearLayout implements DateChangeEvent {
+public class FoxizzCalendarView extends LinearLayout implements UnregisterEventBus {
 
     @BindView(R.id.day_of_week)
     AdaptationTextView dayOfWeek;
@@ -28,14 +32,15 @@ public class FoxizzCalendarView extends LinearLayout implements DateChangeEvent 
 
     public FoxizzCalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.foxizz_calendar_view, this);
+        View.inflate(context, R.layout.layout_foxizz_calendar_view, this);
         //绑定处理
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void changeTo(Date date) {
-        mDate=date;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDateChange(DateChangeEvent dateChangeEvent){
+        mDate=dateChangeEvent.getDate();
         dayOfWeek.setText(DateUtil.getWeekOfDateStr(mDate, DateUtil.WEEK_DAYS_ENGLISH));
         StringBuilder dayMonthYearBuilder = new StringBuilder();
         dayMonthYearBuilder
@@ -46,7 +51,7 @@ public class FoxizzCalendarView extends LinearLayout implements DateChangeEvent 
     }
 
     @Override
-    public void setAfterDateChangeCallBack(AfterDateChangeCallBack afterDateChangeCallBack) {
-        //do nothing
+    public void unregister() {
+        EventBus.getDefault().unregister(this);
     }
 }

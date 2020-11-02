@@ -58,13 +58,16 @@ public class PopUpWindowHelper {
         int left=locations[0];
         int top=locations[1];
 
-        mPopupWindow.getContentView().measure(
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        mPopupWindow.getContentView()
+                .measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         int popupWidth = mPopupWindow.getContentView().getMeasuredWidth();
         int popupHeight = mPopupWindow.getContentView().getMeasuredHeight();
 
         switch (type) {
+            case TOP_TEST:
+                mPopupWindow.showAsDropDown(v, mOffsetX,-(v.getHeight()+popupHeight)+mOffsetY, Gravity.NO_GRAVITY);
+                break;
+            //下面的均为测试过，如有问题请和作者联系
             case TOP_LEFT:
                 mPopupWindow.showAtLocation(v,Gravity.NO_GRAVITY,left - popupWidth + mOffsetX,top - popupHeight + mOffsetY);
                 break;
@@ -267,5 +270,7 @@ public class PopUpWindowHelper {
         LEFT_CENTER,
 
         FROM_BOTTOM,
+
+        TOP_TEST//测试用
     }
 }

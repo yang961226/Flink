@@ -3,6 +3,7 @@ package com.example.flink.tools;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -12,6 +13,8 @@ import com.example.flink.common.MyException;
 import com.example.flink.view.NavigationBarView;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这个类负责生成View
@@ -22,16 +25,14 @@ public class ViewTools {
      * 生成日历布局
      * @return 布局
      */
-    public static LinearLayout buildCalendarSelectView(Context context) {
-        LinearLayout calendarSelectView;
+    public static ViewGroup buildCalendarSelectView(Context context) {
+        ViewGroup calendarSelectView;
         try{
             Class<?> clazz=Class.forName(CommonTools.getString(context, R.string.CalendarSelectView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            calendarSelectView=(LinearLayout)constructor.newInstance(context,null);
-            calendarSelectView.setLayoutParams(layoutParams);
+            calendarSelectView=(ViewGroup) constructor.newInstance(context,null);
         }catch (Exception e){
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+"错误描述："+e.toString());
         }
         return calendarSelectView;
     }
@@ -50,7 +51,7 @@ public class ViewTools {
             topLeftView.setLayoutParams(layoutParams);
 
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+"错误描述："+e.toString());
         }
         return topLeftView;
     }
@@ -68,7 +69,7 @@ public class ViewTools {
             topRightView = (ViewGroup) constructor.newInstance(context, null);
             topRightView.setLayoutParams(layoutParams);
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+"错误描述："+e.toString());
         }
         return topRightView;
     }
@@ -104,5 +105,24 @@ public class ViewTools {
                 , ViewGroup.LayoutParams.WRAP_CONTENT);
         navBarView.setLayoutParams(layoutParams);
         return navBarView;
+    }
+
+    /**
+     *
+      * @param context
+     * @return
+     */
+    public static List<View> buildNoteViewFunctions(Context context){
+        List<View> arrayList=new ArrayList<>();
+        String [] functions=context.getResources().getStringArray(R.array.note_function);
+        try{
+            for (String function : functions) {
+                arrayList.add(buildViewGroup(context, (Class<? extends ViewGroup>) Class.forName(function)));
+            }
+        }catch (Exception e){
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+" 错误描述："+e);
+        }
+
+        return arrayList;
     }
 }

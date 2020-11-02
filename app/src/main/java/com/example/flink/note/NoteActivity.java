@@ -3,31 +3,32 @@ package com.example.flink.note;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.flink.adapter.NotePagerAdapter;
-import com.example.flink.builder.MsgBuilder;
+import com.example.flink.FlickPagerAdapter;
 import com.example.flink.NoteBaseActivity;
 import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
-import com.example.flink.fragment.FlinkBaseFragment;
-import com.example.flink.mInterface.ClockEvent;
-import com.example.flink.mInterface.DateChangeEvent;
+import com.example.flink.event.DateChangeEvent;
+import com.example.flink.event.TickEvent;
+import com.example.flink.mInterface.UnregisterEventBus;
 import com.example.flink.tools.DateUtil;
-import com.example.flink.tools.FragmentTools;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
 import com.example.flink.view.NavigationBarView;
 import com.example.flink.view.SwitchDateView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
@@ -60,38 +61,34 @@ public class NoteActivity extends NoteBaseActivity {
 
     private static final int VIEW_PAGER_ID=5242;
 
-    private DateChangeEvent mCalendarDateChangeEvent;
-    private DateChangeEvent mTopLeftLLDateChangeEvent;
-    private ClockEvent mTopRightLLDateChangeEvent;
+    private ViewGroup topLeftViewGroup;//左上角布局
+    private ViewGroup topRightViewGroup;//右上角布局
+    private ViewGroup calendarSelectView;//点击右下角按钮弹出的日历选择器
+    private NavigationBarView navBarView;//笔记导航条
 
-    private ViewGroup topLeftLL;
-    private ViewGroup topRightLL;
-    private NavigationBarView navBarView;
-
-    private Date mDate;
+    private Date mDate;//当前日期
 
     private PopUpWindowHelper popUpWindowHelper;
 
-    private boolean isPopupCalendar;
+    private boolean isPopupCalendar=false;//日期选择器是否弹出来
 
     private ViewPager mViewPager;
-    private NotePagerAdapter mNotePagerAdapter;
+    private PagerAdapter mPagerAdapter;
+    private List<View> noteViewList;
 
     @Override
     protected void initData() {
         mDate=DateUtil.getNowDate();
-        isPopupCalendar=false;
-
+        EventBus.getDefault().post(new DateChangeEvent(mDate));
+        noteViewList=new ArrayList<>();
     }
 
     @Override
     protected void initView() {
         super.initView();
         setCallBack();
-
+        EventBus.getDefault().post(new DateChangeEvent(DateUtil.getNowDate()));
     }
-
-
 
     @OnClick({R.id.btn_setting,R.id.btn_calendarSelectPopUp})
     @Override
@@ -116,7 +113,7 @@ public class NoteActivity extends NoteBaseActivity {
         java.util.Timer clockTimer = new java.util.Timer(true);
         TimerTask clockTask = new TimerTask() {
             public void run() {
-                mHandler.sendMessage(MsgBuilder.build().setWhat(MyConstants.CLOCK_TICK.hashCode()).setObj(DateUtil.getNowDate()).makeMsg());
+                EventBus.getDefault().post(new TickEvent(DateUtil.getNowDate()));
             }
         };
         clockTimer.schedule(clockTask, 0, 1000);
@@ -125,22 +122,19 @@ public class NoteActivity extends NoteBaseActivity {
     @Override
     protected void initTop() {
         //初始化左上角
-        topLeftLL= ViewTools.buildCalendarView(this);
+        topLeftViewGroup = ViewTools.buildCalendarView(this);
         //如果没有继承这个接口，说明这个View没有按要求去做
-        if(!(topLeftLL instanceof DateChangeEvent)){
+        if(topLeftViewGroup ==null){
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
-        llTop.addView(topLeftLL);
-        mTopLeftLLDateChangeEvent = (DateChangeEvent) topLeftLL;
-        mTopLeftLLDateChangeEvent.changeTo(mDate);//初始化日期
+        llTop.addView(topLeftViewGroup);
 
         //初始化右上角
-        topRightLL= ViewTools.buildClockView(this);
-        if(!(topRightLL instanceof ClockEvent)){
+        topRightViewGroup = ViewTools.buildClockView(this);
+        if(topRightViewGroup == null){
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
-        llTop.addView(topRightLL);
-        mTopRightLLDateChangeEvent =(ClockEvent)topRightLL;
+        llTop.addView(topRightViewGroup);
         startToTick();
     }
 
@@ -165,8 +159,11 @@ public class NoteActivity extends NoteBaseActivity {
     private void initViewPager(){
         mViewPager=buildViewPager();
         mViewPager.setId(VIEW_PAGER_ID);
-        mNotePagerAdapter=new NotePagerAdapter(getSupportFragmentManager(),FragmentTools.getFunctionFragments(this));
-        mViewPager.setAdapter(mNotePagerAdapter);
+
+        noteViewList=ViewTools.buildNoteViewFunctions(this);
+        mPagerAdapter=new FlickPagerAdapter(noteViewList);
+
+        mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -183,6 +180,7 @@ public class NoteActivity extends NoteBaseActivity {
 
             }
         });
+        mPagerAdapter.notifyDataSetChanged();
     }
 
     private ViewPager buildViewPager(){
@@ -195,15 +193,14 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initOther() {
-        ViewGroup calendarView=ViewTools.buildCalendarSelectView(this);
-        if(!(calendarView instanceof DateChangeEvent) ){
+        calendarSelectView =ViewTools.buildCalendarSelectView(this);
+        if(calendarSelectView ==null ){
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
-        mCalendarDateChangeEvent=(DateChangeEvent)calendarView;
-        mCalendarDateChangeEvent.changeTo(mDate);//初始化日期
+
         popUpWindowHelper=new PopUpWindowHelper
                 .Builder(this)
-                .setContentView(calendarView)
+                .setContentView(calendarSelectView)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
                 .setTouchable(true)
@@ -217,7 +214,7 @@ public class NoteActivity extends NoteBaseActivity {
         if(isPopupCalendar){
             popUpWindowHelper.dismiss();
         }else{
-            popUpWindowHelper.showPopupWindow(switchDateView, PopUpWindowHelper.LocationType.TOP_CENTER);
+            popUpWindowHelper.showPopupWindow(switchDateView, PopUpWindowHelper.LocationType.TOP_TEST);
         }
     }
 
@@ -227,55 +224,60 @@ public class NoteActivity extends NoteBaseActivity {
             @Override
             public void onLastDayBtnClick() {
                 Date tmpDate=DateUtil.addDay(mDate,-1);
-                mTopLeftLLDateChangeEvent.changeTo(tmpDate);
-                mCalendarDateChangeEvent.changeTo(tmpDate);
+                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
                 mDate=tmpDate;
             }
 
             @Override
             public void onLastMonthBtnClick() {
                 Date tmpDate=DateUtil.addMonth(mDate,-1);
-                mTopLeftLLDateChangeEvent.changeTo(tmpDate);
-                mCalendarDateChangeEvent.changeTo(tmpDate);
+                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
                 mDate=tmpDate;
             }
 
             @Override
             public void onTodayBtnClick() {
                 Date tmpDate=DateUtil.getNowDate();
-                mTopLeftLLDateChangeEvent.changeTo(tmpDate);
-                mCalendarDateChangeEvent.changeTo(tmpDate);
+                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
                 mDate=tmpDate;
             }
 
             @Override
             public void onNextDayBtnClick() {
                 Date tmpDate=DateUtil.addDay(mDate,1);
-                mTopLeftLLDateChangeEvent.changeTo(tmpDate);
-                mCalendarDateChangeEvent.changeTo(tmpDate);
+                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
                 mDate=tmpDate;
             }
 
             @Override
             public void onNextMonthBtnClick() {
                 Date tmpDate=DateUtil.addMonth(mDate,1);
-                mTopLeftLLDateChangeEvent.changeTo(tmpDate);
-                mCalendarDateChangeEvent.changeTo(tmpDate);
+                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
                 mDate=tmpDate;
             }
-        });
-        mCalendarDateChangeEvent.setAfterDateChangeCallBack(date -> {
-            mTopLeftLLDateChangeEvent.changeTo(date);
-            mCalendarDateChangeEvent.changeTo(date);
-            mDate=date;
         });
     }
 
     @Override
     public void flinkMessageCallBack(Message msg) {
-        if(msg.what==MyConstants.CLOCK_TICK.hashCode()){
-            mTopRightLLDateChangeEvent.tick((Date)msg.obj);
-        }
+
     }
 
+    @Override
+    protected void onDestroy() {
+        unregisterEventBus();
+        super.onDestroy();
+    }
+
+    /**
+     * 将所有注册了eventBus的View(非activity)反注册
+     */
+    private void unregisterEventBus(){
+        if(topLeftViewGroup instanceof UnregisterEventBus){
+            ((UnregisterEventBus) topLeftViewGroup).unregister();
+        }
+        if(topRightViewGroup instanceof UnregisterEventBus){
+            ((UnregisterEventBus) topRightViewGroup).unregister();
+        }
+    }
 }

@@ -9,16 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.mInterface.AfterDateChangeCallBack;
-import com.example.flink.mInterface.DateChangeEvent;
-import com.example.flink.tools.DateUtil;
 
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CalendarView extends LinearLayout implements DateChangeEvent {
+public class CalendarView extends LinearLayout {
 
     @BindView(R.id.tv_testDate)
     TextView tvTestDate;
@@ -27,19 +24,9 @@ public class CalendarView extends LinearLayout implements DateChangeEvent {
 
     public CalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.calendar_view, this);
+        View.inflate(context, R.layout.layout_calendar_view, this);
         //绑定处理
         ButterKnife.bind(this);
     }
 
-    @Override
-    public void changeTo(Date date) {
-        mDate=date;
-        tvTestDate.setText(DateUtil.format(mDate));
-    }
-
-    @Override
-    public void setAfterDateChangeCallBack(AfterDateChangeCallBack afterDateChangeCallBack) {
-        //do nothing
-    }
 }
