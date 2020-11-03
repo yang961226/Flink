@@ -9,8 +9,10 @@
 
     <!--  字符串映射  -->
     <string name="button_setting">设置按钮</string>
-    <string name="button_add">增加按钮</string>
-    <string name="buton_popupCalendar">弹出日历按钮</string>
+    <string name="buton_function">功能按钮</string>
+    <string name="pleast_input_sticky_note">请输入笔记内容</string>
+    <string name="add_sticky_note">新增笔记</string>
+    <string name="confirm">确认</string>
 
-    <dimen name="sticky_note_font_size">18</dimen>
+    <dimen name="sticky_note_font_size">18sp</dimen>
 </resources>

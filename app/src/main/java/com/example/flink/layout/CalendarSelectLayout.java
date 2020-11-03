@@ -35,7 +35,7 @@ public class CalendarSelectLayout extends LinearLayout {
 
     public CalendarSelectLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_calendar_select_view, this);
+        View.inflate(context, R.layout.layout_calendar_select, this);
         //绑定处理
         ButterKnife.bind(this);
     }

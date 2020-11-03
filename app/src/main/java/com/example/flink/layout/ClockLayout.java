@@ -27,7 +27,7 @@ public class ClockLayout extends LinearLayout implements UnregisterEventBus {
 
     public ClockLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_clock_view, this);
+        View.inflate(context, R.layout.layout_clock, this);
         //绑定处理
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);

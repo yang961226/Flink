@@ -67,7 +67,10 @@ public class PopUpWindowHelper {
             case TOP_TEST:
                 mPopupWindow.showAsDropDown(v, mOffsetX,-(v.getHeight()+popupHeight)+mOffsetY, Gravity.NO_GRAVITY);
                 break;
-            //下面的均为测试过，如有问题请和作者联系
+            case CENTER:
+                mPopupWindow.showAtLocation(v,Gravity.CENTER,mOffsetX, mOffsetY);
+                break;
+            //下面的均未测试过，如有问题请和作者联系
             case TOP_LEFT:
                 mPopupWindow.showAtLocation(v,Gravity.NO_GRAVITY,left - popupWidth + mOffsetX,top - popupHeight + mOffsetY);
                 break;
@@ -271,6 +274,8 @@ public class PopUpWindowHelper {
 
         FROM_BOTTOM,
 
-        TOP_TEST//测试用
+        CENTER,//已测试
+
+        TOP_TEST//已测试
     }
 }

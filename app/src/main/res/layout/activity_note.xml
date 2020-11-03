@@ -57,27 +57,14 @@
             android:scaleType="centerInside"
             android:contentDescription="@string/button_setting" />
         <ImageView
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_function"
             android:src="@drawable/square_grey"
-            android:adjustViewBounds="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:scaleType="centerInside"
-            android:contentDescription="@string/button_setting" />
-        <ImageView
-            android:id="@+id/btn_calendarSelectPopUp"
-            android:src="@drawable/square_grey"
-
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:scaleType="centerInside"
-            android:contentDescription="@string/buton_popupCalendar" />
+            android:contentDescription="@string/buton_function" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

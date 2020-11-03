@@ -36,7 +36,7 @@ public class NavigationBarLayout extends LinearLayout {
 
     public NavigationBarLayout(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
-        View.inflate(context, R.layout.layout_navigation_bar_view, this);
+        View.inflate(context, R.layout.layout_navigation_bar, this);
         //绑定处理
         ButterKnife.bind(this);
     }

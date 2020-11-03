@@ -6,6 +6,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,7 @@ import com.example.flink.common.MyException;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
 import com.example.flink.layout.NavigationBarLayout;
+import com.example.flink.layout.PopupInputLayout;
 import com.example.flink.layout.SwitchDateLayout;
 import com.example.flink.mInterface.UnregisterEventBus;
 import com.example.flink.tools.DateUtil;
@@ -36,6 +38,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class NoteActivity extends NoteBaseActivity {
 
@@ -57,28 +60,30 @@ public class NoteActivity extends NoteBaseActivity {
     @BindView(R.id.btn_setting)
     ImageView btnSetting;
 
-    @BindView(R.id.btn_add)
-    ImageView btnAdd;
-
-    @BindView(R.id.btn_calendarSelectPopUp)
-    ImageView btn_calendarSelectPopUp;
+    @BindView(R.id.btn_function)
+    ImageView btn_function;
 
     private static final int VIEW_PAGER_ID=5242;
 
     private ViewGroup topLeftViewGroup;//左上角布局
     private ViewGroup topRightViewGroup;//右上角布局
-    private ViewGroup calendarSelectView;//点击右下角按钮弹出的日历选择器
+    private ViewGroup calendarSelectLayout;//点击右下角按钮弹出的日历选择器
     private NavigationBarLayout navBarLayout;//笔记导航条
+
+    private PopupInputLayout popupInputLayout;
 
     private Date mDate;//当前日期
 
-    private PopUpWindowHelper popUpWindowHelper;
+    private PopUpWindowHelper calenderPopUpHelper;
+    private PopUpWindowHelper inputPopUpHelper;
 
     private boolean isPopupCalendar=false;//日期选择器是否弹出来
 
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private List<View> noteViewList;
+
+    private InputMethodManager imm;
 
     @Override
     protected void initData() {
@@ -94,7 +99,7 @@ public class NoteActivity extends NoteBaseActivity {
         EventBus.getDefault().post(new DateChangeEvent(DateUtil.getNowDate()));
     }
 
-    @OnClick({R.id.btn_setting,R.id.btn_calendarSelectPopUp,R.id.btn_add})
+    @OnClick({R.id.btn_setting,R.id.btn_function})
     @Override
     protected void onBtnClick(View view) {
         switch (view.getId()){
@@ -102,19 +107,34 @@ public class NoteActivity extends NoteBaseActivity {
                 // TODO: 2020/9/3 跳转到设置页
                 showToast("跳转到设置页面");
                 break;
-            case R.id.btn_calendarSelectPopUp:
-                popupCalendar(isPopupCalendar);
-                isPopupCalendar=!isPopupCalendar;
-                break;
-            case R.id.btn_add:
-                onBtnAddClick();
+            case R.id.btn_function:
+                onFunctionClick(false);
                 break;
         }
     }
 
-    private void onBtnAddClick(){
-        // TODO: 2020/9/3 新增按钮
-        showToast("点击新增");
+    @OnLongClick({R.id.btn_function})
+    protected void onBtnLongClick(View view){
+        switch (view.getId()){
+            case R.id.btn_function:
+                onFunctionClick(true);
+                break;
+        }
+    }
+
+    private void onFunctionClick(boolean isLongClick){
+        if(isLongClick){
+            popupCalendar();
+        }else{
+            if(isPopupCalendar){//如果在日历选择window打开的情况下，轻点也是隐藏
+                calenderPopUpHelper.dismiss();
+                isPopupCalendar=!isPopupCalendar;
+            }else{
+                inputPopUpHelper.showPopupWindow(this.getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
+                popupInputLayout.getFEtNoteContent().requestFocus();
+                imm.toggleSoftInput(1000,InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 
     /**
@@ -205,14 +225,9 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initOther() {
-        calendarSelectView =ViewTools.buildCalendarSelectLayout(this);
-        if(calendarSelectView ==null ){
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
-        }
-
-        popUpWindowHelper=new PopUpWindowHelper
-                .Builder(this)
-                .setContentView(calendarSelectView)
+        calendarSelectLayout =ViewTools.buildCalendarSelectLayout(this);
+        calenderPopUpHelper = new PopUpWindowHelper.Builder(this)
+                .setContentView(calendarSelectLayout)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
                 .setTouchable(true)
@@ -220,14 +235,27 @@ public class NoteActivity extends NoteBaseActivity {
                 .setOutsideTouchable(false)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
+
+        popupInputLayout=new PopupInputLayout(this);
+        inputPopUpHelper=new PopUpWindowHelper.Builder(this)
+                .setContentView(popupInputLayout)
+                .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
+                .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
+                .setTouchable(true)
+                .setFocusable(true)
+                .setOutsideTouchable(false)
+                .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
+                .build();
+        imm= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
 
-    private void popupCalendar(boolean isPopupCalendar){
+    private void popupCalendar(){
         if(isPopupCalendar){
-            popUpWindowHelper.dismiss();
+            calenderPopUpHelper.dismiss();
         }else{
-            popUpWindowHelper.showPopupWindow(switchDateLayout, PopUpWindowHelper.LocationType.TOP_TEST);
+            calenderPopUpHelper.showPopupWindow(switchDateLayout, PopUpWindowHelper.LocationType.TOP_TEST);
         }
+        isPopupCalendar=!isPopupCalendar;
     }
 
     private void setCallBack() {

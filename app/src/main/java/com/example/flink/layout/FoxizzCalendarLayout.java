@@ -33,7 +33,7 @@ public class FoxizzCalendarLayout extends LinearLayout implements UnregisterEven
 
     public FoxizzCalendarLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_foxizz_calendar_view, this);
+        View.inflate(context, R.layout.layout_foxizz_calendar, this);
         //绑定处理
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);

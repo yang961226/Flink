@@ -24,7 +24,7 @@ public class CalendarLayout extends LinearLayout {
 
     public CalendarLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_calendar_view, this);
+        View.inflate(context, R.layout.layout_calendar, this);
         //绑定处理
         ButterKnife.bind(this);
     }
