@@ -4,12 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 
-public class TestNoteLayout1 extends LinearLayout {
+public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
 
 
     public TestNoteLayout1(Context context, @Nullable AttributeSet attrs) {
@@ -17,7 +18,23 @@ public class TestNoteLayout1 extends LinearLayout {
         init(context);
     }
 
-    private void init(Context context){
-        View.inflate(context, R.layout.layout_testnote1, this);
+    @Override
+    protected void init(Context context) {
+        super.init(context);
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.layout_testnote1;
+    }
+
+    @Override
+    public void onClickFunction() {
+        Toast.makeText(getContext(),"TestNoteLayout1点击",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLongClickFunction() {
+        Toast.makeText(getContext(),"TestNoteLayout1长按",Toast.LENGTH_SHORT).show();
     }
 }
