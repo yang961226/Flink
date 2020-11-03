@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 import com.example.flink.event.DateChangeEvent;
-import com.example.flink.mInterface.UnregisterEventBus;
+import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.view.AdaptationTextView;
 
@@ -22,7 +22,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoxizzCalendarLayout extends LinearLayout implements UnregisterEventBus {
+public class FoxizzCalendarLayout extends LinearLayout implements Unregister {
 
     @BindView(R.id.day_of_week)
     AdaptationTextView dayOfWeek;

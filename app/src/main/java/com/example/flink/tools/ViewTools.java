@@ -119,7 +119,7 @@ public class ViewTools {
                 arrayList.add(buildViewGroup(context, (Class<? extends ViewGroup>) Class.forName(function)));
             }
         }catch (Exception e){
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+" 错误描述："+e);
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
 
         return arrayList;

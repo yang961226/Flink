@@ -1,4 +1,4 @@
-package com.example.flink;
+package com.example.flink.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;

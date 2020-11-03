@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.flink.FlickPagerAdapter;
+import com.example.flink.adapter.FlickPagerAdapter;
 import com.example.flink.NoteBaseActivity;
 import com.example.flink.R;
 import com.example.flink.common.MyConstants;
@@ -23,7 +23,8 @@ import com.example.flink.event.TickEvent;
 import com.example.flink.layout.NavigationBarLayout;
 import com.example.flink.layout.PopupInputLayout;
 import com.example.flink.layout.SwitchDateLayout;
-import com.example.flink.mInterface.UnregisterEventBus;
+import com.example.flink.mInterface.NoteFunctionClickListener;
+import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
@@ -67,36 +68,22 @@ public class NoteActivity extends NoteBaseActivity {
 
     private ViewGroup topLeftViewGroup;//左上角布局
     private ViewGroup topRightViewGroup;//右上角布局
-    private ViewGroup calendarSelectLayout;//点击右下角按钮弹出的日历选择器
+
     private NavigationBarLayout navBarLayout;//笔记导航条
 
-    private PopupInputLayout popupInputLayout;
 
     private Date mDate;//当前日期
-
-    private PopUpWindowHelper calenderPopUpHelper;
-    private PopUpWindowHelper inputPopUpHelper;
-
-    private boolean isPopupCalendar=false;//日期选择器是否弹出来
 
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private List<View> noteViewList;
 
-    private InputMethodManager imm;
+    private int vpIndex=0;//当前ViewPager页的索引
 
     @Override
     protected void initData() {
         mDate=DateUtil.getNowDate();
-        EventBus.getDefault().post(new DateChangeEvent(mDate));
         noteViewList=new ArrayList<>();
-    }
-
-    @Override
-    protected void initView() {
-        super.initView();
-        setCallBack();
-        EventBus.getDefault().post(new DateChangeEvent(DateUtil.getNowDate()));
     }
 
     @OnClick({R.id.btn_setting,R.id.btn_function})
@@ -123,17 +110,18 @@ public class NoteActivity extends NoteBaseActivity {
     }
 
     private void onFunctionClick(boolean isLongClick){
-        if(isLongClick){
-            popupCalendar();
+        View view=noteViewList.get(vpIndex);
+        NoteFunctionClickListener noteFunctionClickListener;
+        if(!(view instanceof NoteFunctionClickListener)){
+            showToast("当前页面配置错误，请联系作者");
+            return;
         }else{
-            if(isPopupCalendar){//如果在日历选择window打开的情况下，轻点也是隐藏
-                calenderPopUpHelper.dismiss();
-                isPopupCalendar=!isPopupCalendar;
-            }else{
-                inputPopUpHelper.showPopupWindow(this.getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
-                popupInputLayout.getFEtNoteContent().requestFocus();
-                imm.toggleSoftInput(1000,InputMethodManager.HIDE_NOT_ALWAYS);
-            }
+            noteFunctionClickListener=(NoteFunctionClickListener)view;
+        }
+        if(isLongClick){
+            noteFunctionClickListener.onLongClickFunction();
+        }else{
+            noteFunctionClickListener.onClickFunction();
         }
     }
 
@@ -205,6 +193,7 @@ public class NoteActivity extends NoteBaseActivity {
             @Override
             public void onPageSelected(int position) {
                navBarLayout.selectTo(position);
+                vpIndex=position;
             }
 
             @Override
@@ -225,40 +214,8 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initOther() {
-        calendarSelectLayout =ViewTools.buildCalendarSelectLayout(this);
-        calenderPopUpHelper = new PopUpWindowHelper.Builder(this)
-                .setContentView(calendarSelectLayout)
-                .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
-                .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
-                .setTouchable(true)
-                .setFocusable(false)
-                .setOutsideTouchable(false)
-                .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
-                .build();
+        EventBus.getDefault().post(new DateChangeEvent(mDate));
 
-        popupInputLayout=new PopupInputLayout(this);
-        inputPopUpHelper=new PopUpWindowHelper.Builder(this)
-                .setContentView(popupInputLayout)
-                .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
-                .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
-                .setTouchable(true)
-                .setFocusable(true)
-                .setOutsideTouchable(false)
-                .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
-                .build();
-        imm= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    }
-
-    private void popupCalendar(){
-        if(isPopupCalendar){
-            calenderPopUpHelper.dismiss();
-        }else{
-            calenderPopUpHelper.showPopupWindow(switchDateLayout, PopUpWindowHelper.LocationType.TOP_TEST);
-        }
-        isPopupCalendar=!isPopupCalendar;
-    }
-
-    private void setCallBack() {
         //当最底部切换日期的按钮被点击的时候，通知View去更新自己的内容
         switchDateLayout.setmOnSwitchDateListener(new SwitchDateLayout.OnSwitchDateListener() {
             @Override
@@ -298,6 +255,8 @@ public class NoteActivity extends NoteBaseActivity {
         });
     }
 
+
+
     @Override
     public void flinkMessageCallBack(Message msg) {
 
@@ -313,11 +272,11 @@ public class NoteActivity extends NoteBaseActivity {
      * 将所有注册了eventBus的View(非activity)反注册
      */
     private void unregisterEventBus(){
-        if(topLeftViewGroup instanceof UnregisterEventBus){
-            ((UnregisterEventBus) topLeftViewGroup).unregister();
+        if(topLeftViewGroup instanceof Unregister){
+            ((Unregister) topLeftViewGroup).unregister();
         }
-        if(topRightViewGroup instanceof UnregisterEventBus){
-            ((UnregisterEventBus) topRightViewGroup).unregister();
+        if(topRightViewGroup instanceof Unregister){
+            ((Unregister) topRightViewGroup).unregister();
         }
     }
 }

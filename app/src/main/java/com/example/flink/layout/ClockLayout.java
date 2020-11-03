@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 import com.example.flink.event.TickEvent;
-import com.example.flink.mInterface.UnregisterEventBus;
+import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.view.AdaptationTextView;
 
@@ -19,17 +19,19 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
-public class ClockLayout extends LinearLayout implements UnregisterEventBus {
+public class ClockLayout extends LinearLayout implements Unregister {
 
     @BindView(R.id.testNowTime)
     AdaptationTextView tvNowTime;
+    private Unbinder unbinder;
 
     public ClockLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_clock, this);
         //绑定处理
-        ButterKnife.bind(this);
+        unbinder=ButterKnife.bind(this);
         EventBus.getDefault().register(this);
     }
 
@@ -40,6 +42,7 @@ public class ClockLayout extends LinearLayout implements UnregisterEventBus {
 
     @Override
     public void unregister() {
+        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
 }
