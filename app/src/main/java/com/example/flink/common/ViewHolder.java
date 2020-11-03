@@ -12,9 +12,9 @@ public class ViewHolder {
     /**
      * 保存所有itemview的集合
      */
-    private SparseArray<View> mViews;
+    private final SparseArray<View> mViews;
 
-    private View mConvertView;
+    private final View mConvertView;
 
     private ViewHolder(Context context,int layoutId){
         mConvertView=View.inflate(context,layoutId,null);

@@ -10,8 +10,8 @@ import java.util.List;
  * activity处理工具
  */
 public class ActivityControl {
-    private String TAG = ActivityControl.class.getName();
-    private List<Activity> mActivityList = new ArrayList<>();
+    private final String TAG = ActivityControl.class.getName();
+    private final List<Activity> mActivityList = new ArrayList<>();
     private static ActivityControl mActivityControl;
 
     public static synchronized ActivityControl getInstance() {

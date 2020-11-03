@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class DateChangeEvent {
 
-    private Date mDate;
+    private final Date mDate;
 
     public DateChangeEvent(Date date){
         mDate=date;
