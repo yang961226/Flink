@@ -14,7 +14,11 @@ public class StickyNoteItem {
 
     private Date mNoteDate;//笔记日期
 
-    private final String uuid=UUID.randomUUID().toString();;//唯一标识
+    private int order;//序号
+
+    private int id;//主键id
+
+    private int parentId;//父亲的主键id
 
     private StickyNoteItem(){
         //屏蔽
@@ -22,7 +26,6 @@ public class StickyNoteItem {
 
     public static Builder builder(){
         Builder builder=new Builder();
-        builder.setNoteContent("");
         builder.setNoteDate(DateUtil.getNowDate());
         builder.setStatus(StickyNoteStatus.COMMON);
         return builder;
@@ -33,6 +36,9 @@ public class StickyNoteItem {
         private StickyNoteStatus status;
         private String noteContent;
         private Date noteDate;
+        private int order;
+        private int id;
+        private int parentId;
 
         private Builder(){
 
@@ -53,18 +59,53 @@ public class StickyNoteItem {
             return this;
         }
 
+        public void setOrder(int order) {
+            this.order = order;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public void setParentId(int parentId) {
+            this.parentId = parentId;
+        }
+
         public StickyNoteItem build(){
             StickyNoteItem item=new StickyNoteItem();
             item.setNoteContent(noteContent);
             item.setStatus(status);
             item.setNoteDate(noteDate);
+            item.setId(id);
+            item.setParentId(parentId);
+            item.setOrder(order);
             return item;
         }
 
     }
 
-    public String getUUID(){
-        return uuid;
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public StickyNoteStatus getStatus() {
