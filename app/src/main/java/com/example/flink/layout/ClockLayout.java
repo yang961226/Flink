@@ -25,7 +25,7 @@ public class ClockLayout extends LinearLayout implements Unregister {
 
     @BindView(R.id.testNowTime)
     AdaptationTextView tvNowTime;
-    private Unbinder unbinder;
+    private final Unbinder unbinder;
 
     public ClockLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

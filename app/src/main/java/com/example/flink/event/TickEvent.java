@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class TickEvent {
 
-    private Date mDate;
+    private final Date mDate;
 
     public TickEvent(Date date){
         mDate=date;

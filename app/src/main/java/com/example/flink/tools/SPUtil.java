@@ -16,7 +16,7 @@ import java.util.Map;
 public class SPUtil {
     private static SPUtil instance;
     private static final String TAG = "SPUtil";
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences.Editor editor;
     private WeakReference<Context> reference;
 
     private SPUtil(Context context) {

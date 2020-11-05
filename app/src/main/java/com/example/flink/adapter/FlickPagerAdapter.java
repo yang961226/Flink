@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FlickPagerAdapter extends PagerAdapter {
 
-    private List<View> mList;
+    private final List<View> mList;
 
     public FlickPagerAdapter(List<View> mList) {
         this.mList = mList;
