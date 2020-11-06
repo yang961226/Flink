@@ -10,6 +10,8 @@ import java.util.Locale;
 
 public class DateUtil {
 
+    public static String FORMAT_Hms = "HHmmss";
+
     /**
      * 英文简写（默认）如：2010-12-01
      */
@@ -123,8 +125,7 @@ public class DateUtil {
 
     /**
      * 按照预设格式将字符串转成日期
-     * @param strDate
-     * @return
+     * @param strDate 要转换的字符串
      */
     public static Date parse(String strDate){
         return parse(strDate,getDefaultDatePattern());
@@ -134,7 +135,6 @@ public class DateUtil {
      * 在日期上增加数个整月
      * @param date 日期
      * @param n 要增加的月数
-     * @return
      */
     public static Date addMonth(Date date, int n) {
         Calendar cal = Calendar.getInstance();
@@ -151,7 +151,6 @@ public class DateUtil {
      * 在日期上增加天数
      * @param date 日期
      * @param n 要增加的天数
-     * @return
      */
     public static Date addDay(Date date, int n) {
         Calendar cal = Calendar.getInstance();

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao'
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
@@ -15,14 +15,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    //greendao配置
-    greendao {
-        //版本号，升级时可配置
-        schemaVersion 1
-        daoPackage'com.example.flink.greendao.gen'  //一般为app包名+生成文件的文件夹名
-        targetGenDir 'src/main/java'  //自动生成的greendao代码存放路径
     }
 
     buildTypes {
@@ -45,5 +37,4 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'org.greenrobot:eventbus:3.2.0'
-    implementation 'org.greenrobot:greendao:3.2.2'
 }
