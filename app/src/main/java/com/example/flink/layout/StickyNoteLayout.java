@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -16,10 +15,15 @@ import androidx.annotation.Nullable;
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.item.StickyNoteItem;
+import com.example.flink.event.DateChangeEvent;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,12 +42,14 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private ViewGroup calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
 
-    private PopUpWindowHelper inputPopUpHelper;
+    private PopUpWindowHelper popupInputHelper;
     private PopupInputLayout popupInputLayout;
 
     private boolean isPopupCalendar=false;//日期选择器是否弹出来
 
     private InputMethodManager imm;
+
+    private Date mDate;
 
     public StickyNoteLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -55,19 +61,26 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         return R.layout.layout_sticky_note;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDateChange(DateChangeEvent dateChangeEvent){
+        mDate=dateChangeEvent.getDate();
+        refreshData();
+    }
 
     @Override
     protected void init(Context context) {
         super.init(context);
-        mNoteItemList=new ArrayList<>();
         imm= (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+
+        mNoteItemList=new ArrayList<>();
         mNoteAdapter=new StickyNoteAdapter(getContext(), mNoteItemList);
         lv.setAdapter(mNoteAdapter);
         lv.setOnItemClickListener((parent, view, position, id) -> {
             StickyNoteItem item=mNoteItemList.get(position);
-            item.moveToNextStatus();
+            item.moveToNextStatu();
             mNoteAdapter.notifyDataSetChanged();
         });
+
         calendarSelectLayout = ViewTools.buildCalendarSelectLayout(getContext());
         calenderPopUpHelper = new PopUpWindowHelper.Builder(getContext())
                 .setContentView(calendarSelectLayout)
@@ -80,7 +93,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .build();
 
         popupInputLayout=new PopupInputLayout(getContext());
-        inputPopUpHelper=new PopUpWindowHelper.Builder(getContext())
+        popupInputHelper =new PopUpWindowHelper.Builder(getContext())
                 .setContentView(popupInputLayout)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
@@ -89,16 +102,13 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setOutsideTouchable(false)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
-        initTestNote();
     }
 
-    private void initTestNote() {
-        for (int i = 1; i < 50; i++) {
-            mNoteItemList.add(StickyNoteItem
-                    .builder()
-                    .setNoteContent("第" + i + "条测试笔记")
-                    .build());
-        }
+    /**
+     * 查询数据库，刷新笔记页面
+     */
+    private void refreshData(){
+
     }
 
     private void popupCalendar(){
@@ -115,7 +125,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         if(isPopupCalendar){//如果在日历选择window打开的情况下，轻点也是隐藏
             popupCalendar();
         }else{
-            inputPopUpHelper.showPopupWindow(((Activity)getContext()).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
+            popupInputHelper.showPopupWindow(((Activity)getContext()).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
             popupInputLayout.getFEtNoteContent().requestFocus();
             imm.toggleSoftInput(1000, InputMethodManager.HIDE_NOT_ALWAYS);
         }

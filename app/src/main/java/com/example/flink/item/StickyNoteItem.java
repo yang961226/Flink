@@ -1,114 +1,63 @@
 package com.example.flink.item;
 
+import android.content.Context;
+
 import com.example.flink.R;
-import com.example.flink.tools.DateUtil;
+
 
 import java.util.Date;
-import java.util.UUID;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.OrderBy;
+
+/**
+ * greenDao类
+ */
+@Entity
 public class StickyNoteItem {
 
-    private StickyNoteStatus mStatus;//状态
+    private int statu;//状态
 
-    private String mNoteContent;//笔记内容
+    private String noteContent;//笔记内容
 
-    private Date mNoteDate;//笔记日期
+    private Date noteDate;//笔记日期
 
-    private final String uuid=UUID.randomUUID().toString();;//唯一标识
+    @OrderBy
+    private int order;//序号
 
-    private StickyNoteItem(){
-        //屏蔽
+    @Id(autoincrement = true)
+    private Long id;//主键id
+
+    private int parentId;//父亲的主键id
+    
+    @Generated(hash = 94483912)
+    public StickyNoteItem(int statu, String noteContent, Date noteDate, int order,
+            Long id, int parentId) {
+        this.statu = statu;
+        this.noteContent = noteContent;
+        this.noteDate = noteDate;
+        this.order = order;
+        this.id = id;
+        this.parentId = parentId;
     }
 
-    public static Builder builder(){
-        Builder builder=new Builder();
-        builder.setNoteContent("");
-        builder.setNoteDate(DateUtil.getNowDate());
-        builder.setStatus(StickyNoteStatus.COMMON);
-        return builder;
-    }
-
-    public static class Builder{
-
-        private StickyNoteStatus status;
-        private String noteContent;
-        private Date noteDate;
-
-        private Builder(){
-
-        }
-
-
-        public void setStatus(StickyNoteStatus status){
-            this.status=status;
-        }
-
-        public Builder setNoteContent(String noteContent){
-            this.noteContent=noteContent;
-            return this;
-        }
-
-        public Builder setNoteDate(Date noteDate){
-            this.noteContent=noteContent;
-            return this;
-        }
-
-        public StickyNoteItem build(){
-            StickyNoteItem item=new StickyNoteItem();
-            item.setNoteContent(noteContent);
-            item.setStatus(status);
-            item.setNoteDate(noteDate);
-            return item;
-        }
-
-    }
-
-    public String getUUID(){
-        return uuid;
-    }
-
-    public StickyNoteStatus getStatus() {
-        return mStatus;
-    }
-
-    public void setStatus(StickyNoteStatus mStatus) {
-        this.mStatus = mStatus;
-    }
-
-    public void moveToNextStatus(){
-        this.mStatus=this.mStatus.getNextStatus();
-    }
-
-    public String getNoteContent() {
-        return mNoteContent;
-    }
-
-    public void setNoteContent(String mNoteContent) {
-        this.mNoteContent = mNoteContent;
-    }
-
-    public Date getNoteDate() {
-        return mNoteDate;
-    }
-
-    public void setNoteDate(Date mNoteDate) {
-        this.mNoteDate = mNoteDate;
+    public StickyNoteItem() {
     }
 
     //笔记状态枚举
     public enum StickyNoteStatus {
-        COMMON(0, R.drawable.circle_common2)
-        ,FINISH(1,R.drawable.circle_finish)
-        ,HALF(2,R.drawable.circle_half)
-        ,STAR(3,R.drawable.circle_star)
-        ,WAITING(4,R.drawable.delay);
+        COMMON(0)
+        ,FINISH(1)
+        ,HALF(2)
+        ,STAR(3)
+        ,WAITING(4);
 
         private final int index;
-        private final int srcId;
 
-        StickyNoteStatus(int index, int srcId){
+        StickyNoteStatus(int index){
             this.index = index;
-            this.srcId=srcId;
         }
 
         private int getNextStatuIndex(){
@@ -117,9 +66,18 @@ public class StickyNoteItem {
 
         public StickyNoteStatus getNextStatus(){
             int index=getNextStatuIndex();
-            for(StickyNoteStatus stickyNoteStatus:StickyNoteStatus.values()){
+            for(StickyNoteStatus stickyNoteStatus: StickyNoteStatus.values()){
                 if(stickyNoteStatus.getIndex()==index){
                     return stickyNoteStatus;
+                }
+            }
+            return COMMON;
+        }
+
+        public StickyNoteStatus getStatuByIndex(int index){
+            for(StickyNoteStatus status:StickyNoteStatus.values()){
+                if(status.index==index){
+                    return status;
                 }
             }
             return COMMON;
@@ -128,9 +86,67 @@ public class StickyNoteItem {
         public int getIndex(){
             return index;
         }
-
-        public int getScrId(){
-            return srcId;
-        }
     }
+
+    public void moveToNextStatu(){
+        statu=(statu+1)%StickyNoteStatus.values().length;
+    }
+
+    public int getStickyNoteRes(Context context){
+        int[] res=context.getResources().getIntArray(R.array.sticky_note_res);
+        if(res.length==0){
+            return R.drawable.circle_common2;
+        }
+        return res[statu];
+    }
+
+    public int getStatu() {
+        return this.statu;
+    }
+
+    public void setStatu(int statu) {
+        this.statu = statu;
+    }
+
+    public String getNoteContent() {
+        return this.noteContent;
+    }
+
+    public void setNoteContent(String noteContent) {
+        this.noteContent = noteContent;
+    }
+
+    public Date getNoteDate() {
+        return this.noteDate;
+    }
+
+    public void setNoteDate(Date noteDate) {
+        this.noteDate = noteDate;
+    }
+
+    public int getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getParentId() {
+        return this.parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+
 }

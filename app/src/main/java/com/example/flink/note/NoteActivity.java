@@ -102,10 +102,8 @@ public class NoteActivity extends NoteBaseActivity {
 
     @OnLongClick({R.id.btn_function})
     protected void onBtnLongClick(View view){
-        switch (view.getId()){
-            case R.id.btn_function:
-                onFunctionClick(true);
-                break;
+        if (view.getId() == R.id.btn_function) {
+            onFunctionClick(true);
         }
     }
 
@@ -277,6 +275,11 @@ public class NoteActivity extends NoteBaseActivity {
         }
         if(topRightViewGroup instanceof Unregister){
             ((Unregister) topRightViewGroup).unregister();
+        }
+        for(View view:noteViewList){
+            if(view instanceof Unregister){
+                ((Unregister) view).unregister();
+            }
         }
     }
 }

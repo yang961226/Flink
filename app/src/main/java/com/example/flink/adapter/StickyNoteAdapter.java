@@ -21,7 +21,7 @@ public class StickyNoteAdapter extends CommenAdapter<StickyNoteItem> {
         StickyNoteItem item= (StickyNoteItem) getItem(position);
 
         ImageView iv=holder.getItemViewById(R.id.iv_status);
-        iv.setImageResource(item.getStatus().getScrId());
+        iv.setImageResource(item.getStickyNoteRes(context));
 
         TextView tvNoteContet=holder.getItemViewById(R.id.tv_note_content);
         tvNoteContet.setText(item.getNoteContent());

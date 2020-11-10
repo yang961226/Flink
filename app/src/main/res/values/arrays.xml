@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  配置的日记功能  -->
     <string-array name="note_function">
         <item>@string/StickyNote</item>
         <item>@string/TestNote1</item>
