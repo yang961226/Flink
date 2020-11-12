@@ -8,6 +8,15 @@
         <item>@string/TestNote2</item>
     </string-array>
 
+    <!--  便签的资源文件  -->
+    <array name="sticky_note_res">
+        <item>@drawable/circle_common2</item>
+        <item>@drawable/circle_finish</item>
+        <item>@drawable/circle_half</item>
+        <item>@drawable/circle_star</item>
+        <item>@drawable/delay</item>
+    </array>
+
     <!--  日记功能  -->
     <string name="StickyNote">com.example.flink.layout.StickyNoteLayout</string>
     <string name="TestNote1">com.example.flink.layout.TestNoteLayout1</string>

@@ -1,8 +1,11 @@
 package com.example.flink.item;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.os.Bundle;
 
 import com.example.flink.R;
+import com.example.flink.tools.DateUtil;
 
 
 import java.util.Date;
@@ -43,7 +46,74 @@ public class StickyNoteItem {
         this.parentId = parentId;
     }
 
-    public StickyNoteItem() {
+    public static Builder builder(){
+        return new Builder();
+    }
+
+    public static class Builder{
+        private int statu;//状态
+
+        private String noteContent;//笔记内容
+
+        private Date noteDate;//笔记日期
+
+        private int order;//序号
+
+        private Long id;//主键id
+
+        private int parentId;//父亲的主键id
+
+        public Builder(){
+            statu=0;
+            noteContent="";
+            noteDate= DateUtil.getNowDate();
+            order=1;
+            parentId=-1;
+        }
+
+        public Builder setStatu(int statu) {
+            this.statu = statu;
+            return this;
+        }
+
+        public Builder setNoteContent(String noteContent) {
+            this.noteContent = noteContent;
+            return this;
+        }
+
+        public Builder setNoteDate(Date noteDate) {
+            this.noteDate = noteDate;
+            return this;
+        }
+
+        public Builder setOrder(int order) {
+            this.order = order;
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setParentId(int parentId) {
+            this.parentId = parentId;
+            return this;
+        }
+
+        public StickyNoteItem build(){
+            StickyNoteItem item=new StickyNoteItem();
+            item.setId(id);
+            item.setOrder(order);
+            item.setParentId(parentId);
+            item.setNoteContent(noteContent);
+            item.setStatu(statu);
+            item.setNoteDate(noteDate);
+            return item;
+        }
+    }
+
+    private StickyNoteItem() {
     }
 
     //笔记状态枚举
@@ -93,11 +163,10 @@ public class StickyNoteItem {
     }
 
     public int getStickyNoteRes(Context context){
-        int[] res=context.getResources().getIntArray(R.array.sticky_note_res);
-        if(res.length==0){
-            return R.drawable.circle_common2;
-        }
-        return res[statu];
+        TypedArray array=context.getResources().obtainTypedArray(R.array.sticky_note_res);
+        int result=array.getResourceId(statu,R.drawable.circle_common2);
+        array.recycle();
+        return result;
     }
 
     public int getStatu() {

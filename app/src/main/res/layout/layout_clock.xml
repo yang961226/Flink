@@ -33,7 +33,7 @@
         android:paddingBottom="6dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:background="@drawable/square_grey"
+        android:background="@drawable/shape_clock_round_bg"
         android:orientation="horizontal">
 
         <com.example.flink.view.AdaptationTextView

@@ -7,14 +7,21 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
+import com.example.flink.event.DateChangeEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class TestNoteLayout2 extends NoteViewPagerBaseLayout {
 
     public TestNoteLayout2(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDateChange(DateChangeEvent dateChangeEvent){
+
+    }
 
     @Override
     protected int getLayoutResId() {

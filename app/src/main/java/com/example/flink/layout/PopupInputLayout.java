@@ -3,6 +3,7 @@ package com.example.flink.layout;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,6 +38,8 @@ public class PopupInputLayout extends LinearLayout {
 
     private int maxWordNum=15;//默认值
 
+    private ConfirmBtnClickListener confirmBtnClickListener;
+
     public PopupInputLayout(Context context) {
         super(context);
         View.inflate(context, R.layout.layout_popup_input, this);
@@ -49,10 +52,38 @@ public class PopupInputLayout extends LinearLayout {
 
     }
 
-
-
     private void onConfirm(){
-        Toast.makeText(getContext(),"确定",Toast.LENGTH_LONG).show();
+        if(confirmBtnClickListener==null){
+            Toast.makeText(getContext(),"确定",Toast.LENGTH_LONG).show();
+        }else{
+            confirmBtnClickListener.onConfirmBtnClick();
+        }
+
+    }
+
+    public boolean isInputContentEmpty(){
+        if(fetNoteContent==null || fetNoteContent.getText()==null){
+            return true;
+        }
+        return TextUtils.isEmpty(fetNoteContent.getText().toString());
+    }
+
+    public void clearInputContent(){
+        if(fetNoteContent==null){
+            return;
+        }
+        fetNoteContent.setText("");
+    }
+
+    public String getInputContent(){
+        if(fetNoteContent==null || fetNoteContent.getText()==null){
+            return "";
+        }
+        return fetNoteContent.getText().toString();
+    }
+
+    public void setConfirmBtnClickListener(ConfirmBtnClickListener confirmBtnClickListener){
+        this.confirmBtnClickListener=confirmBtnClickListener;
     }
 
     public FliterEditText getFEtNoteContent(){
@@ -62,5 +93,9 @@ public class PopupInputLayout extends LinearLayout {
     @OnClick(R.id.btn_confirm)
     public void onViewClicked() {
         onConfirm();
+    }
+
+    public interface ConfirmBtnClickListener{
+        void onConfirmBtnClick();
     }
 }

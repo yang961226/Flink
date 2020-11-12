@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="sticky_note_popup_input_max_length">30</integer>
-    <!--  便签的资源文件  -->
-    <integer-array name="sticky_note_res">
-        <item>@drawable/circle_common2</item>
-        <item>@drawable/circle_finish</item>
-        <item>@drawable/circle_half</item>
-        <item>@drawable/circle_star</item>
-        <item>@drawable/delay</item>
-    </integer-array>
+
 </resources>

@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -36,6 +38,7 @@ public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Un
         View.inflate(context,getLayoutResId(),this);
         //绑定处理
         unbinder=ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
     }
 
     protected abstract int getLayoutResId();
@@ -43,5 +46,6 @@ public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Un
     @Override
     public void unregister() {
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 }

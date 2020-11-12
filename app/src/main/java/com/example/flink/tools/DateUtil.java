@@ -55,6 +55,13 @@ public class DateUtil {
 
     public static String[] MONTH_NAME_ENGLISH = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
+    public static final long SECOND_IN_MILLIS=1000L;
+    public static final long MINUTE_IN_MILLIS=60000L;
+    public static final long HOUR_IN_MILLIS =3600000L;
+    public static final long DAY_IN_MILLIS=86400000L;
+    public static final long WEEK_IN_MILLIS =604800000L;
+    public static final long YEAR_IN_MILLIS =31449600000L;
+
     /**
      * 获得默认的 date pattern
      */
@@ -242,4 +249,18 @@ public class DateUtil {
         return String.valueOf(cal.get(Calendar.YEAR));
     }
 
+    /**
+     * 清空时间中的时分秒
+     * @param date 日期
+     * @return 清空时分秒后的日期
+     */
+    public static Date clearDateHMS(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
 }

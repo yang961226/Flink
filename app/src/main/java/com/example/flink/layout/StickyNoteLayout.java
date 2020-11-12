@@ -9,16 +9,22 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
+import com.example.flink.greendao.gen.DaoSession;
+import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.event.DateChangeEvent;
+import com.example.flink.tools.DateUtil;
+import com.example.flink.tools.GreenDaoManager;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -29,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.example.flink.tools.DateUtil.FORMAT_SHORT;
 
 
 public class StickyNoteLayout extends NoteViewPagerBaseLayout {
@@ -36,7 +43,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     @BindView(R.id.lv)
     ListView lv;
 
-    private List<StickyNoteItem> mNoteItemList = new ArrayList<>();
+    private List<StickyNoteItem> mNoteItemList;
     private StickyNoteAdapter mNoteAdapter;
 
     private ViewGroup calendarSelectLayout;
@@ -51,9 +58,13 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     private Date mDate;
 
+    private Context context;
+
+    private DaoSession daoSession;
+
     public StickyNoteLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        this.context=context;
     }
 
     @Override
@@ -70,19 +81,23 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     @Override
     protected void init(Context context) {
         super.init(context);
-        imm= (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+        imm= (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        mDate=DateUtil.getNowDate();
+
+        daoSession=GreenDaoManager.getDaoSession(context);
 
         mNoteItemList=new ArrayList<>();
-        mNoteAdapter=new StickyNoteAdapter(getContext(), mNoteItemList);
+        mNoteAdapter=new StickyNoteAdapter(context, mNoteItemList);
         lv.setAdapter(mNoteAdapter);
         lv.setOnItemClickListener((parent, view, position, id) -> {
             StickyNoteItem item=mNoteItemList.get(position);
             item.moveToNextStatu();
+            daoSession.getStickyNoteItemDao().insertOrReplace(item);
             mNoteAdapter.notifyDataSetChanged();
         });
 
-        calendarSelectLayout = ViewTools.buildCalendarSelectLayout(getContext());
-        calenderPopUpHelper = new PopUpWindowHelper.Builder(getContext())
+        calendarSelectLayout = ViewTools.buildCalendarSelectLayout(context);
+        calenderPopUpHelper = new PopUpWindowHelper.Builder(context)
                 .setContentView(calendarSelectLayout)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
@@ -92,8 +107,25 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
 
-        popupInputLayout=new PopupInputLayout(getContext());
-        popupInputHelper =new PopUpWindowHelper.Builder(getContext())
+        popupInputLayout=new PopupInputLayout(context);
+        popupInputLayout.setConfirmBtnClickListener(() -> {
+            if(popupInputLayout.isInputContentEmpty()){
+                Toast.makeText(context,"输入内容为空",Toast.LENGTH_LONG).show();
+                return;
+            }
+            String inputContent=popupInputLayout.getInputContent();
+            StickyNoteItem item=StickyNoteItem.builder()
+                    .setNoteContent(inputContent)
+                    .setNoteDate(mDate)
+                    .setOrder(1)
+                    .build();
+            GreenDaoManager.getDaoSession(context).getStickyNoteItemDao().insert(item);
+            popupInputHelper.dismiss();
+            popupInputLayout.clearInputContent();
+            Toast.makeText(context,"创建笔记",Toast.LENGTH_SHORT).show();
+            refreshData();
+        });
+        popupInputHelper =new PopUpWindowHelper.Builder(context)
                 .setContentView(popupInputLayout)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
@@ -108,14 +140,25 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，刷新笔记页面
      */
     private void refreshData(){
-
+        if(mNoteItemList==null || mNoteAdapter==null){
+            return;
+        }
+        Date startDate=DateUtil.clearDateHMS(new Date(mDate.getTime()));
+        Date endDate=DateUtil.clearDateHMS(new Date(mDate.getTime()+DateUtil.DAY_IN_MILLIS));
+        mNoteItemList.clear();
+        mNoteItemList.addAll(daoSession
+                .getStickyNoteItemDao().queryBuilder()
+                .where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
+                        ,StickyNoteItemDao.Properties.NoteDate.lt(endDate))
+                .list());
+        mNoteAdapter.notifyDataSetChanged();
     }
 
     private void popupCalendar(){
         if(isPopupCalendar){
             calenderPopUpHelper.dismiss();
         }else{
-            calenderPopUpHelper.showPopupWindow(((Activity)getContext()).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
+            calenderPopUpHelper.showPopupWindow(((Activity)context).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
         }
         isPopupCalendar=!isPopupCalendar;
     }
@@ -125,7 +168,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         if(isPopupCalendar){//如果在日历选择window打开的情况下，轻点也是隐藏
             popupCalendar();
         }else{
-            popupInputHelper.showPopupWindow(((Activity)getContext()).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
+            popupInputHelper.showPopupWindow(((Activity)context).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
             popupInputLayout.getFEtNoteContent().requestFocus();
             imm.toggleSoftInput(1000, InputMethodManager.HIDE_NOT_ALWAYS);
         }
