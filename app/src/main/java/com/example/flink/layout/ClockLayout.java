@@ -2,8 +2,10 @@ package com.example.flink.layout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
+import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
@@ -30,6 +33,12 @@ import butterknife.Unbinder;
 
 @SuppressLint("NonConstantResourceId")
 public class ClockLayout extends LinearLayout implements Unregister {
+
+    private final static String FORMAT_24HOUR = "24hour";
+    private final static String FORMAT_12HOUR = "12hour";
+    private static String HOUR_FORMAT_TYPE;
+
+    private final SharedPreferences sharedPreferences;
 
     private static Bitmap imageNum0;
     private static Bitmap imageNum1;
@@ -75,37 +84,68 @@ public class ClockLayout extends LinearLayout implements Unregister {
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
+        sharedPreferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
         initNumberImage();
     }
 
+    @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTick(TickEvent tickEvent) {
         //发生变化时改变数字图片
-        char[] numbers = DateUtil.format(tickEvent.getDate(), DateUtil.FORMAT_Hms).toCharArray();
-        if (!number1.equals(String.valueOf(numbers[0]))) {
-            number1 = String.valueOf(numbers[0]);
+        String numbers = DateUtil.format(tickEvent.getDate(), DateUtil.FORMAT_Hms);
+
+        //12小时格式
+        HOUR_FORMAT_TYPE = sharedPreferences.getString("hour_format_type", FORMAT_24HOUR);
+        if (!TextUtils.isEmpty(HOUR_FORMAT_TYPE) && HOUR_FORMAT_TYPE.equals(FORMAT_12HOUR)) {
+            am_or_pm.setVisibility(VISIBLE);
+            if (!numbers.startsWith("0")) {
+                int hour = Integer.parseInt(numbers.substring(0, 2));
+                if (hour >= 12) {
+                    hour -= 12;
+                    numbers = hour + numbers.substring(2, 6);
+                    if (hour < 10) numbers = "0" + numbers;
+                    am_or_pm.setText("PM");
+                } else {
+                    am_or_pm.setText("AM");
+                }
+            }
+        } else {
+            am_or_pm.setVisibility(INVISIBLE);
+        }
+
+        if (!number1.equals(numbers.substring(0, 1))) {
+            number1 = numbers.substring(0, 1);
             setImage(number1_image, number1);
         }
-        if (!number2.equals(String.valueOf(numbers[1]))) {
-            number2 = String.valueOf(numbers[1]);
+        if (!number2.equals(numbers.substring(1, 2))) {
+            number2 = numbers.substring(1, 2);
             setImage(number2_image, number2);
         }
-        if (!number3.equals(String.valueOf(numbers[2]))) {
-            number3 = String.valueOf(numbers[2]);
+        if (!number3.equals(numbers.substring(2, 3))) {
+            number3 = numbers.substring(2, 3);
             setImage(number3_image, number3);
         }
-        if (!number4.equals(String.valueOf(numbers[3]))) {
-            number4 = String.valueOf(numbers[3]);
+        if (!number4.equals(numbers.substring(3, 4))) {
+            number4 = numbers.substring(3, 4);
             setImage(number4_image, number4);
         }
-        if (!number5.equals(String.valueOf(numbers[4]))) {
-            number5 = String.valueOf(numbers[4]);
+        if (!number5.equals(numbers.substring(4, 5))) {
+            number5 = numbers.substring(4, 5);
             setImage(number5_image, number5);
         }
-        if (!number6.equals(String.valueOf(numbers[5]))) {
-            number6 = String.valueOf(numbers[5]);
+        if (!number6.equals(numbers.substring(5, 6))) {
+            number6 = numbers.substring(5, 6);
             setImage(number6_image, number6);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDateChange(DateChangeEvent dateChangeEvent){
+        Date date = dateChangeEvent.getDate();
+        if (DateUtil.format(date).equals(DateUtil.format(new Date())))
+            isToday.setVisibility(VISIBLE);
+        else isToday.setVisibility(INVISIBLE);
     }
 
     @Override
