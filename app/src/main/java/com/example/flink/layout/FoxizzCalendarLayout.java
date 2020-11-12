@@ -41,7 +41,7 @@ public class FoxizzCalendarLayout extends LinearLayout implements Unregister {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDateChange(DateChangeEvent dateChangeEvent){
-        mDate=dateChangeEvent.getDate();
+        mDate = dateChangeEvent.getDate();
         dayOfWeek.setText(DateUtil.getWeekOfDateStr(mDate, DateUtil.WEEK_DAYS_ENGLISH));
         StringBuilder dayMonthYearBuilder = new StringBuilder();
         dayMonthYearBuilder
