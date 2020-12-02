@@ -15,6 +15,9 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+/**
+ * 笔记页的viewPager里面子View的基类
+ */
 public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Unregister,NoteFunctionClickListener {
 
     private Unbinder unbinder;

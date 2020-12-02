@@ -10,6 +10,7 @@ import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
 import com.example.flink.layout.NavigationBarLayout;
+import com.example.flink.layout.NoteViewPagerBaseLayout;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -107,16 +108,16 @@ public class ViewTools {
     }
 
     /**
-     *
-      * @param context
+     * 构建便签页面的viewPager里面的子页面
+     * @param context
      * @return
      */
-    public static List<View> buildNoteViewFunctions(Context context){
-        List<View> arrayList=new ArrayList<>();
+    public static List<NoteViewPagerBaseLayout> buildNoteViewFunctionViews(Context context){
+        List<NoteViewPagerBaseLayout> arrayList=new ArrayList<>();
         String [] functions=context.getResources().getStringArray(R.array.note_function);
         try{
             for (String function : functions) {
-                arrayList.add(buildViewGroup(context, (Class<? extends ViewGroup>) Class.forName(function)));
+                arrayList.add((NoteViewPagerBaseLayout)buildViewGroup(context, (Class<? extends ViewGroup>) Class.forName(function)));
             }
         }catch (Exception e){
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);

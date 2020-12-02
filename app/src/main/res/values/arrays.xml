@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  配置的日记功能  -->
-    <string-array name="note_function">
-        <item>@string/StickyNote</item>
-        <item>@string/TestNote1</item>
-        <item>@string/TestNote2</item>
-    </string-array>
-
     <!--  便签的资源文件  -->
     <array name="sticky_note_res">
         <item>@drawable/circle_common2</item>
@@ -17,8 +10,4 @@
         <item>@drawable/delay</item>
     </array>
 
-    <!--  日记功能  -->
-    <string name="StickyNote">com.example.flink.layout.StickyNoteLayout</string>
-    <string name="TestNote1">com.example.flink.layout.TestNoteLayout1</string>
-    <string name="TestNote2">com.example.flink.layout.TestNoteLayout2</string>
 </resources>

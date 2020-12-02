@@ -2,6 +2,13 @@
     <string name="app_name">Flink</string>
     <string name="app_version">1.0</string>
 
+    <!--  配置的日记功能  -->
+    <string-array name="note_function">
+        <item name="StickyNote">com.example.flink.layout.StickyNoteLayout</item>
+        <item name="TestNote1">com.example.flink.layout.TestNoteLayout1</item>
+        <item name="TestNote2">com.example.flink.layout.TestNoteLayout2</item>
+    </string-array>
+
     <!--  这里面写需要反射的类名  -->
     <string name="ClockLayout">com.example.flink.layout.ClockLayout</string>
     <string name="CalendarLayout">com.example.flink.layout.FoxizzCalendarLayout</string>

@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
-    <!--  根布局的高度是临时加的，最终要改成wrap_content  -->
-    <Button
-        android:id="@+id/btn_changeDate"
-        android:text="随机日期（模拟点击日期某天）"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:text="目前日期："
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/tv_testDate"
-        android:text="2020-01-01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <com.haibin.calendarview.CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:month_view="com.example.flink.view.calendar.MeiZuMontnView"
+        app:week_view="com.example.flink.view.calendar.MeizuWeekView"/>
 </LinearLayout>

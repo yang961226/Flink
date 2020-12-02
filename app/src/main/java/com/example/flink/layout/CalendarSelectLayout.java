@@ -22,14 +22,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 显示日历
+ * 日历选择
  */
 public class CalendarSelectLayout extends LinearLayout {
-
-    @BindView(R.id.btn_changeDate)
-    Button btnChangeDate;
-    @BindView(R.id.tv_testDate)
-    TextView tvTestDate;
 
     private Date mDate;//目前的日期
 
@@ -40,19 +35,5 @@ public class CalendarSelectLayout extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.btn_changeDate})
-    void onViewClick(View view) {
-        //随机日期
-        long second = 1000;
-        long minute = 60*second;
-        long hour = minute * 60;
-        long day = hour*24;
-        long year = day * 365;
-        long year2020Start  = (2020-1970) * year;
-        long randomTime = (long) (Math.random()*(year-1) + year2020Start);
-        mDate = new Date(randomTime);
-        tvTestDate.setText(DateUtil.format(mDate));
-        EventBus.getDefault().post(new DateChangeEvent(mDate));
-    }
 
 }
