@@ -11,12 +11,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.flink.NoteBaseActivity;
 import com.example.flink.R;
-import com.example.flink.adapter.FlickPagerAdapter;
+import com.example.flink.adapter.FlinkPagerAdapter;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
 import com.example.flink.layout.NavigationBarLayout;
+import com.example.flink.layout.NoteViewPagerBaseLayout;
 import com.example.flink.layout.SwitchDateLayout;
 import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
@@ -69,7 +70,7 @@ public class NoteActivity extends NoteBaseActivity {
 
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
-    private List<View> noteViewList;
+    private List<NoteViewPagerBaseLayout> noteViewList;
 
     private int vpIndex = 0;//当前ViewPager页的索引
 
@@ -172,7 +173,7 @@ public class NoteActivity extends NoteBaseActivity {
         mViewPager.setId(VIEW_PAGER_ID);
 
         noteViewList = ViewTools.buildNoteViewFunctions(this);
-        mPagerAdapter = new FlickPagerAdapter(noteViewList);
+        mPagerAdapter = new FlinkPagerAdapter(noteViewList);
 
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

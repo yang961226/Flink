@@ -15,20 +15,20 @@ import java.util.regex.Pattern;
 /**
  * 计算字符的方式为中文2个字符，其余1个字符
  */
-public class FliterEditText extends androidx.appcompat.widget.AppCompatEditText {
+public class FilterEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private int maxWordNum = 20;
     private OnWordNumChangeListener onWordNumChangeListener;
 
-    public FliterEditText(Context context) {
+    public FilterEditText(Context context) {
         super(context);
     }
 
-    public FliterEditText(Context context, AttributeSet attrs) {
+    public FilterEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FliterEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FilterEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -67,9 +67,9 @@ public class FliterEditText extends androidx.appcompat.widget.AppCompatEditText 
             @Override
             public void afterTextChanged(Editable s) {
                 //获取光标开始的位置
-                selectionStart = FliterEditText.this.getSelectionStart();
+                selectionStart = getSelectionStart();
                 //获取光标结束的位置
-                selectionEnd = FliterEditText.this.getSelectionEnd();
+                selectionEnd = getSelectionEnd();
                 if(getInputLength()>maxWordNum){
                     s.delete(selectionStart - 1, selectionEnd);
                 }

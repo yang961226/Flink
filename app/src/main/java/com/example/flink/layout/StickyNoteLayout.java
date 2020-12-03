@@ -15,14 +15,14 @@ import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
+import com.example.flink.event.DateChangeEvent;
 import com.example.flink.greendao.gen.DaoSession;
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
-import com.example.flink.event.DateChangeEvent;
 import com.example.flink.tools.DateUtil;
-import com.example.flink.tools.GreenDaoManager;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
+import com.example.flink.tools.greendao.GreenDaoManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
