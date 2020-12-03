@@ -2,21 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_root"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-
-    android:padding="10dp">
+    android:padding="@dimen/padding_dp_10">
     <!--  顶部，用于显示时间日期等  -->
     <LinearLayout
-        android:padding="5dp"
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/seashell"
         android:orientation="horizontal"
-        android:background="@color/seashell">
+        android:padding="@dimen/padding_dp_5">
 
     </LinearLayout>
 
@@ -39,33 +38,39 @@
         android:orientation="vertical">
 
     </LinearLayout>
+
     <com.example.flink.layout.SwitchDateLayout
         android:id="@+id/switchDateLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/btn_setting"
-            android:src="@drawable/square_grey"
+            android:layout_width="@dimen/width_dp_50"
+            android:layout_height="@dimen/height_dp_30"
             android:adjustViewBounds="true"
-            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/button_setting"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_setting"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:scaleType="centerInside"
-            android:contentDescription="@string/button_setting" />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/btn_function"
-            android:src="@drawable/square_grey"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/width_dp_50"
+            android:layout_height="@dimen/height_dp_30"
+            android:contentDescription="@string/buton_function"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_more"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:scaleType="centerInside"
-            android:contentDescription="@string/buton_function" />
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

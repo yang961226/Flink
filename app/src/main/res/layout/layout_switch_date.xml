@@ -1,48 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:layout_height="@dimen/margin_dp_50"
+    android:layout_marginTop="@dimen/margin_dp_15"
+    android:layout_marginBottom="@dimen/margin_dp_15"
     android:gravity="center_horizontal"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/padding_dp_15"
+    android:paddingRight="@dimen/padding_dp_15">
+
     <ImageView
         android:id="@+id/btn_lastMonth"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrow_double_left"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-        />
+        android:padding="@dimen/padding_dp_8"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_left_double" />
+
     <ImageView
         android:id="@+id/btn_lastDay"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrow_left"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
+        android:padding="@dimen/padding_dp_8"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_left" />
+
     <ImageView
         android:id="@+id/btn_today"
-        android:scaleType="centerInside"
-        android:src="@drawable/circle"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
+        android:padding="@dimen/padding_dp_8"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_circle" />
+
     <ImageView
         android:id="@+id/btn_nextDay"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrow_right"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
+        android:padding="@dimen/padding_dp_8"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_right" />
+
     <ImageView
         android:id="@+id/btn_nextMonth"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrow_double_right"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
+        android:padding="@dimen/padding_dp_8"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_right_double" />
+
 </LinearLayout>
