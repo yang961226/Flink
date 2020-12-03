@@ -9,9 +9,9 @@ import com.example.flink.greendao.gen.DaoSession;
 
 public class GreenDaoManager {
 
-    public static final boolean ENCRYPTED=true;//是否加密
+    public static final boolean ENCRYPTED = true;//是否加密
 
-    public static final String DB_NAME="Xbox.db";
+    public static final String DB_NAME = "Xbox.db";
 
     private static GreenDaoManager mGreenDaoManager;
 
@@ -22,45 +22,50 @@ public class GreenDaoManager {
 
     private static DaoSession mDaoSession;
 
-    private GreenDaoManager(Context context){
-        mDevOpenHelper=new DaoMaster.DevOpenHelper(context,DB_NAME);
+    private GreenDaoManager(Context context) {
+        mDevOpenHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
         getDaoMaster(context);
         getDaoSession(context);
     }
 
-    public static GreenDaoManager getInstance(Context context){
-        if(null==mGreenDaoManager){
-            synchronized (GreenDaoManager.class){
-                if(null==mGreenDaoManager){
-                    mGreenDaoManager=new GreenDaoManager(context);
+    public static GreenDaoManager getInstance(Context context) {
+        if (null == mGreenDaoManager) {
+            synchronized (GreenDaoManager.class) {
+                if (null == mGreenDaoManager) {
+                    mGreenDaoManager = new GreenDaoManager(context);
                 }
             }
         }
         return mGreenDaoManager;
     }
 
-    /** * 获取可读数据库 *
-
+    /**
+     * 获取可读数据库 *
+     *
      * @param context
-
-     * @return */
+     * @return
+     */
 
     public static SQLiteDatabase getReadableDatabase(Context context) {
         if (null == mDevOpenHelper) {
-            getInstance(context); }
+            getInstance(context);
+        }
 
         return mDevOpenHelper.getReadableDatabase();
 
     }
 
-    /** * 获取可写数据库 *
-
+    /**
+     * 获取可写数据库 *
+     *
      * @param context
-
-     * @return */
+     * @return
+     */
 
     public static SQLiteDatabase getWritableDatabase(Context context) {
-        if (null == mDevOpenHelper) { getInstance(context); }
+        if (null == mDevOpenHelper) {
+            getInstance(context);
+        }
 
         return mDevOpenHelper.getWritableDatabase();
 
@@ -68,14 +73,15 @@ public class GreenDaoManager {
 
     /**
      * 判断是否存在数据库，如果没有则创建
+     *
      * @param context
      * @return
      */
-    public static DaoMaster getDaoMaster(Context context){
+    public static DaoMaster getDaoMaster(Context context) {
         if (null == mDaoMaster) {
             synchronized (GreenDaoManager.class) {
                 if (null == mDaoMaster) {
-                    DaoMasterUpgradeOpenHelper helper = new DaoMasterUpgradeOpenHelper(context,DB_NAME,null);
+                    DaoMasterUpgradeOpenHelper helper = new DaoMasterUpgradeOpenHelper(context, DB_NAME, null);
                     mDaoMaster = new DaoMaster(helper.getWritableDatabase());
                 }
             }
@@ -83,7 +89,7 @@ public class GreenDaoManager {
         return mDaoMaster;
     }
 
-    public static DaoSession getDaoSession(Context context){
+    public static DaoSession getDaoSession(Context context) {
         if (null == mDaoSession) {
             synchronized (GreenDaoManager.class) {
                 mDaoSession = getDaoMaster(context).newSession();

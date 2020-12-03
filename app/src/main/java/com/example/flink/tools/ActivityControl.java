@@ -40,7 +40,7 @@ public class ActivityControl {
     /**
      * 退出程序
      */
-    public void exit(){
+    public void exit() {
         clearAllActivity();
         System.exit(0);
     }

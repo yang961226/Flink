@@ -19,7 +19,7 @@ public abstract class FlinkBaseFragment extends Fragment {
 
     protected boolean isViewCreated;//Fragment的View加载完毕的标记
 
-    private boolean isUIVisible=false;//Fragment对用户可见的标记
+    private boolean isUIVisible = false;//Fragment对用户可见的标记
 
     private View view;
 
@@ -52,9 +52,10 @@ public abstract class FlinkBaseFragment extends Fragment {
 
     /**
      * 这个碎片是否使用ViewPager，如果子类使用了Fragment+ViewPager的结合，一定要重写这个方法并返回true
+     *
      * @return
      */
-    protected boolean isUseViewPager(){
+    protected boolean isUseViewPager() {
         return false;
     }
 
@@ -77,7 +78,7 @@ public abstract class FlinkBaseFragment extends Fragment {
     /**
      * 找出对应的控件
      *
-     * @param id 控件id
+     * @param id  控件id
      * @param <T>
      * @return
      */
@@ -91,7 +92,7 @@ public abstract class FlinkBaseFragment extends Fragment {
     /**
      * 当视图初始化并且对用户可见的时候加载数据
      */
-    protected void lazyLoad(){
+    protected void lazyLoad() {
         //这里进行双重标记判断,是因为setUserVisibleHint会多次回调,并且会在onCreateView执行前回调,必须确保onCreateView加载完毕且页面可见,才加载数据
         if (isViewCreated && (isUIVisible || !isUseViewPager())) {//之所以加一个isUseViewPager是因为如果不结合ViewPager，isUIVisible会永远为false
             loadData();

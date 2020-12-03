@@ -33,15 +33,17 @@ public class PopUpWindowHelper {
     private boolean mFocusable;
     private boolean mTouchable;
 
-    private PopUpWindowHelper(){
+    private PopUpWindowHelper() {
         //屏蔽
-    };
+    }
 
-    public void showPopupWindow(View v,LocationType type){
-        if(mView!=null){
+    ;
+
+    public void showPopupWindow(View v, LocationType type) {
+        if (mView != null) {
             mPopupWindow.setContentView(mView);
-        }else if(mLayoutId!=-1){
-            View contentView= LayoutInflater.from(mContext).inflate(mLayoutId,null);
+        } else if (mLayoutId != -1) {
+            View contentView = LayoutInflater.from(mContext).inflate(mLayoutId, null);
             mPopupWindow.setContentView(contentView);
         }
         mPopupWindow.setWidth(mWidth);
@@ -53,10 +55,10 @@ public class PopUpWindowHelper {
         mPopupWindow.setTouchable(mTouchable);
         mPopupWindow.setFocusable(mFocusable);
 
-        int[] locations=new int[2];
+        int[] locations = new int[2];
         v.getLocationOnScreen(locations);
-        int left=locations[0];
-        int top=locations[1];
+        int left = locations[0];
+        int top = locations[1];
 
         mPopupWindow.getContentView()
                 .measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -65,31 +67,31 @@ public class PopUpWindowHelper {
 
         switch (type) {
             case TOP_TEST:
-                mPopupWindow.showAsDropDown(v, mOffsetX,-(v.getHeight()+popupHeight)+mOffsetY, Gravity.NO_GRAVITY);
+                mPopupWindow.showAsDropDown(v, mOffsetX, -(v.getHeight() + popupHeight) + mOffsetY, Gravity.NO_GRAVITY);
                 break;
             case CENTER:
-                mPopupWindow.showAtLocation(v,Gravity.CENTER,mOffsetX, mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.CENTER, mOffsetX, mOffsetY);
                 break;
             //下面的均未测试过，如有问题请和作者联系
             case TOP_LEFT:
-                mPopupWindow.showAtLocation(v,Gravity.NO_GRAVITY,left - popupWidth + mOffsetX,top - popupHeight + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left - popupWidth + mOffsetX, top - popupHeight + mOffsetY);
                 break;
             case TOP_CENTER:
                 int offsetX = (v.getWidth() - popupWidth) / 2;
-                mPopupWindow.showAtLocation(v,Gravity.NO_GRAVITY,left + offsetX + mOffsetX,top - popupHeight + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + offsetX + mOffsetX, top - popupHeight + mOffsetY);
                 break;
             case TOP_RIGHT:
-                mPopupWindow.showAtLocation(v,Gravity.NO_GRAVITY,left + v.getWidth() + mOffsetX,top - popupHeight + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + v.getWidth() + mOffsetX, top - popupHeight + mOffsetY);
                 break;
             case BOTTOM_LEFT:
-                mPopupWindow.showAsDropDown(v, -popupWidth + mOffsetX,mOffsetY);
+                mPopupWindow.showAsDropDown(v, -popupWidth + mOffsetX, mOffsetY);
                 break;
             case BOTTOM_CENTER:
                 int offsetX1 = (v.getWidth() - popupWidth) / 2;
-                mPopupWindow.showAsDropDown(v,offsetX1 + mOffsetX,mOffsetY);
+                mPopupWindow.showAsDropDown(v, offsetX1 + mOffsetX, mOffsetY);
                 break;
             case BOTTOM_RIGHT:
-                mPopupWindow.showAsDropDown(v, v.getWidth() + mOffsetX,mOffsetY);
+                mPopupWindow.showAsDropDown(v, v.getWidth() + mOffsetX, mOffsetY);
                 break;
             case LEFT_TOP:
                 mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left - popupWidth + mOffsetX, top - popupHeight + mOffsetY);
@@ -99,20 +101,20 @@ public class PopUpWindowHelper {
                 break;
             case LEFT_CENTER:
                 int offsetY = (v.getHeight() - popupHeight) / 2;
-                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY,left - popupWidth + mOffsetX,top + offsetY + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left - popupWidth + mOffsetX, top + offsetY + mOffsetY);
                 break;
             case RIGHT_TOP:
-                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + v.getWidth() + mOffsetX,top - popupHeight + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + v.getWidth() + mOffsetX, top - popupHeight + mOffsetY);
                 break;
             case RIGHT_BOTTOM:
-                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + v.getWidth() + mOffsetX,top + v.getHeight() + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + v.getWidth() + mOffsetX, top + v.getHeight() + mOffsetY);
                 break;
             case RIGHT_CENTER:
                 int offsetY1 = (v.getHeight() - popupHeight) / 2;
-                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY,left + v.getWidth() + mOffsetX,top + offsetY1 + mOffsetY);
+                mPopupWindow.showAtLocation(v, Gravity.NO_GRAVITY, left + v.getWidth() + mOffsetX, top + offsetY1 + mOffsetY);
                 break;
             case FROM_BOTTOM:
-                mPopupWindow.showAtLocation(v,mGravity,mOffsetX,mOffsetY);
+                mPopupWindow.showAtLocation(v, mGravity, mOffsetX, mOffsetY);
                 break;
         }
     }
@@ -148,8 +150,8 @@ public class PopUpWindowHelper {
             this.offsetY = 0;
         }
 
-        public Builder setFocusable(boolean focusable){
-            this.focusable=focusable;
+        public Builder setFocusable(boolean focusable) {
+            this.focusable = focusable;
             return this;
         }
 
@@ -242,7 +244,7 @@ public class PopUpWindowHelper {
             popUpWindowHelper.mOnDismissListener = this.onDismissListener;
             popUpWindowHelper.mAnimationStyle = this.animationStyle;
             popUpWindowHelper.mTouchable = this.touchable;
-            popUpWindowHelper.mFocusable=this.focusable;
+            popUpWindowHelper.mFocusable = this.focusable;
             popUpWindowHelper.mOffsetX = this.offsetX;
             popUpWindowHelper.mOffsetY = this.offsetY;
             popUpWindowHelper.mGravity = this.gravity;

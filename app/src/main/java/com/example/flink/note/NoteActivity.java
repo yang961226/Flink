@@ -1,34 +1,27 @@
 package com.example.flink.note;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.flink.adapter.FlickPagerAdapter;
 import com.example.flink.NoteBaseActivity;
 import com.example.flink.R;
+import com.example.flink.adapter.FlickPagerAdapter;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
 import com.example.flink.layout.NavigationBarLayout;
-import com.example.flink.layout.PopupInputLayout;
 import com.example.flink.layout.SwitchDateLayout;
 import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
-import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.ViewTools;
-
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -64,7 +57,7 @@ public class NoteActivity extends NoteBaseActivity {
     @BindView(R.id.btn_function)
     ImageView btn_function;
 
-    private static final int VIEW_PAGER_ID=5242;
+    private static final int VIEW_PAGER_ID = 5242;
 
     private ViewGroup topLeftViewGroup;//左上角布局
     private ViewGroup topRightViewGroup;//右上角布局
@@ -78,18 +71,18 @@ public class NoteActivity extends NoteBaseActivity {
     private PagerAdapter mPagerAdapter;
     private List<View> noteViewList;
 
-    private int vpIndex=0;//当前ViewPager页的索引
+    private int vpIndex = 0;//当前ViewPager页的索引
 
     @Override
     protected void initData() {
-        mDate=DateUtil.getNowDate();
-        noteViewList=new ArrayList<>();
+        mDate = DateUtil.getNowDate();
+        noteViewList = new ArrayList<>();
     }
 
-    @OnClick({R.id.btn_setting,R.id.btn_function})
+    @OnClick({R.id.btn_setting, R.id.btn_function})
     @Override
     protected void onBtnClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_setting:
                 // TODO: 2020/9/3 跳转到设置页
                 showToast("跳转到设置页面");
@@ -101,24 +94,24 @@ public class NoteActivity extends NoteBaseActivity {
     }
 
     @OnLongClick({R.id.btn_function})
-    protected void onBtnLongClick(View view){
+    protected void onBtnLongClick(View view) {
         if (view.getId() == R.id.btn_function) {
             onFunctionClick(true);
         }
     }
 
-    private void onFunctionClick(boolean isLongClick){
-        View view=noteViewList.get(vpIndex);
+    private void onFunctionClick(boolean isLongClick) {
+        View view = noteViewList.get(vpIndex);
         NoteFunctionClickListener noteFunctionClickListener;
-        if(!(view instanceof NoteFunctionClickListener)){
+        if (!(view instanceof NoteFunctionClickListener)) {
             showToast("当前页面配置错误，请联系作者");
             return;
-        }else{
-            noteFunctionClickListener=(NoteFunctionClickListener)view;
+        } else {
+            noteFunctionClickListener = (NoteFunctionClickListener) view;
         }
-        if(isLongClick){
+        if (isLongClick) {
             noteFunctionClickListener.onLongClickFunction();
-        }else{
+        } else {
             noteFunctionClickListener.onClickFunction();
         }
     }
@@ -126,7 +119,7 @@ public class NoteActivity extends NoteBaseActivity {
     /**
      * 开启时钟
      */
-    private void startToTick(){
+    private void startToTick() {
         //每秒更新一次时钟View
         java.util.Timer clockTimer = new java.util.Timer(true);
         TimerTask clockTask = new TimerTask() {
@@ -142,14 +135,14 @@ public class NoteActivity extends NoteBaseActivity {
         //初始化左上角
         topLeftViewGroup = ViewTools.buildCalendarLayout(this);
         //如果没有继承这个接口，说明这个View没有按要求去做
-        if(topLeftViewGroup ==null){
+        if (topLeftViewGroup == null) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
         llTop.addView(topLeftViewGroup);
 
         //初始化右上角
         topRightViewGroup = ViewTools.buildClockLayout(this);
-        if(topRightViewGroup == null){
+        if (topRightViewGroup == null) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
         llTop.addView(topRightViewGroup);
@@ -159,7 +152,7 @@ public class NoteActivity extends NoteBaseActivity {
     @Override
     protected void initCenter() {
         initViewPager();
-        navBarLayout =ViewTools.buildNavBarView(this);
+        navBarLayout = ViewTools.buildNavBarView(this);
         navBarLayout.init(NavigationBarLayout.NavigationBarViewConfig
                 .create()
                 .setItemNum(3)// TODO: 2020/9/10 现在是写死3个，后面这个值要改成根据实际页数来填写 
@@ -174,12 +167,12 @@ public class NoteActivity extends NoteBaseActivity {
 
     }
 
-    private void initViewPager(){
-        mViewPager=buildViewPager();
+    private void initViewPager() {
+        mViewPager = buildViewPager();
         mViewPager.setId(VIEW_PAGER_ID);
 
-        noteViewList=ViewTools.buildNoteViewFunctions(this);
-        mPagerAdapter=new FlickPagerAdapter(noteViewList);
+        noteViewList = ViewTools.buildNoteViewFunctions(this);
+        mPagerAdapter = new FlickPagerAdapter(noteViewList);
 
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -190,8 +183,8 @@ public class NoteActivity extends NoteBaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-               navBarLayout.selectTo(position);
-                vpIndex=position;
+                navBarLayout.selectTo(position);
+                vpIndex = position;
             }
 
             @Override
@@ -202,9 +195,9 @@ public class NoteActivity extends NoteBaseActivity {
         mPagerAdapter.notifyDataSetChanged();
     }
 
-    private ViewPager buildViewPager(){
-        ViewPager viewPager=new ViewPager(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0,1);
+    private ViewPager buildViewPager() {
+        ViewPager viewPager = new ViewPager(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1);
         viewPager.setLayoutParams(layoutParams);
         viewPager.setOffscreenPageLimit(NavigationBarLayout.MAX_ITEM_NUM);//设置回收缓存，不要让ViewPager回收里面的碎片
         return viewPager;
@@ -218,41 +211,40 @@ public class NoteActivity extends NoteBaseActivity {
         switchDateLayout.setmOnSwitchDateListener(new SwitchDateLayout.OnSwitchDateListener() {
             @Override
             public void onLastDayBtnClick() {
-                Date tmpDate=DateUtil.addDay(mDate,-1);
+                Date tmpDate = DateUtil.addDay(mDate, -1);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate=tmpDate;
+                mDate = tmpDate;
             }
 
             @Override
             public void onLastMonthBtnClick() {
-                Date tmpDate=DateUtil.addMonth(mDate,-1);
+                Date tmpDate = DateUtil.addMonth(mDate, -1);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate=tmpDate;
+                mDate = tmpDate;
             }
 
             @Override
             public void onTodayBtnClick() {
-                Date tmpDate=DateUtil.getNowDate();
+                Date tmpDate = DateUtil.getNowDate();
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate=tmpDate;
+                mDate = tmpDate;
             }
 
             @Override
             public void onNextDayBtnClick() {
-                Date tmpDate=DateUtil.addDay(mDate,1);
+                Date tmpDate = DateUtil.addDay(mDate, 1);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate=tmpDate;
+                mDate = tmpDate;
             }
 
             @Override
             public void onNextMonthBtnClick() {
-                Date tmpDate=DateUtil.addMonth(mDate,1);
+                Date tmpDate = DateUtil.addMonth(mDate, 1);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate=tmpDate;
+                mDate = tmpDate;
             }
         });
     }
-
 
 
     @Override
@@ -269,15 +261,15 @@ public class NoteActivity extends NoteBaseActivity {
     /**
      * 将所有注册了eventBus的View(非activity)反注册
      */
-    private void unregisterEventBus(){
-        if(topLeftViewGroup instanceof Unregister){
+    private void unregisterEventBus() {
+        if (topLeftViewGroup instanceof Unregister) {
             ((Unregister) topLeftViewGroup).unregister();
         }
-        if(topRightViewGroup instanceof Unregister){
+        if (topRightViewGroup instanceof Unregister) {
             ((Unregister) topRightViewGroup).unregister();
         }
-        for(View view:noteViewList){
-            if(view instanceof Unregister){
+        for (View view : noteViewList) {
+            if (view instanceof Unregister) {
                 ((Unregister) view).unregister();
             }
         }

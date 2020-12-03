@@ -36,7 +36,7 @@ public class PopupInputLayout extends LinearLayout {
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
 
-    private int maxWordNum=15;//默认值
+    private int maxWordNum = 15;//默认值
 
     private ConfirmBtnClickListener confirmBtnClickListener;
 
@@ -45,45 +45,45 @@ public class PopupInputLayout extends LinearLayout {
         View.inflate(context, R.layout.layout_popup_input, this);
         //绑定处理
         ButterKnife.bind(this);
-        maxWordNum=getResources().getInteger(R.integer.sticky_note_popup_input_max_length);
-        tvProgress.setText(0+"/"+maxWordNum);
+        maxWordNum = getResources().getInteger(R.integer.sticky_note_popup_input_max_length);
+        tvProgress.setText(0 + "/" + maxWordNum);
         fetNoteContent.init(maxWordNum);
-        fetNoteContent.setOnWordNumChangeListener(wordNumAfterChange -> tvProgress.setText(wordNumAfterChange+"/"+maxWordNum));
+        fetNoteContent.setOnWordNumChangeListener(wordNumAfterChange -> tvProgress.setText(wordNumAfterChange + "/" + maxWordNum));
 
     }
 
-    private void onConfirm(){
-        if(confirmBtnClickListener==null){
-            Toast.makeText(getContext(),"确定",Toast.LENGTH_LONG).show();
-        }else{
+    private void onConfirm() {
+        if (confirmBtnClickListener == null) {
+            Toast.makeText(getContext(), "确定", Toast.LENGTH_LONG).show();
+        } else {
             confirmBtnClickListener.onConfirmBtnClick();
         }
 
     }
 
-    public boolean isInputContentEmpty(){
-        if(fetNoteContent==null || fetNoteContent.getText()==null){
+    public boolean isInputContentEmpty() {
+        if (fetNoteContent == null || fetNoteContent.getText() == null) {
             return true;
         }
         return TextUtils.isEmpty(fetNoteContent.getText().toString());
     }
 
-    public void clearInputContent(){
-        if(fetNoteContent==null){
+    public void clearInputContent() {
+        if (fetNoteContent == null) {
             return;
         }
         fetNoteContent.setText("");
     }
 
-    public String getInputContent(){
-        if(fetNoteContent==null || fetNoteContent.getText()==null){
+    public String getInputContent() {
+        if (fetNoteContent == null || fetNoteContent.getText() == null) {
             return "";
         }
         return fetNoteContent.getText().toString();
     }
 
-    public void setConfirmBtnClickListener(ConfirmBtnClickListener confirmBtnClickListener){
-        this.confirmBtnClickListener=confirmBtnClickListener;
+    public void setConfirmBtnClickListener(ConfirmBtnClickListener confirmBtnClickListener) {
+        this.confirmBtnClickListener = confirmBtnClickListener;
     }
 
     public FliterEditText getFEtNoteContent(){
@@ -95,7 +95,7 @@ public class PopupInputLayout extends LinearLayout {
         onConfirm();
     }
 
-    public interface ConfirmBtnClickListener{
+    public interface ConfirmBtnClickListener {
         void onConfirmBtnClick();
     }
 }

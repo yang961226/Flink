@@ -25,7 +25,7 @@ public class MyApplication extends Application {
         return context;
     }
 
-    private void initGreenDao(){
+    private void initGreenDao() {
         GreenDaoManager.getInstance(this);
         GreenDaoManager.getDaoMaster(this);
     }

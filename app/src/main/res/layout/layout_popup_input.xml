@@ -33,7 +33,7 @@
             tools:text="18/20" />
     </LinearLayout>
 
-    <com.example.flink.view.FliterEditText
+    <com.example.flink.view.FilterEditText
         android:id="@+id/fet_note_content"
         android:inputType="text"
         android:textSize="@dimen/sticky_note_font_size"

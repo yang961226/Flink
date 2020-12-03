@@ -5,7 +5,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 import com.example.flink.common.EditTextLengthFilter;
 import com.example.flink.mInterface.OnWordNumChangeListener;
@@ -18,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class FliterEditText extends androidx.appcompat.widget.AppCompatEditText {
 
-    private int maxWordNum=20;
+    private int maxWordNum = 20;
     private OnWordNumChangeListener onWordNumChangeListener;
 
     public FliterEditText(Context context) {
@@ -33,22 +32,22 @@ public class FliterEditText extends androidx.appcompat.widget.AppCompatEditText 
         super(context, attrs, defStyleAttr);
     }
 
-    public void init(int maxWordNum){
-        this.maxWordNum=maxWordNum;
+    public void init(int maxWordNum) {
+        this.maxWordNum = maxWordNum;
         addTextChangedListener(getTextWatcher());
         setFilters(getInputFilters());
     }
 
-    public void setOnWordNumChangeListener(OnWordNumChangeListener onWordNumChangeListener){
-        this.onWordNumChangeListener=onWordNumChangeListener;
+    public void setOnWordNumChangeListener(OnWordNumChangeListener onWordNumChangeListener) {
+        this.onWordNumChangeListener = onWordNumChangeListener;
     }
 
-    protected InputFilter[] getInputFilters(){
-        InputFilter[] filters={new EditTextLengthFilter(maxWordNum)};
+    protected InputFilter[] getInputFilters() {
+        InputFilter[] filters = {new EditTextLengthFilter(maxWordNum)};
         return filters;
     }
 
-    protected TextWatcher getTextWatcher(){
+    protected TextWatcher getTextWatcher() {
         return new TextWatcher() {
 
             private CharSequence temp;
@@ -74,14 +73,14 @@ public class FliterEditText extends androidx.appcompat.widget.AppCompatEditText 
                 if(getInputLength()>maxWordNum){
                     s.delete(selectionStart - 1, selectionEnd);
                 }
-                if(onWordNumChangeListener!=null){
+                if (onWordNumChangeListener != null) {
                     onWordNumChangeListener.onWordNumChange(getInputLength());
                 }
             }
 
-            private int getInputLength(){//汉字算2个字符，其他算1个
+            private int getInputLength() {//汉字算2个字符，其他算1个
                 return temp.length()
-                        +getChineseCount(temp.toString());
+                        + getChineseCount(temp.toString());
             }
 
             private int getChineseCount(String str) {

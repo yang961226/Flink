@@ -46,8 +46,8 @@ public class SwitchDateLayout extends LinearLayout {
         this.mOnSwitchDateListener = mOnSwitchDateListener;
     }
 
-    @OnClick({R.id.btn_lastDay,R.id.btn_lastMonth,R.id.btn_today,R.id.btn_nextDay,R.id.btn_nextMonth})
-    public void onViewClick(View view){
+    @OnClick({R.id.btn_lastDay, R.id.btn_lastMonth, R.id.btn_today, R.id.btn_nextDay, R.id.btn_nextMonth})
+    public void onViewClick(View view) {
         if (mOnSwitchDateListener == null) {
             Toast.makeText(getContext(), MyConstants.UNBIND_LISTENER, Toast.LENGTH_LONG).show();
             return;

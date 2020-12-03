@@ -15,7 +15,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Unregister,NoteFunctionClickListener {
+public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Unregister, NoteFunctionClickListener {
 
     private Unbinder unbinder;
 
@@ -34,10 +34,10 @@ public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Un
         init(context);
     }
 
-    protected void init(Context context){
-        View.inflate(context,getLayoutResId(),this);
+    protected void init(Context context) {
+        View.inflate(context, getLayoutResId(), this);
         //绑定处理
-        unbinder=ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
     }
 

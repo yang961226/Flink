@@ -10,7 +10,7 @@ import com.example.flink.item.StickyNoteItem;
 
 import java.util.List;
 
-public class StickyNoteAdapter extends CommenAdapter<StickyNoteItem> {
+public class StickyNoteAdapter extends CommonAdapter<StickyNoteItem> {
 
     public StickyNoteAdapter(Context context, List<StickyNoteItem> mDatas) {
         super(context, mDatas);
@@ -18,13 +18,13 @@ public class StickyNoteAdapter extends CommenAdapter<StickyNoteItem> {
 
     @Override
     protected void setUI(ViewHolder holder, int position, Context context) {
-        StickyNoteItem item= (StickyNoteItem) getItem(position);
+        StickyNoteItem item = (StickyNoteItem) getItem(position);
 
-        ImageView iv=holder.getItemViewById(R.id.iv_status);
+        ImageView iv = holder.getItemViewById(R.id.iv_status);
         iv.setImageResource(item.getStickyNoteRes(context));
 
-        TextView tvNoteContet=holder.getItemViewById(R.id.tv_note_content);
-        tvNoteContet.setText(item.getNoteContent());
+        TextView tvNoteContent = holder.getItemViewById(R.id.tv_note_content);
+        tvNoteContent.setText(item.getNoteContent());
     }
 
     @Override

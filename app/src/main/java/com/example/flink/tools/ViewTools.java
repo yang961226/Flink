@@ -22,22 +22,24 @@ public class ViewTools {
 
     /**
      * 生成日历布局
+     *
      * @return 布局
      */
     public static ViewGroup buildCalendarSelectLayout(Context context) {
         ViewGroup calendarSelectView;
-        try{
-            Class<?> clazz=Class.forName(CommonTools.getString(context, R.string.CalendarSelectLayout));
+        try {
+            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarSelectLayout));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
-            calendarSelectView=(ViewGroup) constructor.newInstance(context,null);
-        }catch (Exception e){
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+"错误描述："+e.toString());
+            calendarSelectView = (ViewGroup) constructor.newInstance(context, null);
+        } catch (Exception e) {
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR + "错误描述：" + e.toString());
         }
         return calendarSelectView;
     }
 
     /**
      * 生成日期布局
+     *
      * @return 布局
      */
     public static ViewGroup buildCalendarLayout(Context context) {
@@ -50,16 +52,17 @@ public class ViewTools {
             topLeftView.setLayoutParams(layoutParams);
 
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+"错误描述："+e.toString());
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR + "错误描述：" + e.toString());
         }
         return topLeftView;
     }
 
     /**
      * 生成时钟的布局
+     *
      * @return 布局
      */
-    public static  ViewGroup buildClockLayout(Context context) {
+    public static ViewGroup buildClockLayout(Context context) {
         ViewGroup topRightView;
         try {
             Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockLayout));
@@ -68,38 +71,39 @@ public class ViewTools {
             topRightView = (ViewGroup) constructor.newInstance(context, null);
             topRightView.setLayoutParams(layoutParams);
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR+"错误描述："+e.toString());
+            throw new MyException(MyConstants.CLASS_CONFIG_ERROR + "错误描述：" + e.toString());
         }
         return topRightView;
     }
 
     /**
      * 通用的ViewGroup生成器
-     * @param context 上下文
-     * @param clazz 类文件
+     *
+     * @param context      上下文
+     * @param clazz        类文件
      * @param layoutParams 参数
      * @return 生成的ViewGroup
      */
-    public static ViewGroup buildViewGroup(Context context,Class<? extends ViewGroup>clazz,ViewGroup.LayoutParams layoutParams){
+    public static ViewGroup buildViewGroup(Context context, Class<? extends ViewGroup> clazz, ViewGroup.LayoutParams layoutParams) {
         ViewGroup viewGroup;
-        try{
+        try {
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
-            viewGroup=(ViewGroup)constructor.newInstance(context, null);
+            viewGroup = (ViewGroup) constructor.newInstance(context, null);
             viewGroup.setLayoutParams(layoutParams);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
         return viewGroup;
     }
 
-    public static ViewGroup buildViewGroup(Context context,Class<? extends ViewGroup>clazz){
+    public static ViewGroup buildViewGroup(Context context, Class<? extends ViewGroup> clazz) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.MATCH_PARENT);
-        return buildViewGroup(context,clazz,layoutParams);
+        return buildViewGroup(context, clazz, layoutParams);
     }
 
-    public static NavigationBarLayout buildNavBarView(Context context){
-        NavigationBarLayout navBarView=new NavigationBarLayout(context,null);
+    public static NavigationBarLayout buildNavBarView(Context context) {
+        NavigationBarLayout navBarView = new NavigationBarLayout(context, null);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.WRAP_CONTENT);
         navBarView.setLayoutParams(layoutParams);
@@ -107,18 +111,17 @@ public class ViewTools {
     }
 
     /**
-     *
-      * @param context
+     * @param context
      * @return
      */
-    public static List<View> buildNoteViewFunctions(Context context){
-        List<View> arrayList=new ArrayList<>();
-        String [] functions=context.getResources().getStringArray(R.array.note_function);
-        try{
+    public static List<View> buildNoteViewFunctions(Context context) {
+        List<View> arrayList = new ArrayList<>();
+        String[] functions = context.getResources().getStringArray(R.array.note_function);
+        try {
             for (String function : functions) {
                 arrayList.add(buildViewGroup(context, (Class<? extends ViewGroup>) Class.forName(function)));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
         }
 

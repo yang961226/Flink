@@ -27,7 +27,7 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDateChange(DateChangeEvent dateChangeEvent){
+    public void onDateChange(DateChangeEvent dateChangeEvent) {
 
     }
 
@@ -38,11 +38,11 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
 
     @Override
     public void onClickFunction() {
-        Toast.makeText(getContext(),"TestNoteLayout1点击",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "TestNoteLayout1点击", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLongClickFunction() {
-        Toast.makeText(getContext(),"TestNoteLayout1长按",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "TestNoteLayout1长按", Toast.LENGTH_SHORT).show();
     }
 }

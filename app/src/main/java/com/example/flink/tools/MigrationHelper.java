@@ -36,8 +36,9 @@ public class MigrationHelper {
 
     private static WeakReference<ReCreateAllTableListener> weakListener;
 
-    public interface ReCreateAllTableListener{
+    public interface ReCreateAllTableListener {
         void onCreateAllTables(Database db, boolean ifNotExists);
+
         void onDropAllTables(Database db, boolean ifExists);
     }
 
@@ -99,7 +100,7 @@ public class MigrationHelper {
                 insertTableStringBuilder.append("CREATE TEMPORARY TABLE ").append(tempTableName);
                 insertTableStringBuilder.append(" AS SELECT * FROM ").append(tableName).append(";");
                 db.execSQL(insertTableStringBuilder.toString());
-                printLog("【Table】" + tableName +"\n ---Columns-->"+getColumnsStr(daoConfig));
+                printLog("【Table】" + tableName + "\n ---Columns-->" + getColumnsStr(daoConfig));
                 printLog("【Generate temp table】" + tempTableName);
             } catch (SQLException e) {
                 Log.e(TAG, "【Failed to generate temp table】" + tempTableName, e);
@@ -113,7 +114,7 @@ public class MigrationHelper {
         }
         String dbName = isTemp ? SQLITE_TEMP_MASTER : SQLITE_MASTER;
         String sql = "SELECT COUNT(*) FROM " + dbName + " WHERE type = ? AND name = ?";
-        Cursor cursor=null;
+        Cursor cursor = null;
         int count = 0;
         try {
             cursor = db.rawQuery(sql, new String[]{"table", tableName});
@@ -167,7 +168,7 @@ public class MigrationHelper {
         try {
             for (Class cls : daoClasses) {
                 Method method = cls.getDeclaredMethod(methodName, Database.class, boolean.class);
-                method.invoke(null, db, isExists);
+                method.invoke(null, db, (Object) isExists);
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -177,6 +178,7 @@ public class MigrationHelper {
             e.printStackTrace();
         }
     }
+
     private static void restoreData(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
         for (int i = 0; i < daoClasses.length; i++) {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
@@ -253,8 +255,8 @@ public class MigrationHelper {
         return columns;
     }
 
-    private static void printLog(String info){
-        if(DEBUG){
+    private static void printLog(String info) {
+        if (DEBUG) {
             Log.d(TAG, info);
         }
     }

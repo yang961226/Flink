@@ -141,7 +141,7 @@ public class ClockLayout extends LinearLayout implements Unregister {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDateChange(DateChangeEvent dateChangeEvent){
+    public void onDateChange(DateChangeEvent dateChangeEvent) {
         Date date = dateChangeEvent.getDate();
         if (DateUtil.format(date).equals(DateUtil.format(new Date())))
             isToday.setVisibility(VISIBLE);
@@ -171,17 +171,38 @@ public class ClockLayout extends LinearLayout implements Unregister {
     //设置数字图片
     private void setImage(ImageView number_image, String number) {
         switch (number) {
-            case "0": number_image.setImageBitmap(imageNum0); break;
-            case "1": number_image.setImageBitmap(imageNum1); break;
-            case "2": number_image.setImageBitmap(imageNum2); break;
-            case "3": number_image.setImageBitmap(imageNum3); break;
-            case "4": number_image.setImageBitmap(imageNum4); break;
-            case "5": number_image.setImageBitmap(imageNum5); break;
-            case "6": number_image.setImageBitmap(imageNum6); break;
-            case "7": number_image.setImageBitmap(imageNum7); break;
-            case "8": number_image.setImageBitmap(imageNum8); break;
-            case "9": number_image.setImageBitmap(imageNum9); break;
-            default: break;
+            case "0":
+                number_image.setImageBitmap(imageNum0);
+                break;
+            case "1":
+                number_image.setImageBitmap(imageNum1);
+                break;
+            case "2":
+                number_image.setImageBitmap(imageNum2);
+                break;
+            case "3":
+                number_image.setImageBitmap(imageNum3);
+                break;
+            case "4":
+                number_image.setImageBitmap(imageNum4);
+                break;
+            case "5":
+                number_image.setImageBitmap(imageNum5);
+                break;
+            case "6":
+                number_image.setImageBitmap(imageNum6);
+                break;
+            case "7":
+                number_image.setImageBitmap(imageNum7);
+                break;
+            case "8":
+                number_image.setImageBitmap(imageNum8);
+                break;
+            case "9":
+                number_image.setImageBitmap(imageNum9);
+                break;
+            default:
+                break;
         }
     }
 }

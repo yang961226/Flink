@@ -2,18 +2,16 @@ package com.example.flink.item;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Bundle;
 
 import com.example.flink.R;
 import com.example.flink.tools.DateUtil;
-
-
-import java.util.Date;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.OrderBy;
+
+import java.util.Date;
 
 /**
  * greenDao类
@@ -34,7 +32,7 @@ public class StickyNoteItem {
     private Long id;//主键id
 
     private int parentId;//父亲的主键id
-    
+
     @Generated(hash = 94483912)
     public StickyNoteItem(int statu, String noteContent, Date noteDate, int order,
             Long id, int parentId) {
@@ -46,7 +44,7 @@ public class StickyNoteItem {
         this.parentId = parentId;
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -101,8 +99,8 @@ public class StickyNoteItem {
             return this;
         }
 
-        public StickyNoteItem build(){
-            StickyNoteItem item=new StickyNoteItem();
+        public StickyNoteItem build() {
+            StickyNoteItem item = new StickyNoteItem();
             item.setId(id);
             item.setOrder(order);
             item.setParentId(parentId);
@@ -118,15 +116,11 @@ public class StickyNoteItem {
 
     //笔记状态枚举
     public enum StickyNoteStatus {
-        COMMON(0)
-        ,FINISH(1)
-        ,HALF(2)
-        ,STAR(3)
-        ,WAITING(4);
+        COMMON(0), FINISH(1), HALF(2), STAR(3), WAITING(4);
 
         private final int index;
 
-        StickyNoteStatus(int index){
+        StickyNoteStatus(int index) {
             this.index = index;
         }
 
@@ -144,16 +138,16 @@ public class StickyNoteItem {
             return COMMON;
         }
 
-        public StickyNoteStatus getStatuByIndex(int index){
-            for(StickyNoteStatus status:StickyNoteStatus.values()){
-                if(status.index==index){
+        public StickyNoteStatus getStatuByIndex(int index) {
+            for (StickyNoteStatus status : StickyNoteStatus.values()) {
+                if (status.index == index) {
                     return status;
                 }
             }
             return COMMON;
         }
 
-        public int getIndex(){
+        public int getIndex() {
             return index;
         }
     }

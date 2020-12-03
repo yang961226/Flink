@@ -1,14 +1,13 @@
 package com.example.flink.tools;
 
 import android.content.Context;
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.SharedPreferences;
-
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * 数据保存类
@@ -20,7 +19,7 @@ public class SPUtil {
     private WeakReference<Context> reference;
 
     private SPUtil(Context context) {
-        reference=new WeakReference<>(context);//防止内存泄漏
+        reference = new WeakReference<>(context);//防止内存泄漏
         editor = reference.get().getSharedPreferences("user", MODE_PRIVATE).edit();
     }
 

@@ -46,7 +46,7 @@ public class AdaptationTextView extends androidx.appcompat.widget.AppCompatTextV
         //获取自定义属性，默认为宽度自适应
         @SuppressLint("Recycle") TypedArray typedArray =
                 context.obtainStyledAttributes(attrs, R.styleable.AdaptationTextView);
-        if(typedArray != null) {
+        if (typedArray != null) {
             adaptiveType = typedArray.getInt(
                     R.styleable.AdaptationTextView_adaptive_type, 0) == 0;
         }
@@ -54,6 +54,7 @@ public class AdaptationTextView extends androidx.appcompat.widget.AppCompatTextV
 
     /**
      * 设置自适应类型
+     *
      * @param adaptiveType 高度或宽度
      */
     public void setAdaptiveType(boolean adaptiveType) {
@@ -63,7 +64,7 @@ public class AdaptationTextView extends androidx.appcompat.widget.AppCompatTextV
     //内容改变时
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        if(adaptiveType) refitTextWidth(text.toString(), this.getWidth());//textView视图的宽度
+        if (adaptiveType) refitTextWidth(text.toString(), this.getWidth());//textView视图的宽度
         else refitTextHeight(this.getHeight());//textView视图的高度
 
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
@@ -72,22 +73,22 @@ public class AdaptationTextView extends androidx.appcompat.widget.AppCompatTextV
     //高度改变时
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        if(adaptiveType) {
-            if(w != oldw) refitTextWidth(this.getText().toString(), w);
+        if (adaptiveType) {
+            if (w != oldw) refitTextWidth(this.getText().toString(), w);
         } else {
-            if(h != oldh) refitTextHeight(h);
+            if (h != oldh) refitTextHeight(h);
         }
     }
 
     //调整字体大小，使其适应文本框的宽度
     private void refitTextWidth(String text, int textWidth) {
-        if(textWidth > 0) {
+        if (textWidth > 0) {
             //减去边距计算字体的实际宽度
             int availableWidth = textWidth - this.getPaddingLeft() - this.getPaddingRight();
             float trySize = mMaxTextSize;
             mTextPaint.setTextSize(trySize);
             //测量的字体宽度过大，不断地缩放
-            while(mTextPaint.measureText(text) > availableWidth) {
+            while (mTextPaint.measureText(text) > availableWidth) {
                 trySize--;//字体不断地减小来适应
                 if (trySize <= mMinTextSize) {
                     trySize = mMinTextSize;
@@ -103,13 +104,13 @@ public class AdaptationTextView extends androidx.appcompat.widget.AppCompatTextV
 
     //调整字体大小，使其适应文本框的高度
     private void refitTextHeight(int height) {
-        if(height > 0) {
+        if (height > 0) {
             //减去边距计算字体的实际高度
             int availableHeight = height - this.getPaddingTop() - this.getPaddingBottom();
             float trySize = mMaxTextSize;
             mTextPaint.setTextSize(trySize);
             //测量的字体高度过大，不断地缩放
-            while(mTextPaint.descent() - mTextPaint.ascent() > availableHeight) {
+            while (mTextPaint.descent() - mTextPaint.ascent() > availableHeight) {
                 trySize--;//字体不断地减小来适应
                 if (trySize <= mMinTextSize) {
                     trySize = mMinTextSize;//最小为这个

@@ -46,21 +46,21 @@ public class DateUtil {
      */
     public static String FORMAT_FULL_CN = "yyyy年MM月dd日  HH时mm分ss秒SSS毫秒";
 
-    public static String[] WEEK_DAYS_STR = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+    public static String[] WEEK_DAYS_STR = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
     /**
      * 英文的周和月
      */
-    public static String[] WEEK_DAYS_ENGLISH = { "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY" };
+    public static String[] WEEK_DAYS_ENGLISH = {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
 
-    public static String[] MONTH_NAME_ENGLISH = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    public static String[] MONTH_NAME_ENGLISH = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-    public static final long SECOND_IN_MILLIS=1000L;
-    public static final long MINUTE_IN_MILLIS=60000L;
-    public static final long HOUR_IN_MILLIS =3600000L;
-    public static final long DAY_IN_MILLIS=86400000L;
-    public static final long WEEK_IN_MILLIS =604800000L;
-    public static final long YEAR_IN_MILLIS =31449600000L;
+    public static final long SECOND_IN_MILLIS = 1000L;
+    public static final long MINUTE_IN_MILLIS = 60000L;
+    public static final long HOUR_IN_MILLIS = 3600000L;
+    public static final long DAY_IN_MILLIS = 86400000L;
+    public static final long WEEK_IN_MILLIS = 604800000L;
+    public static final long YEAR_IN_MILLIS = 31449600000L;
 
     /**
      * 获得默认的 date pattern
@@ -69,24 +69,26 @@ public class DateUtil {
         return FORMAT_SHORT;
     }
 
-    public static String[] getDefaultWeekDaysStr(){
+    public static String[] getDefaultWeekDaysStr() {
         return WEEK_DAYS_STR;
     }
 
     /**
      * 根据预设格式返回当前日期
+     *
      * @return 对应的日期
      */
     public static String getNowDateStr() {
         return format(getNowDate());
     }
 
-    public static Date getNowDate(){
+    public static Date getNowDate() {
         return new Date();
     }
 
     /**
      * 使用预设格式格式化日期
+     *
      * @param date 日期
      * @return 格式化的日期
      */
@@ -96,29 +98,30 @@ public class DateUtil {
 
     /**
      * 日期转字符串
-     * @param date 日期
+     *
+     * @param date    日期
      * @param pattern 日期格式
      * @return 对应的字符串
      */
     public static String format(Date date, String pattern) {
         String returnValue = "";
         if (date != null) {
-            SimpleDateFormat df = new SimpleDateFormat(pattern,Locale.getDefault());
+            SimpleDateFormat df = new SimpleDateFormat(pattern, Locale.getDefault());
             returnValue = df.format(date);
         }
         return (returnValue);
     }
 
 
-
     /**
      * 字符串转日期
+     *
      * @param strDate 日期字符串
      * @param pattern 日期格式
      * @return 对应的日期
      */
     public static Date parse(String strDate, String pattern) {
-        if(TextUtils.isEmpty(strDate)){
+        if (TextUtils.isEmpty(strDate)) {
             return new Date();
         }
         SimpleDateFormat df = new SimpleDateFormat(pattern, Locale.getDefault());
@@ -132,16 +135,18 @@ public class DateUtil {
 
     /**
      * 按照预设格式将字符串转成日期
+     *
      * @param strDate 要转换的字符串
      */
-    public static Date parse(String strDate){
-        return parse(strDate,getDefaultDatePattern());
+    public static Date parse(String strDate) {
+        return parse(strDate, getDefaultDatePattern());
     }
 
     /**
      * 在日期上增加数个整月
+     *
      * @param date 日期
-     * @param n 要增加的月数
+     * @param n    要增加的月数
      */
     public static Date addMonth(Date date, int n) {
         Calendar cal = Calendar.getInstance();
@@ -150,14 +155,15 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    public static Date addMonth(Date date){
-        return addMonth(date,1);
+    public static Date addMonth(Date date) {
+        return addMonth(date, 1);
     }
 
     /**
      * 在日期上增加天数
+     *
      * @param date 日期
-     * @param n 要增加的天数
+     * @param n    要增加的天数
      */
     public static Date addDay(Date date, int n) {
         Calendar cal = Calendar.getInstance();
@@ -176,6 +182,7 @@ public class DateUtil {
 
     /**
      * 检查字符串日期是否符合格式
+     *
      * @param dateStr 日期对应的字符串
      * @param pattern 格式
      * @return true:符合
@@ -193,12 +200,13 @@ public class DateUtil {
 
     /**
      * 获取当前date对应的星期几的字符串
-     * @param date 日期
+     *
+     * @param date     日期
      * @param weekDays 星期1到7对应的字符串
      * @return 星期几对应的字符串
      */
-    public static String getWeekOfDateStr(Date date,String [] weekDays){
-        if(date==null || weekDays==null || weekDays.length!=7){
+    public static String getWeekOfDateStr(Date date, String[] weekDays) {
+        if (date == null || weekDays == null || weekDays.length != 7) {
             return "";
         }
         Calendar cal = Calendar.getInstance();
@@ -209,17 +217,18 @@ public class DateUtil {
         return weekDays[dayOfWeek];
     }
 
-    public static String getWeekOfDateStr(Date date){
-        return getWeekOfDateStr(date,getDefaultWeekDaysStr());
+    public static String getWeekOfDateStr(Date date) {
+        return getWeekOfDateStr(date, getDefaultWeekDaysStr());
     }
 
     /**
      * 获取当前date对应的日期数字的字符串
+     *
      * @param date 日期
      * @return 日期数字对应的字符串
      */
     public static String getDayOfMonth(Date date) {
-        if(date == null) return "";
+        if (date == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
@@ -227,11 +236,12 @@ public class DateUtil {
 
     /**
      * 获取当前date对应的月份英文的字符串
+     *
      * @param date 日期
      * @return 月份英文对应的字符串
      */
     public static String getMonthEnglish(Date date) {
-        if(date == null) return "";
+        if (date == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return MONTH_NAME_ENGLISH[cal.get(Calendar.MONTH)];
@@ -239,11 +249,12 @@ public class DateUtil {
 
     /**
      * 获取当前date对应的年份的字符串
+     *
      * @param date 日期
      * @return 年份对应的字符串
      */
     public static String getYear(Date date) {
-        if(date == null) return "";
+        if (date == null) return "";
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return String.valueOf(cal.get(Calendar.YEAR));
@@ -251,10 +262,11 @@ public class DateUtil {
 
     /**
      * 清空时间中的时分秒
+     *
      * @param date 日期
      * @return 清空时分秒后的日期
      */
-    public static Date clearDateHMS(Date date){
+    public static Date clearDateHMS(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
