@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.example.flink"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -46,5 +46,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'com.haibin:calendarview:3.7.0'
 
 }

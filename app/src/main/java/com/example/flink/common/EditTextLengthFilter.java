@@ -7,6 +7,9 @@ import android.util.Log;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 过滤器
+ */
 public class EditTextLengthFilter implements InputFilter {
 
     int MAX_EN;// 最大英文/数字长度 一个汉字算两个字母

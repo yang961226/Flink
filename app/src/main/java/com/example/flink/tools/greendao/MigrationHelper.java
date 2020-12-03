@@ -1,4 +1,4 @@
-package com.example.flink.tools;
+package com.example.flink.tools.greendao;
 
 
 import android.database.Cursor;

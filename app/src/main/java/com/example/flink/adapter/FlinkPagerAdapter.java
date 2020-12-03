@@ -6,13 +6,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.flink.layout.NoteViewPagerBaseLayout;
+
 import java.util.List;
 
-public class FlickPagerAdapter extends PagerAdapter {
+public class FlinkPagerAdapter extends PagerAdapter {
 
-    private final List<View> mList;
+    private final List<NoteViewPagerBaseLayout> mList;
 
-    public FlickPagerAdapter(List<View> mList) {
+    public FlinkPagerAdapter(List<NoteViewPagerBaseLayout> mList) {
         this.mList = mList;
     }
 

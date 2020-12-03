@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.flink.tools.GreenDaoManager;
+import com.example.flink.tools.greendao.GreenDaoManager;
 
 /**
  * MyApplication
