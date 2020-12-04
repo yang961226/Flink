@@ -21,23 +21,6 @@ import java.util.List;
 public class ViewTools {
 
     /**
-     * 生成日历布局
-     *
-     * @return 布局
-     */
-    public static ViewGroup buildCalendarSelectLayout(Context context) {
-        ViewGroup calendarSelectView;
-        try {
-            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarSelectLayout));
-            Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
-            calendarSelectView = (ViewGroup) constructor.newInstance(context, null);
-        } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR + "错误描述：" + e.toString());
-        }
-        return calendarSelectView;
-    }
-
-    /**
      * 生成日期布局
      *
      * @return 布局

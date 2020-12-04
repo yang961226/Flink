@@ -7,8 +7,12 @@
     android:layout_margin="10dp">
 
     <com.haibin.calendarview.CalendarView
+        app:week_bar_view="com.example.flink.view.calendar.FlinkWeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:month_view="com.example.flink.view.calendar.MeiZuMontnView"
-        app:week_view="com.example.flink.view.calendar.MeizuWeekView"/>
+        android:background="@color/white"
+
+        app:calendar_height="35dp"
+        app:select_mode="single_mode"
+        app:month_view="com.example.flink.view.calendar.FlinkMonthView" />
 </LinearLayout>

@@ -21,8 +21,17 @@ public class CalendarSelectLayout extends LinearLayout {
 
     private Date mDate;//目前的日期
 
+    public CalendarSelectLayout(Context context) {
+        super(context);
+        init(context);
+    }
+
     public CalendarSelectLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(context);
+    }
+
+    private void init(Context context) {
         View.inflate(context, R.layout.layout_calendar_select, this);
         //绑定处理
         ButterKnife.bind(this);

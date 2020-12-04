@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
@@ -21,7 +20,6 @@ import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
-import com.example.flink.tools.ViewTools;
 import com.example.flink.tools.greendao.GreenDaoManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -44,7 +42,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private List<StickyNoteItem> mNoteItemList;
     private StickyNoteAdapter mNoteAdapter;
 
-    private ViewGroup calendarSelectLayout;
+    private CalendarSelectLayout calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
 
     private PopUpWindowHelper popupInputHelper;
@@ -94,7 +92,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             mNoteAdapter.notifyDataSetChanged();
         });
 
-        calendarSelectLayout = ViewTools.buildCalendarSelectLayout(context);
+        calendarSelectLayout = new CalendarSelectLayout(getContext());
         calenderPopUpHelper = new PopUpWindowHelper.Builder(context)
                 .setContentView(calendarSelectLayout)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
