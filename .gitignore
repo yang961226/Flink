@@ -12,3 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+/app/src/main/java/com/example/flink/greendao/gen/DaoMaster.java
+/app/src/main/java/com/example/flink/greendao/gen/DaoSession.java
+/app/src/main/java/com/example/flink/greendao/gen/StickyNoteItemDao.java
