@@ -1,6 +1,11 @@
 package com.example.flink.tools;
 
+import android.content.Context;
 import android.text.TextUtils;
+
+import com.example.flink.common.MyConstants;
+import com.example.flink.mInterface.DataInterface;
+import com.example.flink.tools.data.DataManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,6 +91,12 @@ public class DateUtil {
         return new Date();
     }
 
+    public static Calendar getNowCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(getNowDate());
+        return calendar;
+    }
+
     /**
      * 使用预设格式格式化日期
      *
@@ -131,6 +142,10 @@ public class DateUtil {
             e.printStackTrace();
             return new Date();
         }
+    }
+
+    public static Date parse(int year, int month, int dayOfMonth) {
+        return parse(year + "-" + month + "-" + dayOfMonth);
     }
 
     /**
@@ -274,5 +289,28 @@ public class DateUtil {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
+    }
+
+    /**
+     * 获取程序当前选中的日期
+     *
+     * @param context 上下文
+     * @return 日期
+     */
+    public static Date getNowSelectedDate(Context context) {
+        DataManager dataManager = new DataManager(context);
+        DataInterface ramDataManager = dataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER);
+        if (ramDataManager.getObject(MyConstants.KEY_NOW_DATE) == null
+                || !(ramDataManager.getObject(MyConstants.KEY_NOW_DATE) instanceof Date)) {
+            return DateUtil.getNowDate();
+        } else {
+            return (Date) ramDataManager.getObject(MyConstants.KEY_NOW_DATE);
+        }
+    }
+
+    public static void saveNowSelectedDate(Context context, Date date) {
+        DataManager dataManager = new DataManager(context);
+        DataInterface ramDataManager = dataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER);
+        ramDataManager.saveObject(MyConstants.KEY_NOW_DATE, date);
     }
 }

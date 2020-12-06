@@ -78,7 +78,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     protected void init(Context context) {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-        mDate = DateUtil.getNowDate();
+
+        mDate = DateUtil.getNowSelectedDate(context);
 
         daoSession = GreenDaoManager.getDaoSession(context);
 
@@ -86,7 +87,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         mNoteAdapter = new StickyNoteAdapter(context, mNoteItemList);
         lv.setAdapter(mNoteAdapter);
         lv.setOnItemClickListener((parent, view, position, id) -> {
-            StickyNoteItem item=mNoteItemList.get(position);
+            StickyNoteItem item = mNoteItemList.get(position);
             item.moveToNextStatu();
             daoSession.getStickyNoteItemDao().insertOrReplace(item);
             mNoteAdapter.notifyDataSetChanged();
@@ -173,6 +174,15 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     @Override
     public void onLongClickFunction() {
         popupCalendar();
+    }
+
+    @Override
+    public void onViewPagerScorll() {
+        if (isPopupCalendar) {
+            calenderPopUpHelper.dismiss();
+        } else {
+            popupInputHelper.dismiss();
+        }
     }
 
 }

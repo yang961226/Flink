@@ -29,25 +29,29 @@ public class FoxizzCalendarLayout extends LinearLayout implements Unregister {
     @BindView(R.id.day_month_year)
     AdaptationTextView dayMonthYear;
 
-    private Date mDate;
-
     public FoxizzCalendarLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_foxizz_calendar, this);
         //绑定处理
         ButterKnife.bind(this);
+
+        setDateText(DateUtil.getNowSelectedDate(getContext()));
+
         EventBus.getDefault().register(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDateChange(DateChangeEvent dateChangeEvent) {
-        mDate = dateChangeEvent.getDate();
-        dayOfWeek.setText(DateUtil.getWeekOfDateStr(mDate, DateUtil.WEEK_DAYS_ENGLISH));
+        setDateText(dateChangeEvent.getDate());
+    }
+
+    private void setDateText(Date date) {
+        dayOfWeek.setText(DateUtil.getWeekOfDateStr(date, DateUtil.WEEK_DAYS_ENGLISH));
         StringBuilder dayMonthYearBuilder = new StringBuilder();
         dayMonthYearBuilder
-                .append(DateUtil.getDayOfMonth(mDate)).append(" ")
-                .append(DateUtil.getMonthEnglish(mDate)).append(" / ")
-                .append(DateUtil.getYear(mDate));
+                .append(DateUtil.getDayOfMonth(date)).append(" ")
+                .append(DateUtil.getMonthEnglish(date)).append(" / ")
+                .append(DateUtil.getYear(date));
         dayMonthYear.setText(dayMonthYearBuilder);
     }
 

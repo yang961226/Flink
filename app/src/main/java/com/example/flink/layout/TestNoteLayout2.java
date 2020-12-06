@@ -37,4 +37,9 @@ public class TestNoteLayout2 extends NoteViewPagerBaseLayout {
     public void onLongClickFunction() {
         Toast.makeText(getContext(), "TestNoteLayout2长按", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onViewPagerScorll() {
+
+    }
 }

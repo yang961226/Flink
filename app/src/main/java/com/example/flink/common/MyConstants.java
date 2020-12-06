@@ -16,4 +16,8 @@ public class MyConstants {
 
     public static final String UNBIND_LISTENER = "该按钮未配置点击事件，请联系管理员";
     public static final String CLASS_CONFIG_ERROR = "类文件配置错误，请联系管理员";
+
+
+    //存储Key值，必须KEY_开头
+    public static final String KEY_NOW_DATE = "key_now_date";
 }

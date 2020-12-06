@@ -23,6 +23,7 @@ import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.ViewTools;
+import com.example.flink.tools.data.DataManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,8 +67,6 @@ public class NoteActivity extends NoteBaseActivity {
     private NavigationBarLayout navBarLayout;//笔记导航条
 
 
-    private Date mDate;//当前日期
-
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private List<NoteViewPagerBaseLayout> noteViewList;
@@ -76,7 +75,7 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initData() {
-        mDate = DateUtil.getNowDate();
+        DataManager dataManager = new DataManager(this);
         noteViewList = new ArrayList<>();
     }
 
@@ -104,7 +103,7 @@ public class NoteActivity extends NoteBaseActivity {
     private void onFunctionClick(boolean isLongClick) {
         View view = noteViewList.get(vpIndex);
         NoteFunctionClickListener noteFunctionClickListener;
-        if (!(view instanceof NoteFunctionClickListener)) {
+        if (view == null) {
             showToast("当前页面配置错误，请联系作者");
             return;
         } else {
@@ -206,47 +205,48 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initOther() {
-        EventBus.getDefault().post(new DateChangeEvent(mDate));
-
         //当最底部切换日期的按钮被点击的时候，通知View去更新自己的内容
         switchDateLayout.setmOnSwitchDateListener(new SwitchDateLayout.OnSwitchDateListener() {
             @Override
             public void onLastDayBtnClick() {
-                Date tmpDate = DateUtil.addDay(mDate, -1);
+                Date tmpDate = DateUtil.addDay(getNowDateFromDataManager(), -1);
+                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate = tmpDate;
             }
 
             @Override
             public void onLastMonthBtnClick() {
-                Date tmpDate = DateUtil.addMonth(mDate, -1);
+                Date tmpDate = DateUtil.addMonth(getNowDateFromDataManager(), -1);
+                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate = tmpDate;
             }
 
             @Override
             public void onTodayBtnClick() {
                 Date tmpDate = DateUtil.getNowDate();
+                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate = tmpDate;
             }
 
             @Override
             public void onNextDayBtnClick() {
-                Date tmpDate = DateUtil.addDay(mDate, 1);
+                Date tmpDate = DateUtil.addDay(getNowDateFromDataManager(), 1);
+                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate = tmpDate;
             }
 
             @Override
             public void onNextMonthBtnClick() {
-                Date tmpDate = DateUtil.addMonth(mDate, 1);
+                Date tmpDate = DateUtil.addMonth(getNowDateFromDataManager(), 1);
+                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
-                mDate = tmpDate;
             }
         });
     }
 
+    private Date getNowDateFromDataManager() {
+        return DateUtil.getNowSelectedDate(this);
+    }
 
     @Override
     public void flinkMessageCallBack(Message msg) {

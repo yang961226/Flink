@@ -2,8 +2,6 @@ package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -44,5 +42,10 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
     @Override
     public void onLongClickFunction() {
         Toast.makeText(getContext(), "TestNoteLayout1长按", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onViewPagerScorll() {
+
     }
 }

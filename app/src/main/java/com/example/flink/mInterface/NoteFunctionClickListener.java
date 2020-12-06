@@ -1,11 +1,11 @@
 package com.example.flink.mInterface;
 
-import android.view.View;
-
 public interface NoteFunctionClickListener {
 
-    void onClickFunction();
+    void onClickFunction();//短按
 
-    void onLongClickFunction();
+    void onLongClickFunction();//长按
+
+    void onViewPagerScorll();//页面发生切换
 
 }
