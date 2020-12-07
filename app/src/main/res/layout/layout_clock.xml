@@ -29,44 +29,44 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:padding="6dp"
         android:background="@drawable/shape_clock_round_bg"
         android:orientation="horizontal">
 
         <com.example.flink.view.AdaptationTextView
             android:id="@+id/am_or_pm"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="3dp"
-            android:gravity="top"
+            android:layout_weight="2"
+            android:gravity="top|right"
             android:textSize="12sp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/number_1"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="-6dp"
                 android:layout_marginRight="-6dp"
-                android:contentDescription="@null"
-                android:src="@drawable/number_a_0" />
+                android:src="@drawable/number_a_0"
+                android:contentDescription="@null" />
 
             <ImageView
                 android:id="@+id/number_2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="-6dp"
                 android:layout_marginRight="-6dp"
-                android:contentDescription="@null"
-                android:src="@drawable/number_a_0" />
+                android:src="@drawable/number_a_0"
+                android:contentDescription="@null" />
         </LinearLayout>
 
         <com.example.flink.view.AdaptationTextView
@@ -79,28 +79,31 @@
             tools:ignore="HardcodedText" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/number_3"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="-6dp"
                 android:layout_marginRight="-6dp"
-                android:contentDescription="@null"
-                android:src="@drawable/number_a_0" />
+                android:src="@drawable/number_a_0"
+                android:contentDescription="@null" />
 
             <ImageView
                 android:id="@+id/number_4"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="-6dp"
                 android:layout_marginRight="-6dp"
-                android:contentDescription="@null"
-                android:src="@drawable/number_a_0" />
+                android:src="@drawable/number_a_0"
+                android:contentDescription="@null" />
         </LinearLayout>
 
         <com.example.flink.view.AdaptationTextView
@@ -113,28 +116,31 @@
             tools:ignore="HardcodedText" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/number_5"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="-6dp"
                 android:layout_marginRight="-6dp"
-                android:contentDescription="@null"
-                android:src="@drawable/number_a_0" />
+                android:src="@drawable/number_a_0"
+                android:contentDescription="@null" />
 
             <ImageView
                 android:id="@+id/number_6"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="-6dp"
                 android:layout_marginRight="-6dp"
-                android:contentDescription="@null"
-                android:src="@drawable/number_a_0" />
+                android:src="@drawable/number_a_0"
+                android:contentDescription="@null" />
         </LinearLayout>
     </LinearLayout>
 
