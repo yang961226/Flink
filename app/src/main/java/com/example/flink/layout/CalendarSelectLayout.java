@@ -32,7 +32,6 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
     @BindView(R.id.calendarview)
     CalendarView calendarview;
 
-    private Date mDate;//目前的日期
     private Unbinder unbinder;
 
     public CalendarSelectLayout(Context context) {
@@ -51,18 +50,11 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        mDate = DateUtil.getNowDate();
         initCalendarView();
     }
 
     private void initCalendarView() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mDate);
         calendarview.setOnCalendarSelectListener(this);
-        calendarview.scrollToCalendar(calendar.get(Calendar.YEAR)
-                , calendar.get(Calendar.MONTH)
-                , calendar.get(Calendar.DAY_OF_MONTH));
-
     }
 
     @Override
@@ -79,20 +71,8 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateChangeEvent.getDate());
         calendarview.scrollToCalendar(calendar.get(Calendar.YEAR)
-                , calendar.get(Calendar.MONTH)
-                , calendar.get(Calendar.DAY_OF_MONTH)
-                , isNeedSommthScroll(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)));
-    }
-
-    /**
-     * 判断接收到时间变更时间后，是否需要日历滚动到指定日期，如果只是天数发生变化，则不用
-     *
-     * @param toYear  目的年份
-     * @param toMonth 目的月
-     * @return true：需要滚动
-     */
-    private boolean isNeedSommthScroll(int toYear, int toMonth) {
-        return toYear == calendarview.getCurYear() && toMonth == calendarview.getCurMonth();
+                , calendar.get(Calendar.MONTH) + 1
+                , calendar.get(Calendar.DAY_OF_MONTH), true);
     }
 
     @Override
@@ -100,7 +80,12 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
         if (isClick) {
             EventBus.getDefault().post(new DateChangeEvent(
                     getDateByYMD(calendar.getYear(), calendar.getMonth(), calendar.getDay()), getClass().getName()));
+            DateUtil.saveNowSelectedDate(getContext(), getDateByCalendar(calendar));
         }
+    }
+
+    private Date getDateByCalendar(com.haibin.calendarview.Calendar calendar) {
+        return getDateByYMD(calendar.getYear(), calendar.getMonth(), calendar.getDay());
     }
 
     private Date getDateByYMD(int year, int month, int day) {
