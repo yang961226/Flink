@@ -96,7 +96,7 @@ public class ClockLayout extends LinearLayout implements Unregister {
         String numbers = DateUtil.format(tickEvent.getDate(), DateUtil.FORMAT_Hms);
 
         //12小时格式
-        HOUR_FORMAT_TYPE = sharedPreferences.getString("hour_format_type", FORMAT_24HOUR);
+        HOUR_FORMAT_TYPE = sharedPreferences.getString("hour_format_type", FORMAT_12HOUR);
         if (!TextUtils.isEmpty(HOUR_FORMAT_TYPE) && HOUR_FORMAT_TYPE.equals(FORMAT_12HOUR)) {
             am_or_pm.setVisibility(VISIBLE);
             if (!numbers.startsWith("0")) {
