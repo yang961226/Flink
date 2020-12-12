@@ -50,6 +50,8 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         return holder.getConvertView();
     }
 
+    public abstract void updateData(List<T> mDataList);
+
     protected abstract void setUI(ViewHolder holder, int position, Context context);
 
     protected abstract int getLayoutId();

@@ -433,5 +433,6 @@
     <!-- 海军色 -->
 
     <color name="black">#000000</color>
+    <color name="back_color">#21808080</color>
     <!-- 黑色 -->
 </resources>
