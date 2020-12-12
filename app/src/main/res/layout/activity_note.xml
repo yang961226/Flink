@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="@dimen/padding_dp_10">
+    android:padding="@dimen/dp_10">
     <!--  顶部，用于显示时间日期等  -->
     <LinearLayout
         android:id="@+id/ll_top"
@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:background="#21808080"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_dp_5">
+        android:padding="@dimen/dp_5">
 
     </LinearLayout>
 
@@ -50,8 +50,8 @@
 
         <ImageView
             android:id="@+id/btn_setting"
-            android:layout_width="@dimen/width_dp_50"
-            android:layout_height="@dimen/height_dp_30"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
             android:adjustViewBounds="true"
             android:contentDescription="@string/button_setting"
             android:scaleType="centerInside"
@@ -62,8 +62,8 @@
 
         <ImageView
             android:id="@+id/btn_function"
-            android:layout_width="@dimen/width_dp_50"
-            android:layout_height="@dimen/height_dp_30"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_30"
             android:contentDescription="@string/buton_function"
             android:scaleType="centerInside"
             android:src="@drawable/icon_more"

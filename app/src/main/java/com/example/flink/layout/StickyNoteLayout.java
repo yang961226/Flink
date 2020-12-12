@@ -5,8 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +23,9 @@ import com.example.flink.item.StickyNoteItem;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.GreenDaoManager;
+import com.example.flink.utils.LogUtil;
+import com.example.flink.utils.ToastUtil;
+import com.example.flink.view.dialog.LongClickDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,6 +43,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     @BindView(R.id.lv)
     ListView lv;
+
+    LongClickDialog mLongClickDialog;
 
     private List<StickyNoteItem> mNoteItemList;
     private StickyNoteAdapter mNoteAdapter;
@@ -78,7 +85,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     protected void init(Context context) {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-
+        mLongClickDialog = new LongClickDialog(context);
         mDate = DateUtil.getNowSelectedDate(context);
 
         daoSession = GreenDaoManager.getDaoSession(context);
@@ -86,12 +93,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         mNoteItemList = new ArrayList<>();
         mNoteAdapter = new StickyNoteAdapter(context, mNoteItemList);
         lv.setAdapter(mNoteAdapter);
-        lv.setOnItemClickListener((parent, view, position, id) -> {
-            StickyNoteItem item = mNoteItemList.get(position);
-            item.moveToNextStatu();
-            daoSession.getStickyNoteItemDao().insertOrReplace(item);
-            mNoteAdapter.notifyDataSetChanged();
-        });
+
+        setLvListener();
 
         calendarSelectLayout = new CalendarSelectLayout(getContext());
         calenderPopUpHelper = new PopUpWindowHelper.Builder(context)
@@ -131,6 +134,57 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setOutsideTouchable(false)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
+
+        refreshData();
+    }
+
+    private void setLvListener() {
+        lv.setOnItemClickListener((parent, view, position, id) -> {
+            StickyNoteItem item = mNoteItemList.get(position);
+            item.moveToNextStatu();
+            daoSession.getStickyNoteItemDao().insertOrReplace(item);
+            mNoteAdapter.notifyDataSetChanged();
+        });
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                StickyNoteItem stickyNoteItem = mNoteItemList.get(i);
+                testLongClickDialog(stickyNoteItem);
+                return false;
+            }
+        });
+    }
+
+    private void testLongClickDialog(StickyNoteItem stickyNoteItem) {
+        if (mLongClickDialog == null) {
+            LogUtil.e("笔记 长按对话框 为空");
+            return;
+        }
+
+        mLongClickDialog.setDeleteOnClickListener(new LongClickDialog.DeleteOnClickListener() {
+            @Override
+            public void onDeleteClick() {
+                StickyNoteItemDao dao = GreenDaoManager.getDaoSession(context).getStickyNoteItemDao();
+                dao.delete(stickyNoteItem);
+                refreshData();
+            }
+        });
+
+        mLongClickDialog.setEditOnClickListener(new LongClickDialog.EditOnClickListener() {
+            @Override
+            public void onEditClick() {
+                ToastUtil.showWhenDebug((Activity) context, "编辑");
+            }
+        });
+        mLongClickDialog.setSubNoteOnClickListener(new LongClickDialog.SubNoteOnClickListener() {
+            @Override
+            public void onSubNoteClick() {
+                ToastUtil.showWhenDebug((Activity) context, "自笔记");
+            }
+        });
+        mLongClickDialog.setTitle("笔记处理");
+        mLongClickDialog.show();
+        LogUtil.d("长按");
     }
 
     /**
