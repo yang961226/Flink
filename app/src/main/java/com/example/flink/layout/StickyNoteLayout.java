@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import com.example.flink.item.StickyNoteItem;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.GreenDaoManager;
+import com.example.flink.utils.LogUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -44,6 +46,9 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     private CalendarSelectLayout calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
+
+    private PopUpWindowHelper longClickPopUpHelper;
+    private LongClickLayout longClickLayout;
 
     private PopUpWindowHelper popupInputHelper;
     private PopupInputLayout popupInputLayout;
@@ -78,7 +83,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     protected void init(Context context) {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-
         mDate = DateUtil.getNowSelectedDate(context);
 
         daoSession = GreenDaoManager.getDaoSession(context);
@@ -86,12 +90,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         mNoteItemList = new ArrayList<>();
         mNoteAdapter = new StickyNoteAdapter(context, mNoteItemList);
         lv.setAdapter(mNoteAdapter);
-        lv.setOnItemClickListener((parent, view, position, id) -> {
-            StickyNoteItem item = mNoteItemList.get(position);
-            item.moveToNextStatu();
-            daoSession.getStickyNoteItemDao().insertOrReplace(item);
-            mNoteAdapter.notifyDataSetChanged();
-        });
+
+        setLvListener();
 
         calendarSelectLayout = new CalendarSelectLayout(getContext());
         calenderPopUpHelper = new PopUpWindowHelper.Builder(context)
@@ -131,6 +131,45 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setOutsideTouchable(false)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
+
+        longClickLayout = new LongClickLayout(context);
+        longClickPopUpHelper = new PopUpWindowHelper.Builder(context)
+                .setContentView(longClickLayout)
+                .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
+                .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
+                .setTouchable(true)
+                .setFocusable(false)
+                .setOutsideTouchable(true)
+                .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
+                .build();
+
+        refreshData();
+    }
+
+    private void setLvListener() {
+        lv.setOnItemClickListener((parent, view, position, id) -> {
+            StickyNoteItem item = mNoteItemList.get(position);
+            item.moveToNextStatu();
+            daoSession.getStickyNoteItemDao().insertOrReplace(item);
+            mNoteAdapter.notifyDataSetChanged();
+        });
+        lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            StickyNoteItemDao dao = GreenDaoManager.getDaoSession(context).getStickyNoteItemDao();
+            stickNoteItem(dao, i);
+            return false;
+        });
+    }
+
+
+    private void stickNoteItem(StickyNoteItemDao dao, int i) {
+        longClickPopUpHelper.showPopupWindow(((Activity) context).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
+        longClickLayout.setStickyNoteItemDao(dao);
+        longClickLayout.setCurPosition(i);
+        longClickLayout.setStickyNoteItemList(mNoteItemList);
+        longClickLayout.setOnCompleteListener(list -> {
+            mNoteItemList = list;
+            mNoteAdapter.updateData(list);
+        });
     }
 
     /**

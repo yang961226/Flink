@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="translate">#0000</color>
+    <!--透明-->
+
     <color name="white">#FFFFFF</color>
     <!-- 白色 -->
 
@@ -430,5 +433,6 @@
     <!-- 海军色 -->
 
     <color name="black">#000000</color>
+    <color name="back_color">#21808080</color>
     <!-- 黑色 -->
 </resources>

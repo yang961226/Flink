@@ -17,6 +17,12 @@ public class StickyNoteAdapter extends CommonAdapter<StickyNoteItem> {
     }
 
     @Override
+    public void updateData(List<StickyNoteItem> mDataList) {
+        this.mDataList = mDataList;
+        notifyDataSetChanged();
+    }
+
+    @Override
     protected void setUI(ViewHolder holder, int position, Context context) {
         StickyNoteItem item = (StickyNoteItem) getItem(position);
 
