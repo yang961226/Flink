@@ -2,6 +2,7 @@ package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -70,6 +71,7 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateChangeEvent.getDate());
+        Log.d("测试", "收到日期切换事件，切换日期" + DateUtil.format(dateChangeEvent.getDate()));
         calendarview.scrollToCalendar(calendar.get(Calendar.YEAR)
                 , calendar.get(Calendar.MONTH) + 1
                 , calendar.get(Calendar.DAY_OF_MONTH), true);
@@ -80,6 +82,7 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
         if (isClick) {
             EventBus.getDefault().post(new DateChangeEvent(
                     getDateByYMD(calendar.getYear(), calendar.getMonth(), calendar.getDay()), getClass().getName()));
+            Log.d("测试", "切换日期，点击" + calendar.getYear() + "年" + calendar.getMonth() + "月" + calendar.getDay() + "日");
             DateUtil.saveNowSelectedDate(getContext(), getDateByCalendar(calendar));
         }
     }

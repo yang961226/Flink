@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        app:calendar_height="35dp"
+        app:calendar_height="28dp"
+        app:week_bar_height="35dp"
         app:month_view_auto_select_day="last_select_day_ignore_current"
         app:month_view_show_mode="mode_all"
         app:month_view="com.example.flink.view.calendar.FlinkMonthView" />
