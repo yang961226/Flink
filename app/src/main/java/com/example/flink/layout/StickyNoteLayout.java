@@ -50,8 +50,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private CalendarSelectLayout calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
 
-    private PopUpWindowHelper longClickPopUpHelper;
-    private LongClickLayout longClickLayout;
+    private PopUpWindowHelper editPopUpHelper;
+    private EditStickyNoteLayout editStickyNoteLayout;
 
     private PopUpWindowHelper popupInputHelper;
     private PopupInputLayout popupInputLayout;
@@ -156,9 +156,9 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
 
-        longClickLayout = new LongClickLayout(context);
-        longClickPopUpHelper = new PopUpWindowHelper.Builder(context)
-                .setContentView(longClickLayout)
+        editStickyNoteLayout = new EditStickyNoteLayout(context);
+        editPopUpHelper = new PopUpWindowHelper.Builder(context)
+                .setContentView(editStickyNoteLayout)
                 .setWidth(WindowManager.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
                 .setTouchable(true)
@@ -173,19 +173,21 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     /**
      * 插入笔记的那一天不存在笔记
-     * ==
      *
      * @return true:不存在笔记 false:存在笔记
      */
     private boolean insertDatehasNoNote() {
+        return getSelectedDayStickyNoteList().isEmpty();
+    }
+
+    private List<StickyNoteItem> getSelectedDayStickyNoteList() {
         Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
         Date endDate = DateUtil.clearDateHMS(new Date(mDate.getTime() + DateUtil.DAY_IN_MILLIS));
-        List<StickyNoteItem> itemList = new ArrayList<>(daoSession
+        return new ArrayList<>(daoSession
                 .getStickyNoteItemDao().queryBuilder()
                 .where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
                         , StickyNoteItemDao.Properties.NoteDate.lt(endDate))
                 .list());
-        return itemList.isEmpty();
     }
 
     private void setLvListener() {
@@ -197,18 +199,21 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         });
         lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
             StickyNoteItemDao dao = GreenDaoManager.getDaoSession(context).getStickyNoteItemDao();
-            stickNoteItem(dao, i);
-            return false;
+            editStickyNoteItem(dao, i);
+            return true;
         });
     }
 
 
-    private void stickNoteItem(StickyNoteItemDao dao, int i) {
-        longClickPopUpHelper.showPopupWindow(((Activity) context).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
-        longClickLayout.setStickyNoteItemDao(dao);
-        longClickLayout.setCurPosition(i);
-        longClickLayout.setStickyNoteItemList(mNoteItemList);
-        longClickLayout.setOnCompleteListener(list -> {
+    private void editStickyNoteItem(StickyNoteItemDao dao, int i) {
+        if (isPopupCalendar) {
+            popupCalendar();
+        }
+        editPopUpHelper.showPopupWindow(((Activity) context).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
+        editStickyNoteLayout.setStickyNoteItemDao(dao);
+        editStickyNoteLayout.setCurPosition(i);
+        editStickyNoteLayout.setStickyNoteItemList(mNoteItemList);
+        editStickyNoteLayout.setOnCompleteListener(list -> {
             mNoteItemList = list;
             mNoteAdapter.updateData(list);
         });
@@ -275,9 +280,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     @Override
     public void onViewPagerScorll() {
         if (isPopupCalendar) {
-            calenderPopUpHelper.dismiss();
-        } else {
-            popupInputHelper.dismiss();
+            popupCalendar();
         }
     }
 

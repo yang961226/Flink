@@ -22,14 +22,14 @@ import butterknife.OnClick;
  *
  * My motto   : 我在皮皮虾凑数的日子
  */
-public class LongClickLayout extends LinearLayout {
+public class EditStickyNoteLayout extends LinearLayout {
 
     private List<StickyNoteItem> stickyNoteItemList;
     private StickyNoteItemDao stickyNoteItemDao;
     private int curPosition;
     private int tmpPosition;
 
-    public LongClickLayout(Context context) {
+    public EditStickyNoteLayout(Context context) {
         super(context);
         View.inflate(context, R.layout.layout_edit_note, this);
         //绑定处理
