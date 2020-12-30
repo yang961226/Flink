@@ -35,7 +35,7 @@ public class FoxizzCalendarLayout extends LinearLayout implements Unregister {
         //绑定处理
         ButterKnife.bind(this);
 
-        setDateText(DateUtil.getNowSelectedDate(getContext()));
+        setDateText(DateUtil.getNowSelectedDate());
 
         EventBus.getDefault().register(this);
     }
@@ -46,11 +46,11 @@ public class FoxizzCalendarLayout extends LinearLayout implements Unregister {
     }
 
     private void setDateText(Date date) {
-        dayOfWeek.setText(DateUtil.getWeekOfDateStr(date, DateUtil.WEEK_DAYS_ENGLISH));
+        dayOfWeek.setText(DateUtil.getWeekOfDateStr(date, DateUtil.WEEK_DAYS_CHI));
         StringBuilder dayMonthYearBuilder = new StringBuilder();
         dayMonthYearBuilder
                 .append(DateUtil.getDayOfMonth(date)).append(" ")
-                .append(DateUtil.getMonthEnglish(date)).append(" / ")
+                .append(DateUtil.getMonthChi(date)).append(" / ")
                 .append(DateUtil.getYear(date));
         dayMonthYear.setText(dayMonthYearBuilder);
     }

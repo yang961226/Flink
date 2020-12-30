@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
@@ -16,20 +15,24 @@ import androidx.annotation.Nullable;
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.event.DateChangeEvent;
+import com.example.flink.event.SchemeChangeEvent;
 import com.example.flink.greendao.gen.DaoSession;
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.GreenDaoManager;
-import com.example.flink.utils.LogUtil;
+import com.haibin.calendarview.Calendar;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -79,11 +82,25 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         refreshData();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSchemeChangeEvent(SchemeChangeEvent schemeChangeEvent) {
+        if (schemeChangeEvent.getDate() == null) {
+            return;
+        }
+        if (schemeChangeEvent.isAdd()) {
+            calendarSelectLayout.getCalendarview()
+                    .addSchemeDate(DateUtil.calendarTrans(schemeChangeEvent.getDate()));
+        } else {
+            calendarSelectLayout.getCalendarview()
+                    .removeSchemeDate(DateUtil.calendarTrans(schemeChangeEvent.getDate()));
+        }
+    }
+
     @Override
     protected void init(Context context) {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-        mDate = DateUtil.getNowSelectedDate(context);
+        mDate = DateUtil.getNowSelectedDate();
 
         daoSession = GreenDaoManager.getDaoSession(context);
 
@@ -116,10 +133,17 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                     .setNoteDate(mDate)
                     .setOrder(1)
                     .build();
+            //当天的笔记是不是空的，需要插入新的标记
+            boolean needAddScheme = insertDatehasNoNote();
+
             GreenDaoManager.getDaoSession(context).getStickyNoteItemDao().insert(item);
             popupInputHelper.dismiss();
             popupInputLayout.clearInputContent();
-            Toast.makeText(context, "创建笔记", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "新建笔记成功", Toast.LENGTH_SHORT).show();
+
+            if (needAddScheme) {
+                EventBus.getDefault().post(new SchemeChangeEvent(mDate, true));
+            }
             refreshData();
         });
         popupInputHelper = new PopUpWindowHelper.Builder(context)
@@ -144,6 +168,24 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .build();
 
         refreshData();
+        refreshScheme();
+    }
+
+    /**
+     * 插入笔记的那一天不存在笔记
+     * ==
+     *
+     * @return true:不存在笔记 false:存在笔记
+     */
+    private boolean insertDatehasNoNote() {
+        Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
+        Date endDate = DateUtil.clearDateHMS(new Date(mDate.getTime() + DateUtil.DAY_IN_MILLIS));
+        List<StickyNoteItem> itemList = new ArrayList<>(daoSession
+                .getStickyNoteItemDao().queryBuilder()
+                .where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
+                        , StickyNoteItemDao.Properties.NoteDate.lt(endDate))
+                .list());
+        return itemList.isEmpty();
     }
 
     private void setLvListener() {
@@ -176,7 +218,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，刷新笔记页面
      */
     private void refreshData() {
-        if (mNoteItemList == null || mNoteAdapter == null) {
+        if (mNoteItemList == null || mNoteAdapter == null || daoSession == null) {
             return;
         }
         Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
@@ -190,11 +232,26 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         mNoteAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 查询数据库，查出所有笔记，并生成日历标记
+     */
+    private void refreshScheme() {
+        List<StickyNoteItem> allNoteList = new ArrayList<>(daoSession.getStickyNoteItemDao().loadAll());
+        Map<String, Calendar> map = new HashMap<>();
+        for (StickyNoteItem noteItem : allNoteList) {
+            Calendar calendar = DateUtil.calendarTrans(DateUtil.getCalendarByDate(noteItem.getNoteDate()));
+            map.put(calendar.toString(), calendar);
+        }
+        calendarSelectLayout.getCalendarview().setSchemeDate(map);
+    }
+
+
     private void popupCalendar() {
         if (isPopupCalendar) {
             calenderPopUpHelper.dismiss();
         } else {
-            calenderPopUpHelper.showPopupWindow(((Activity) context).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
+            calenderPopUpHelper.showPopupWindow(((Activity) context).findViewById(R.id.switchDateLayout)
+                    , PopUpWindowHelper.LocationType.TOP_TEST);
         }
         isPopupCalendar = !isPopupCalendar;
     }

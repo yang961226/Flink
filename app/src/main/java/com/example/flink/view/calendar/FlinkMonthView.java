@@ -7,7 +7,6 @@ import android.graphics.Path;
 import android.graphics.Typeface;
 
 import com.example.flink.R;
-import com.example.flink.enums.SchemeEnum;
 import com.example.flink.tools.CommonTools;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
@@ -61,6 +60,11 @@ public class FlinkMonthView extends MonthView {
         selectedTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         selectedTextPaint.setColor(getResources().getColor(R.color.white, null));
         selectedTextPaint.setTextSize(CommonTools.dip2px(getContext(), DEFAULT_TEXT_SIZE_DP));
+
+        selectedHasNoteSchemePaint = new Paint();
+        selectedHasNoteSchemePaint.setColor(getResources().getColor(R.color.white, null));
+        selectedHasNoteSchemePaint.setStyle(Paint.Style.FILL);
+        selectedHasNoteSchemePaint.setAntiAlias(true);
     }
 
     private void initDefaultPaint() {
@@ -112,7 +116,7 @@ public class FlinkMonthView extends MonthView {
      * @param x         日历Card x起点坐标
      * @param y         日历Card y起点坐标
      * @param hasScheme hasScheme 非标记的日期
-     * @return false 则不绘制onDrawScheme，因为这里背景色是互斥的
+     * @return false 则不绘制onDrawScheme
      */
     @Override
     protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
@@ -121,7 +125,7 @@ public class FlinkMonthView extends MonthView {
                 , x + mItemWidth - CALENDAR_ITEM_PADDING_DP
                 , y + mItemHeight - CALENDAR_ITEM_PADDING_DP
                 , selectedBackgroundPaint);
-        return true;
+        return false;
     }
 
     @Override
@@ -131,9 +135,11 @@ public class FlinkMonthView extends MonthView {
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
-
         if (isSelected) {
             onDrawSelectedText(canvas, calendar, x, y);
+            if (hasScheme) {
+                onDrawScheme(canvas, x, y, true);
+            }
         } else {
             if (calendar.isCurrentMonth()) {
                 onDrawDefaultBackground(canvas, calendar, x, y);
@@ -142,7 +148,22 @@ public class FlinkMonthView extends MonthView {
                 onDrawOtherBackground(canvas, calendar, x, y);
                 onDrawOhterMonthText(canvas, calendar, x, y);
             }
+            if (hasScheme) {
+                onDrawScheme(canvas, x, y, false);
+            }
+        }
+    }
 
+    protected void onDrawScheme(Canvas canvas, int x, int y, boolean isSelected) {
+        Path path = new Path();
+        path.moveTo(x + CALENDAR_ITEM_PADDING_DP + DEFAULT_BG_PAINT_STROKE_WIDTH_DP, y + CALENDAR_ITEM_PADDING_DP + DEFAULT_BG_PAINT_STROKE_WIDTH_DP);
+        path.lineTo(x + CALENDAR_ITEM_PADDING_DP + DEFAULT_BG_PAINT_STROKE_WIDTH_DP, y + mItemHeight / 2 + CALENDAR_ITEM_PADDING_DP + DEFAULT_BG_PAINT_STROKE_WIDTH_DP);
+        path.lineTo(x + CALENDAR_ITEM_PADDING_DP + DEFAULT_BG_PAINT_STROKE_WIDTH_DP + mItemHeight / 2, y + CALENDAR_ITEM_PADDING_DP + DEFAULT_BG_PAINT_STROKE_WIDTH_DP);
+        path.close();
+        if (isSelected) {
+            canvas.drawPath(path, selectedHasNoteSchemePaint);
+        } else {
+            canvas.drawPath(path, defaultHasNoteSchemePaint);
         }
     }
 
@@ -194,17 +215,18 @@ public class FlinkMonthView extends MonthView {
                     , defaultBackgroundPaint);
         }
 
-        if (!(calendar.getScheme() == null || calendar.getSchemes().isEmpty())) {
-            List<Calendar.Scheme> schemes = calendar.getSchemes();
-            if (checkHasTheScheme(schemes, SchemeEnum.HAS_NOTE)) {//今天包含日记
-                Path path = new Path();
-                path.moveTo(x, y);
-                path.lineTo(x, y + mItemHeight / 2);
-                path.lineTo(x + mItemHeight / 2, y);
-                path.close();
-                canvas.drawPath(path, defaultHasNoteSchemePaint);
-            }
-        }
+//        if (!(calendar.getScheme() == null)) {
+//
+//            List<Calendar.Scheme> schemes = calendar.getSchemes();
+//            if (checkHasTheScheme(schemes, SchemeEnum.HAS_NOTE)) {//今天包含日记
+//                Path path = new Path();
+//                path.moveTo(x, y);
+//                path.lineTo(x, y + mItemHeight / 2);
+//                path.lineTo(x + mItemHeight / 2, y);
+//                path.close();
+//                canvas.drawPath(path, defaultHasNoteSchemePaint);
+//            }
+//        }
     }
 
     /**

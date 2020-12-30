@@ -44,7 +44,7 @@ public class PopupInputLayout extends LinearLayout {
 
     private void onConfirm() {
         if (confirmBtnClickListener == null) {
-            Toast.makeText(getContext(), "确定", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "监听器未配置", Toast.LENGTH_LONG).show();
         } else {
             confirmBtnClickListener.onConfirmBtnClick();
         }

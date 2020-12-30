@@ -1,28 +1,29 @@
 package com.example.flink.tools.data;
 
-import android.content.Context;
-
 import androidx.annotation.Nullable;
 
-import com.example.flink.FlinkApplication;
 import com.example.flink.mInterface.DataInterface;
 import com.example.flink.mInterface.VisitDataCallBack;
+
+import java.util.HashMap;
 
 /**
  * 内存存储器：将数据存在内存中，生命周期为整个软件生命周期
  */
 public class RamDataManager implements DataInterface {
     private static RamDataManager instance;
-    private FlinkApplication flinkApplication;
 
-    private RamDataManager(Context context) {
-        flinkApplication = (FlinkApplication) context.getApplicationContext();
+    //存放变量的map
+    private HashMap<String, Object> globalVariableMap;
+
+    private RamDataManager() {
+        globalVariableMap = new HashMap<>();
     }
 
-    public static RamDataManager getInstance(Context context) {
+    static RamDataManager getInstance() {
         synchronized (RamDataManager.class) {
             if (instance == null) {
-                instance = new RamDataManager(context);
+                instance = new RamDataManager();
             }
         }
         return instance;
@@ -31,7 +32,7 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public void saveInteger(String key, int value, VisitDataCallBack<Integer> visitDataCallBack) {
-        flinkApplication.getGlobalVariableMap().put(key, value);
+        globalVariableMap.put(key, value);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public void saveDouble(String key, double value, VisitDataCallBack<Integer> visitDataCallBack) {
-        flinkApplication.getGlobalVariableMap().put(key, value);
+        globalVariableMap.put(key, value);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public void saveFloat(String key, float value, VisitDataCallBack<Integer> visitDataCallBack) {
-        flinkApplication.getGlobalVariableMap().put(key, value);
+        globalVariableMap.put(key, value);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public void saveString(String key, String value, VisitDataCallBack<Integer> visitDataCallBack) {
-        flinkApplication.getGlobalVariableMap().put(key, value);
+        globalVariableMap.put(key, value);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public void saveBoolean(String key, boolean value, VisitDataCallBack<Integer> visitDataCallBack) {
-        flinkApplication.getGlobalVariableMap().put(key, value);
+        globalVariableMap.put(key, value);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public void saveObject(String key, Object object, VisitDataCallBack<Integer> visitDataCallBack) {
-        flinkApplication.getGlobalVariableMap().put(key, object);
+        globalVariableMap.put(key, object);
     }
 
     @Override
@@ -91,10 +92,10 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public int getInteger(String key, VisitDataCallBack<Integer> visitDataCallBack) {
-        if (!flinkApplication.getGlobalVariableMap().containsKey(key)) {
+        if (!globalVariableMap.containsKey(key)) {
             return 0;
         }
-        return (int) flinkApplication.getGlobalVariableMap().get(key);
+        return (int) globalVariableMap.get(key);
     }
 
     @Override
@@ -104,10 +105,10 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public double getDouble(String key, VisitDataCallBack<Integer> visitDataCallBack) {
-        if (!flinkApplication.getGlobalVariableMap().containsKey(key)) {
+        if (!globalVariableMap.containsKey(key)) {
             return 0;
         }
-        return (double) flinkApplication.getGlobalVariableMap().get(key);
+        return (double) globalVariableMap.get(key);
     }
 
     @Override
@@ -117,10 +118,10 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public float getFloat(String key, VisitDataCallBack<Integer> visitDataCallBack) {
-        if (!flinkApplication.getGlobalVariableMap().containsKey(key)) {
+        if (!globalVariableMap.containsKey(key)) {
             return 0;
         }
-        return (float) flinkApplication.getGlobalVariableMap().get(key);
+        return (float) globalVariableMap.get(key);
     }
 
     @Override
@@ -130,10 +131,10 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public String getString(String key, VisitDataCallBack<Integer> visitDataCallBack) {
-        if (!flinkApplication.getGlobalVariableMap().containsKey(key)) {
+        if (!globalVariableMap.containsKey(key)) {
             return "";
         }
-        return (String) flinkApplication.getGlobalVariableMap().get(key);
+        return (String) globalVariableMap.get(key);
     }
 
     @Override
@@ -143,10 +144,10 @@ public class RamDataManager implements DataInterface {
 
     @Override
     public boolean getBoolean(String key, VisitDataCallBack<Integer> visitDataCallBack) {
-        if (!flinkApplication.getGlobalVariableMap().containsKey(key)) {
+        if (!globalVariableMap.containsKey(key)) {
             return false;
         }
-        return (boolean) flinkApplication.getGlobalVariableMap().get(key);
+        return (boolean) globalVariableMap.get(key);
     }
 
     @Override
@@ -157,10 +158,10 @@ public class RamDataManager implements DataInterface {
     @Override
     @Nullable
     public Object getObject(String key, VisitDataCallBack<Integer> visitDataCallBack) {
-        if (!flinkApplication.getGlobalVariableMap().containsKey(key)) {
+        if (!globalVariableMap.containsKey(key)) {
             return null;
         }
-        return flinkApplication.getGlobalVariableMap().get(key);
+        return globalVariableMap.get(key);
     }
 
     @Override

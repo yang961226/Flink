@@ -1,30 +1,25 @@
 package com.example.flink.tools.data;
 
-import android.content.Context;
-
 import com.example.flink.mInterface.DataInterface;
-
-import java.lang.ref.WeakReference;
 
 /**
  * 数据管理器
  */
 public class DataManager {
 
-    private WeakReference<Context> reference;
+    private DataManager() {
 
-    public DataManager(Context context) {
-        reference = new WeakReference<>(context);
     }
 
-    public DataInterface getDataManager(DataManagerEnum dataManagerEnum) {
+
+    public static DataInterface getDataManager(DataManagerEnum dataManagerEnum) {
         switch (dataManagerEnum) {
             case SP_DATA_MANAGER:
-                return SpDataManager.getInstance(reference.get());
+                return SpDataManager.getInstance();
             case RAM_DATA_MANAGER:
-                return RamDataManager.getInstance(reference.get());
+                return RamDataManager.getInstance();
             default:
-                return SpDataManager.getInstance(reference.get());
+                return SpDataManager.getInstance();
         }
     }
 

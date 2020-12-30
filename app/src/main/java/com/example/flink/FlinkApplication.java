@@ -7,9 +7,8 @@ import android.content.Context;
 import com.example.flink.common.MyConstants;
 import com.example.flink.core.Flink;
 import com.example.flink.tools.DateUtil;
+import com.example.flink.tools.data.DataManager;
 import com.example.flink.tools.greendao.GreenDaoManager;
-
-import java.util.HashMap;
 
 /**
  * MyApplication
@@ -19,8 +18,6 @@ public class FlinkApplication extends Application {
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
-    //存放全局变量的map
-    private static HashMap<String, Object> GLOBAL_VARIABLE_MAP;
 
     @Override
     public void onCreate() {
@@ -28,6 +25,11 @@ public class FlinkApplication extends Application {
         init();
     }
 
+    /**
+     * 不要随便获取这个context
+     *
+     * @return
+     */
     public static Context getContext() {
         return context;
     }
@@ -37,20 +39,12 @@ public class FlinkApplication extends Application {
         GreenDaoManager.getDaoMaster(this);
     }
 
-    public HashMap<String, Object> getGlobalVariableMap() {
-        synchronized (FlinkApplication.class) {
-            if (GLOBAL_VARIABLE_MAP == null) {
-                GLOBAL_VARIABLE_MAP = new HashMap<>();
-            }
-        }
-        return GLOBAL_VARIABLE_MAP;
-    }
-
     private void init() {
         context = getApplicationContext();
         initGreenDao();
         Flink.getInstance().init(this);
         //初始化程序的当前选择日期
-        getGlobalVariableMap().put(MyConstants.KEY_NOW_DATE, DateUtil.getNowDate());
+        DataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER)
+                .saveObject(MyConstants.KEY_NOW_DATE, DateUtil.getNowDate());
     }
 }

@@ -23,7 +23,6 @@ import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.ViewTools;
-import com.example.flink.tools.data.DataManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -75,7 +74,6 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initData() {
-        DataManager dataManager = new DataManager(this);
         noteViewList = new ArrayList<>();
     }
 
@@ -210,42 +208,42 @@ public class NoteActivity extends NoteBaseActivity {
             @Override
             public void onLastDayBtnClick() {
                 Date tmpDate = DateUtil.addDay(getNowDateFromDataManager(), -1);
-                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
+                DateUtil.saveDateAsSelectedDate(tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
             }
 
             @Override
             public void onLastMonthBtnClick() {
                 Date tmpDate = DateUtil.addMonth(getNowDateFromDataManager(), -1);
-                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
+                DateUtil.saveDateAsSelectedDate(tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
             }
 
             @Override
             public void onTodayBtnClick() {
                 Date tmpDate = DateUtil.getNowDate();
-                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
+                DateUtil.saveDateAsSelectedDate(tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
             }
 
             @Override
             public void onNextDayBtnClick() {
                 Date tmpDate = DateUtil.addDay(getNowDateFromDataManager(), 1);
-                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
+                DateUtil.saveDateAsSelectedDate(tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
             }
 
             @Override
             public void onNextMonthBtnClick() {
                 Date tmpDate = DateUtil.addMonth(getNowDateFromDataManager(), 1);
-                DateUtil.saveNowSelectedDate(NoteActivity.this, tmpDate);
+                DateUtil.saveDateAsSelectedDate(tmpDate);
                 EventBus.getDefault().post(new DateChangeEvent(tmpDate));
             }
         });
     }
 
     private Date getNowDateFromDataManager() {
-        return DateUtil.getNowSelectedDate(this);
+        return DateUtil.getNowSelectedDate();
     }
 
     @Override

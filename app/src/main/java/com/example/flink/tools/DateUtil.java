@@ -1,6 +1,5 @@
 package com.example.flink.tools;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.example.flink.common.MyConstants;
@@ -51,7 +50,7 @@ public class DateUtil {
      */
     public static String FORMAT_FULL_CN = "yyyy年MM月dd日  HH时mm分ss秒SSS毫秒";
 
-    public static String[] WEEK_DAYS_STR = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+    public static String[] WEEK_DAYS_CHI = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
     /**
      * 英文的周和月
@@ -59,6 +58,8 @@ public class DateUtil {
     public static String[] WEEK_DAYS_ENGLISH = {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
 
     public static String[] MONTH_NAME_ENGLISH = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+    public static String[] MONTH_NAME_CHI = {"一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"};
 
     public static final long SECOND_IN_MILLIS = 1000L;
     public static final long MINUTE_IN_MILLIS = 60000L;
@@ -75,7 +76,7 @@ public class DateUtil {
     }
 
     public static String[] getDefaultWeekDaysStr() {
-        return WEEK_DAYS_STR;
+        return WEEK_DAYS_CHI;
     }
 
     /**
@@ -262,6 +263,13 @@ public class DateUtil {
         return MONTH_NAME_ENGLISH[cal.get(Calendar.MONTH)];
     }
 
+    public static String getMonthChi(Date date) {
+        if (date == null) return "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return MONTH_NAME_CHI[cal.get(Calendar.MONTH)];
+    }
+
     /**
      * 获取当前date对应的年份的字符串
      *
@@ -294,12 +302,10 @@ public class DateUtil {
     /**
      * 获取程序当前选中的日期
      *
-     * @param context 上下文
      * @return 日期
      */
-    public static Date getNowSelectedDate(Context context) {
-        DataManager dataManager = new DataManager(context);
-        DataInterface ramDataManager = dataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER);
+    public static Date getNowSelectedDate() {
+        DataInterface ramDataManager = DataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER);
         if (ramDataManager.getObject(MyConstants.KEY_NOW_DATE) == null
                 || !(ramDataManager.getObject(MyConstants.KEY_NOW_DATE) instanceof Date)) {
             return DateUtil.getNowDate();
@@ -308,9 +314,47 @@ public class DateUtil {
         }
     }
 
-    public static void saveNowSelectedDate(Context context, Date date) {
-        DataManager dataManager = new DataManager(context);
-        DataInterface ramDataManager = dataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER);
-        ramDataManager.saveObject(MyConstants.KEY_NOW_DATE, date);
+    /**
+     * 保存日期为当前选择日期
+     *
+     * @param date 需要保存的日期
+     */
+    public static void saveDateAsSelectedDate(Date date) {
+        DataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER).saveObject(MyConstants.KEY_NOW_DATE, date);
+    }
+
+    /**
+     * 通过Date获取Calendar
+     */
+    public static Calendar getCalendarByDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+
+    /**
+     * 将util里面的Calendar转译成日历框架的calendar
+     *
+     * @param calendar java.util.Calendar
+     * @return com.haibin.calendarview.Calendar
+     */
+    public static com.haibin.calendarview.Calendar calendarTrans(java.util.Calendar calendar) {
+        return calendarTrans(calendar.get(java.util.Calendar.YEAR)
+                , calendar.get(java.util.Calendar.MONTH) + 1
+                , calendar.get(java.util.Calendar.DAY_OF_MONTH));
+    }
+
+    public static com.haibin.calendarview.Calendar calendarTrans(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendarTrans(calendar);
+    }
+
+    private static com.haibin.calendarview.Calendar calendarTrans(int year, int month, int day) {
+        com.haibin.calendarview.Calendar calendar = new com.haibin.calendarview.Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        return calendar;
     }
 }

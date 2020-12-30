@@ -1,14 +1,12 @@
 package com.example.flink.tools.data;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
+import com.example.flink.FlinkApplication;
 import com.example.flink.mInterface.DataInterface;
 import com.example.flink.mInterface.VisitDataCallBack;
-
-import java.lang.ref.WeakReference;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -18,16 +16,15 @@ public class SpDataManager implements DataInterface {
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
 
-    private SpDataManager(Context context) {
-        WeakReference<Context> reference = new WeakReference<>(context);//防止内存泄漏
-        sharedPreferences = reference.get().getSharedPreferences("user", MODE_PRIVATE);
+    private SpDataManager() {
+        sharedPreferences = FlinkApplication.getContext().getSharedPreferences("user", MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
 
-    public static SpDataManager getInstance(Context context) {
+    static SpDataManager getInstance() {
         synchronized (SpDataManager.class) {
             if (instance == null) {
-                instance = new SpDataManager(context);
+                instance = new SpDataManager();
             }
         }
         return instance;

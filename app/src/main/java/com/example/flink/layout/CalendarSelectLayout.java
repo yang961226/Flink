@@ -56,6 +56,11 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
 
     private void initCalendarView() {
         calendarview.setOnCalendarSelectListener(this);
+        calendarview.setMonthViewScrollable(false);
+    }
+
+    public CalendarView getCalendarview() {
+        return calendarview;
     }
 
     @Override
@@ -83,7 +88,7 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
             EventBus.getDefault().post(new DateChangeEvent(
                     getDateByYMD(calendar.getYear(), calendar.getMonth(), calendar.getDay()), getClass().getName()));
             Log.d("测试", "切换日期，点击" + calendar.getYear() + "年" + calendar.getMonth() + "月" + calendar.getDay() + "日");
-            DateUtil.saveNowSelectedDate(getContext(), getDateByCalendar(calendar));
+            DateUtil.saveDateAsSelectedDate(getDateByCalendar(calendar));
         }
     }
 
