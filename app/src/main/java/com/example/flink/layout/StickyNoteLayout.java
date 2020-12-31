@@ -198,6 +198,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             mNoteAdapter.notifyDataSetChanged();
         });
         lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            mNoteItemList.get(i).setSelected(true);
+            mNoteAdapter.notifyDataSetChanged();
             StickyNoteItemDao dao = GreenDaoManager.getDaoSession(context).getStickyNoteItemDao();
             editStickyNoteItem(dao, i);
             return true;

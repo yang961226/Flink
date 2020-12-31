@@ -8,8 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:padding="@dimen/dp_5">
+        android:layout_weight="3"
+        android:padding="7dp">
 
         <RelativeLayout
             android:id="@+id/rl_delete"
@@ -72,9 +72,16 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="2">
+
+        <View
+            android:background="@color/silver"
+            android:layout_margin="5dp"
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
 
         <LinearLayout
+            android:layout_marginEnd="15dp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_gravity="center"

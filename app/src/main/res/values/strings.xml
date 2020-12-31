@@ -22,6 +22,7 @@
     <string name="confirm">确认</string>
     <string name="welcome_content">每一天都是新的一天</string>
     <string name="app_state">beta</string>
+    <string name="selected">已选中</string>
 
     <dimen name="sticky_note_font_size">18sp</dimen>
 </resources>

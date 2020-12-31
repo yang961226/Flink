@@ -50,8 +50,8 @@
 
         <ImageView
             android:id="@+id/btn_setting"
-            android:layout_width="@dimen/dp_50"
-            android:layout_height="@dimen/dp_50"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/button_setting"
             android:scaleType="centerInside"
@@ -62,8 +62,8 @@
 
         <ImageView
             android:id="@+id/btn_function"
-            android:layout_width="@dimen/dp_50"
-            android:layout_height="@dimen/dp_30"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="@string/buton_function"
             android:scaleType="centerInside"
             android:src="@drawable/icon_more"

@@ -10,6 +10,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.OrderBy;
+import org.greenrobot.greendao.annotation.Transient;
 
 import java.util.Date;
 
@@ -26,16 +27,19 @@ public class StickyNoteItem {
     private Date noteDate;//笔记日期
 
     @OrderBy
-    private int order;//序号
+    private long order;//序号
 
     @Id(autoincrement = true)
     private Long id;//主键id
 
     private int parentId;//父亲的主键id
 
-    @Generated(hash = 94483912)
-    public StickyNoteItem(int statu, String noteContent, Date noteDate, int order,
-            Long id, int parentId) {
+    @Transient
+    private boolean isSelected;//当前日记是否处于被选中的状态
+
+    @Generated(hash = 2141453713)
+    public StickyNoteItem(int statu, String noteContent, Date noteDate, long order, Long id,
+                          int parentId) {
         this.statu = statu;
         this.noteContent = noteContent;
         this.noteDate = noteDate;
@@ -55,7 +59,7 @@ public class StickyNoteItem {
 
         private Date noteDate;//笔记日期
 
-        private int order;//序号
+        private long order;//序号
 
         private Long id;//主键id
 
@@ -64,9 +68,9 @@ public class StickyNoteItem {
         public Builder(){
             statu=0;
             noteContent="";
-            noteDate= DateUtil.getNowDate();
-            order=1;
-            parentId=-1;
+            noteDate = DateUtil.getNowDate();
+            order = noteDate.getTime();
+            parentId = -1;
         }
 
         public Builder setStatu(int statu) {
@@ -187,11 +191,11 @@ public class StickyNoteItem {
         this.noteDate = noteDate;
     }
 
-    public int getOrder() {
+    public long getOrder() {
         return this.order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(long order) {
         this.order = order;
     }
 
@@ -211,5 +215,11 @@ public class StickyNoteItem {
         this.parentId = parentId;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 }
