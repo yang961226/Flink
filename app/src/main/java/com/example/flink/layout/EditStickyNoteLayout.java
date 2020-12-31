@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import com.example.flink.R;
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
-import com.example.flink.utils.LogUtil;
+import com.example.flink.tools.notify.LogUtil;
 
 import java.util.Collections;
 import java.util.List;

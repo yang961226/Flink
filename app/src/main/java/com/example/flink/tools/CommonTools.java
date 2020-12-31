@@ -70,18 +70,26 @@ public class CommonTools {
     }
 
     public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, int delaySec) {
-        redirectDelay(from, to, new Bundle(), delaySec,false);
+        redirectDelay(from, to, null, delaySec, false);
     }
 
-    public static void redirectDelay(Activity from,Class<? extends FlinkBaseActivity> to,int delaySec,boolean isKillSelf){
-        redirectDelay(from,to,new Bundle(),(long) delaySec * 1000,isKillSelf);
+    public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, int delaySec, boolean isKillSelf) {
+        redirectDelay(from, to, null, (long) delaySec * 1000, isKillSelf);
+    }
+
+    public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, long delayMs, boolean isKillSelf) {
+        redirectDelay(from, to, null, delayMs, isKillSelf);
+    }
+
+    public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, long delayMs) {
+        redirectDelay(from, to, null, delayMs, false);
     }
 
     public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, Bundle bundle, long delayMs) {
-        redirectDelay(from,to,bundle,delayMs,false);
+        redirectDelay(from, to, bundle, delayMs, false);
     }
 
-    public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, Bundle bundle, long delayMs,boolean isKillSelf){
+    public static void redirectDelay(Activity from, Class<? extends FlinkBaseActivity> to, Bundle bundle, long delayMs, boolean isKillSelf) {
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override

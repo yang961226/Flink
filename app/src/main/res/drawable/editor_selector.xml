@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--得到焦点时的样式-->
+    <item android:drawable="@drawable/shape_edit_focus" android:state_focused="true" />
+
+    <!--常规演示-->
+    <item android:drawable="@drawable/shape_edit_normal" />
+
+</selector>

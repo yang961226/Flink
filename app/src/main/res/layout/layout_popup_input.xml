@@ -34,7 +34,9 @@
     </LinearLayout>
 
     <com.example.flink.view.FilterEditText
+        android:padding="7dp"
         android:id="@+id/fet_note_content"
+        android:background="@drawable/editor_selector"
         android:inputType="text"
         android:textSize="@dimen/sticky_note_font_size"
         android:maxLines="1"
@@ -44,6 +46,7 @@
         android:autofillHints="" />
 
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button

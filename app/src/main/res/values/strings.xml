@@ -20,6 +20,8 @@
     <string name="pleast_input_sticky_note">请输入笔记内容</string>
     <string name="add_sticky_note">新增笔记</string>
     <string name="confirm">确认</string>
+    <string name="welcome_content">每一天都是新的一天</string>
+    <string name="app_state">beta</string>
 
     <dimen name="sticky_note_font_size">18sp</dimen>
 </resources>
