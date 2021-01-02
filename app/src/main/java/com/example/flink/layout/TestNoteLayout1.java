@@ -3,6 +3,7 @@ package com.example.flink.layout;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,9 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
     @Override
     protected void init(Context context) {
         super.init(context);
-        el.setDuration(400);
+        el.setDuration(1500);
+        el.setInterpolator(new AccelerateDecelerateInterpolator());
+        el.setChangeAplhaWhileExpanding(true);
         el.setOnExpandingListener(new ExpandableLayout.OnExpandingListener() {
             @Override
             public void onExpandingInterpolatedTime(float interpolatedTime, boolean isDown) {

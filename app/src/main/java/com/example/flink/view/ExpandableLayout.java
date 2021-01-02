@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
  */
 public class ExpandableLayout extends LinearLayout {
 
+    private boolean changeAplhaWhileExpanding;//伸缩的时候是否改变可见度
     private boolean isExpand = false;//是否展开
     private boolean isPlayingAnim = false;//是否正在播放动画
     private int height = 0;
@@ -57,6 +58,14 @@ public class ExpandableLayout extends LinearLayout {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public void setInterpolator(Interpolator interpolator) {
+        this.interpolator = interpolator;
+    }
+
+    public void setChangeAplhaWhileExpanding(boolean changeAplhaWhileExpanding) {
+        this.changeAplhaWhileExpanding = changeAplhaWhileExpanding;
     }
 
     public void expand() {
@@ -161,6 +170,9 @@ public class ExpandableLayout extends LinearLayout {
         protected void applyTransformation(float interpolatedTime, Transformation t) {
             int newHeight;
             if (expandToDown) {
+                if (changeAplhaWhileExpanding) {
+                    ExpandableLayout.this.setAlpha(interpolatedTime);
+                }
                 if (onExpandingListener != null) {
                     onExpandingListener.onExpandingRange((int) (expandRange * interpolatedTime), true);
                     onExpandingListener.onExpandingInterpolatedTime(interpolatedTime, true);
@@ -170,6 +182,9 @@ public class ExpandableLayout extends LinearLayout {
                 }
                 newHeight = (int) (expandRange * interpolatedTime);
             } else {
+                if (changeAplhaWhileExpanding) {
+                    ExpandableLayout.this.setAlpha(1 - interpolatedTime);
+                }
                 if (onExpandingListener != null) {
                     onExpandingListener.onExpandingRange((int) (expandRange * interpolatedTime), false);
                     onExpandingListener.onExpandingInterpolatedTime(interpolatedTime, false);
