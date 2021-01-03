@@ -19,16 +19,16 @@ public class ExpandableLayout extends LinearLayout {
     private boolean changeAplhaWhileExpanding;//伸缩的时候是否改变可见度
     private boolean isExpand = false;//是否展开
     private boolean isPlayingAnim = false;//是否正在播放动画
+    private boolean isFirstPalyAnim = true;//是否是第一次启动动画
     private int height = 0;
     private long duration = 500;//动画持续时间
-    private Interpolator interpolator;
 
     private Animation animationDown;
     private Animation animationUp;
 
-    private boolean isFirstPalyAnim = true;//是否是第一次启动动画
-
     private OnExpandingListener onExpandingListener;
+
+    private Interpolator interpolator;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -66,6 +66,14 @@ public class ExpandableLayout extends LinearLayout {
 
     public void setChangeAplhaWhileExpanding(boolean changeAplhaWhileExpanding) {
         this.changeAplhaWhileExpanding = changeAplhaWhileExpanding;
+    }
+
+    public boolean isPlayingAnim() {
+        return isPlayingAnim;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
     }
 
     public void expand() {

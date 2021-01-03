@@ -5,12 +5,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
@@ -19,6 +21,7 @@ import com.example.flink.event.SchemeChangeEvent;
 import com.example.flink.greendao.gen.DaoSession;
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
+import com.example.flink.mInterface.MyOnItemClickListener;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.GreenDaoManager;
@@ -41,11 +44,9 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
-    @BindView(R.id.lv)
-    ListView lv;
-
+    @BindView(R.id.rl)
+    RecyclerView rl;
     private List<StickyNoteItem> mNoteItemList;
-    private StickyNoteAdapter mNoteAdapter;
 
     private CalendarSelectLayout calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
@@ -56,6 +57,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private PopUpWindowHelper popupInputHelper;
     private PopupInputLayout popupInputLayout;
 
+    private StickyNoteAdapter stickyNoteAdapter;
+
     private boolean isPopupCalendar = false;//日期选择器是否弹出来
 
     private InputMethodManager imm;
@@ -65,6 +68,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private Context context;
 
     private DaoSession daoSession;
+    private StickyNoteItemDao stickyNoteItemDao;
 
     public StickyNoteLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -103,12 +107,13 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         mDate = DateUtil.getNowSelectedDate();
 
         daoSession = GreenDaoManager.getDaoSession(context);
+        stickyNoteItemDao = daoSession.getStickyNoteItemDao();
 
         mNoteItemList = new ArrayList<>();
-        mNoteAdapter = new StickyNoteAdapter(context, mNoteItemList);
-        lv.setAdapter(mNoteAdapter);
-
-        setLvListener();
+        stickyNoteAdapter = new StickyNoteAdapter(getContext(), mNoteItemList);
+        rl.setAdapter(stickyNoteAdapter);
+        rl.setLayoutManager(new LinearLayoutManager(getContext()));
+        setRlListener();
 
         calendarSelectLayout = new CalendarSelectLayout(getContext());
         calenderPopUpHelper = new PopUpWindowHelper.Builder(context)
@@ -190,19 +195,23 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .list());
     }
 
-    private void setLvListener() {
-        lv.setOnItemClickListener((parent, view, position, id) -> {
-            StickyNoteItem item = mNoteItemList.get(position);
-            item.moveToNextStatu();
-            daoSession.getStickyNoteItemDao().insertOrReplace(item);
-            mNoteAdapter.notifyDataSetChanged();
-        });
-        lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            mNoteItemList.get(i).setSelected(true);
-            mNoteAdapter.notifyDataSetChanged();
-            StickyNoteItemDao dao = GreenDaoManager.getDaoSession(context).getStickyNoteItemDao();
-            editStickyNoteItem(dao, i);
-            return true;
+    private void setRlListener() {
+        stickyNoteAdapter.setMyOnItemClickListener(new MyOnItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                StickyNoteItem item = mNoteItemList.get(position);
+                item.moveToNextStatu();
+                daoSession.getStickyNoteItemDao().insertOrReplace(item);
+                stickyNoteAdapter.notifyItemChanged(position);
+            }
+
+            @Override
+            public boolean onItemLongClickListener(View view, int position) {
+                mNoteItemList.get(position).setSelected(true);
+                stickyNoteAdapter.notifyItemChanged(position);
+                editStickyNoteItem(stickyNoteItemDao, position);
+                return true;
+            }
         });
     }
 
@@ -217,7 +226,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         editStickyNoteLayout.setStickyNoteItemList(mNoteItemList);
         editStickyNoteLayout.setOnCompleteListener(list -> {
             mNoteItemList = list;
-            mNoteAdapter.updateData(list);
+            stickyNoteAdapter.notifyDataSetChanged();
         });
     }
 
@@ -225,7 +234,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，刷新笔记页面
      */
     private void refreshData() {
-        if (mNoteItemList == null || mNoteAdapter == null || daoSession == null) {
+        if (mNoteItemList == null || stickyNoteAdapter == null || daoSession == null) {
             return;
         }
         Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
@@ -236,7 +245,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
                         , StickyNoteItemDao.Properties.NoteDate.lt(endDate))
                 .list());
-        mNoteAdapter.notifyDataSetChanged();
+        stickyNoteAdapter.notifyDataSetChanged();
     }
 
     /**
