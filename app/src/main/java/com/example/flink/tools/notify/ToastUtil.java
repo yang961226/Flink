@@ -2,6 +2,7 @@ package com.example.flink.tools.notify;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.widget.Toast;
 
@@ -28,16 +29,13 @@ public class ToastUtil {
         return debug != 0;
     }
 
-    private static void show(Activity activity, String tip) {
-        if (activity == null) {
-            throw new RuntimeException("activity is null,do not show toast on null activity !");
+    public static void show(Context context, String text) {
+        if (context == null) {
+            throw new RuntimeException("context is null,do not show toast on null activity !");
         }
-
-        if (mToast == null) {
-            mToast = Toast.makeText(activity, "", Toast.LENGTH_SHORT);
-        }
-
-        mToast.setText(tip);
+        if (mToast != null) mToast.cancel();
+        mToast = Toast.makeText(context, null, Toast.LENGTH_SHORT);
+        mToast.setText(text);
         mToast.show();
     }
 }

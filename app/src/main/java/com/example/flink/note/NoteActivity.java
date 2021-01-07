@@ -1,5 +1,6 @@
 package com.example.flink.note;
 
+import android.content.Intent;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.flink.NoteBaseActivity;
 import com.example.flink.R;
+import com.example.flink.SettingsActivity;
 import com.example.flink.adapter.FlinkPagerAdapter;
 import com.example.flink.common.MyConstants;
 import com.example.flink.common.MyException;
@@ -82,8 +84,7 @@ public class NoteActivity extends NoteBaseActivity {
     protected void onBtnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_setting:
-                // TODO: 2020/9/3 跳转到设置页
-                showToast("跳转到设置页面");
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.btn_function:
                 onFunctionClick(false);

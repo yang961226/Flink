@@ -20,4 +20,6 @@ public class MyConstants {
 
     //存储Key值，必须KEY_开头
     public static final String KEY_NOW_DATE = "key_now_date";
+
+    public static final String ENABLE_24HOURS_FORMAT = "enable_24hours_format";
 }

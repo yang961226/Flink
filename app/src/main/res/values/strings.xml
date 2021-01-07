@@ -24,5 +24,11 @@
     <string name="app_state">beta</string>
     <string name="selected">已选中</string>
 
+    <string name="settings">设置</string>
+    <string name="note_icon_introduction">笔记图标含义介绍</string>
+    <string name="enable_24hours_format">启用24小时时间格式</string>
+    <string name="tactile_feedback">触觉反馈</string>
+    <string name="about_flink">关于子弹笔记</string>
+
     <dimen name="sticky_note_font_size">18sp</dimen>
 </resources>

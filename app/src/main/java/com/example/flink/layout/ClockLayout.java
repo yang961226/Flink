@@ -2,7 +2,6 @@ package com.example.flink.layout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
@@ -14,17 +13,19 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
+import com.example.flink.common.MyConstants;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
+import com.example.flink.mInterface.DataInterface;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
+import com.example.flink.tools.data.DataManager;
 import com.example.flink.view.AdaptationTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -33,12 +34,6 @@ import butterknife.Unbinder;
 
 @SuppressLint("NonConstantResourceId")
 public class ClockLayout extends LinearLayout implements Unregister {
-
-    private final static String FORMAT_24HOUR = "24hour";
-    private final static String FORMAT_12HOUR = "12hour";
-    private static String HOUR_FORMAT_TYPE;
-
-    private final SharedPreferences sharedPreferences;
 
     private static Bitmap imageNum0;
     private static Bitmap imageNum1;
@@ -77,14 +72,17 @@ public class ClockLayout extends LinearLayout implements Unregister {
 
     private final Unbinder unbinder;
 
+    private final DataInterface dataInterface;
+
     public ClockLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_clock, this);
+
         //绑定处理
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        sharedPreferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        dataInterface = DataManager.getDataManager(DataManager.DataManagerEnum.SP_DATA_MANAGER);
 
         initNumberImage();
     }
@@ -95,9 +93,9 @@ public class ClockLayout extends LinearLayout implements Unregister {
         //发生变化时改变数字图片
         String numbers = DateUtil.format(tickEvent.getDate(), DateUtil.FORMAT_Hms);
 
-        //12小时格式
-        HOUR_FORMAT_TYPE = sharedPreferences.getString("hour_format_type", FORMAT_12HOUR);
-        if (!TextUtils.isEmpty(HOUR_FORMAT_TYPE) && HOUR_FORMAT_TYPE.equals(FORMAT_12HOUR)) {
+        if (dataInterface.getBoolean(MyConstants.ENABLE_24HOURS_FORMAT)) {//24小时格式
+            am_or_pm.setVisibility(INVISIBLE);
+        } else {//12小时格式
             am_or_pm.setVisibility(VISIBLE);
             if (!numbers.startsWith("0")) {
                 int hour = Integer.parseInt(numbers.substring(0, 2));
@@ -110,8 +108,6 @@ public class ClockLayout extends LinearLayout implements Unregister {
                     am_or_pm.setText("AM");
                 }
             }
-        } else {
-            am_or_pm.setVisibility(INVISIBLE);
         }
 
         if (!number1.equals(numbers.substring(0, 1))) {
