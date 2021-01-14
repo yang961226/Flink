@@ -61,7 +61,7 @@ public class SettingsActivity extends FlinkBaseActivity implements View.OnClickL
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(array.getResourceId(i, R.drawable.circle_common2));
             int finalI = i;
-            imageView.setOnClickListener(v -> ToastUtil.showWhenDebug(this, "click " + finalI + " icon"));
+            imageView.setOnClickListener(v -> ToastUtil.show(this, "click " + finalI + " icon", true));
             iconsIntroduction.addView(imageView);
 
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) imageView.getLayoutParams();

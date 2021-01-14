@@ -3,8 +3,10 @@ package com.example.flink.tools;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 
+import com.example.flink.FlinkApplication;
 import com.example.flink.FlinkBaseActivity;
 import com.example.flink.R;
 
@@ -134,6 +136,17 @@ public class CommonTools {
     public int px2sp(Context context, float px) {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (px / scale + 0.5f);
+    }
+
+    /**
+     * 是否是debug
+     *
+     * @return true:是debug
+     */
+    public static boolean isDebugMode() {
+        ApplicationInfo info = FlinkApplication.getContext().getApplicationInfo();
+        int debug = info.flags & ApplicationInfo.FLAG_DEBUGGABLE;
+        return debug != 0;
     }
 
 }

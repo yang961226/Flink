@@ -2,31 +2,40 @@ package com.example.flink.tools.notify;
 
 import android.util.Log;
 
+import com.example.flink.tools.CommonTools;
+
 
 public class LogUtil {
-    private static boolean isEnable = true;
 
-    private static final String TAG = "Flink";
-
-    public void setEnable(boolean enable) {
-        isEnable = enable;
-    }
+    private static final String TAG = "LogUtil:";
 
     public static void e(String tip) {
-        if (isEnable) {
-            Log.e(TAG, "错误：" + tip);
+        e("", tip);
+    }
+
+    public static void e(String tag, String tip) {
+        if (CommonTools.isDebugMode()) {
+            Log.e(TAG + tag, "错误：" + tip);
         }
     }
 
     public static void d(String tip) {
-        if (isEnable) {
-            Log.d(TAG, "调试：" + tip);
+        d("", tip);
+    }
+
+    public static void d(String tag, String tip) {
+        if (CommonTools.isDebugMode()) {
+            Log.d(TAG + tag, "调试：" + tip);
         }
     }
 
     public static void w(String tip) {
-        if (isEnable) {
-            Log.w(TAG, "警告：" + tip);
+        w("", tip);
+    }
+
+    public static void w(String tag, String tip) {
+        if (CommonTools.isDebugMode()) {
+            Log.w(TAG + tag, "警告：" + tip);
         }
     }
 }

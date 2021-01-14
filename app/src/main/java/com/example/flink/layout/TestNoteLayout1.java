@@ -1,6 +1,5 @@
 package com.example.flink.layout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -57,9 +56,9 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
             @Override
             public void onExpandingEnd(int expandRange, boolean isDown) {
                 if (isDown) {
-                    ToastUtil.showWhenDebug((Activity) getContext(), "向下扩展" + expandRange);
+                    ToastUtil.show(getContext(), "向下扩展" + expandRange, true);
                 } else {
-                    ToastUtil.showWhenDebug((Activity) getContext(), "向上收缩" + expandRange);
+                    ToastUtil.show(getContext(), "向上收缩" + expandRange, true);
                 }
 
             }
