@@ -1,13 +1,13 @@
 package com.example.flink.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.flink.R;
-import com.example.flink.common.ViewHolder;
+import com.example.flink.adapter.base.CommonAdapter;
+import com.example.flink.adapter.base.ViewHolder;
 import com.example.flink.item.StickyNoteItem;
 
 import java.util.List;
@@ -37,9 +37,6 @@ public class StickyNoteAdapter1 extends CommonAdapter<StickyNoteItem> {
 
         TextView tvNoteContent = holder.getItemViewById(R.id.tv_note_content);
         tvNoteContent.setText(item.getNoteContent());
-
-        TextView tvSelect = holder.getItemViewById(R.id.tv_select);
-        tvSelect.setVisibility(item.isSelected() ? View.VISIBLE : View.GONE);
 
         LinearLayout llRoot = holder.getItemViewById(R.id.ll_root);
         llRoot.setBackgroundColor(item.isSelected() ?

@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.common.MyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,10 +103,10 @@ public class NavigationBarLayout extends LinearLayout {
     public void init(NavigationBarViewConfig config) {
         //已经初始化过了，请不要再初始化，停止你的愚蠢行为
         if (isAlreadyInitItem) {
-            throw new MyException(HAS_INIT);
+            throw new RuntimeException(HAS_INIT);
         }
         if (config.getItemNum() > MAX_ITEM_NUM) {
-            throw new MyException(OVER_NUM);
+            throw new RuntimeException(OVER_NUM);
         }
         ivNavItems = new ArrayList<>();
         isAlreadyInitItem = true;

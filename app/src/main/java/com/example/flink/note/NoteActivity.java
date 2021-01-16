@@ -15,7 +15,6 @@ import com.example.flink.R;
 import com.example.flink.SettingsActivity;
 import com.example.flink.adapter.FlinkPagerAdapter;
 import com.example.flink.common.MyConstants;
-import com.example.flink.common.MyException;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
 import com.example.flink.layout.NavigationBarLayout;
@@ -69,7 +68,6 @@ public class NoteActivity extends NoteBaseActivity {
 
 
     private ViewPager mViewPager;
-    private PagerAdapter mPagerAdapter;
     private List<NoteViewPagerBaseLayout> noteViewList;
 
     private int vpIndex = 0;//当前ViewPager页的索引
@@ -135,14 +133,14 @@ public class NoteActivity extends NoteBaseActivity {
         topLeftViewGroup = ViewTools.buildCalendarLayout(this);
         //如果没有继承这个接口，说明这个View没有按要求去做
         if (topLeftViewGroup == null) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new RuntimeException(MyConstants.CLASS_CONFIG_ERROR + ":笔记页左上角布局初始化失败");
         }
         llTop.addView(topLeftViewGroup);
 
         //初始化右上角
         topRightViewGroup = ViewTools.buildClockLayout(this);
         if (topRightViewGroup == null) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new RuntimeException(MyConstants.CLASS_CONFIG_ERROR + "笔记页右上角布局初始化失败");
         }
         llTop.addView(topRightViewGroup);
         startToTick();
@@ -171,7 +169,7 @@ public class NoteActivity extends NoteBaseActivity {
         mViewPager.setId(VIEW_PAGER_ID);
 
         noteViewList = ViewTools.buildNoteViewFunctions(this);
-        mPagerAdapter = new FlinkPagerAdapter(noteViewList);
+        PagerAdapter mPagerAdapter = new FlinkPagerAdapter(noteViewList);
 
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

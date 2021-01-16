@@ -1,12 +1,10 @@
-package com.example.flink.adapter;
+package com.example.flink.adapter.base;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
-import com.example.flink.common.ViewHolder;
 
 import java.util.List;
 

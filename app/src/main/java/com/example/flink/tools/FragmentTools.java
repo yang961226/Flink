@@ -1,7 +1,5 @@
 package com.example.flink.tools;
 
-import com.example.flink.common.MyConstants;
-import com.example.flink.common.MyException;
 import com.example.flink.fragment.FlinkBaseFragment;
 
 import java.lang.reflect.Constructor;
@@ -18,7 +16,7 @@ public class FragmentTools {
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             flinkBaseFragment = (FlinkBaseFragment) constructor.newInstance();
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new RuntimeException(e);
         }
         return flinkBaseFragment;
     }
@@ -29,7 +27,7 @@ public class FragmentTools {
         try {
             clazz = (Class<? extends FlinkBaseFragment>) Class.forName(className);
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new RuntimeException(e);
         }
         return buildFragment(clazz);
     }

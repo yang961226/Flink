@@ -1,4 +1,4 @@
-package com.example.flink.common;
+package com.example.flink.adapter.base;
 
 import android.content.Context;
 import android.util.SparseArray;

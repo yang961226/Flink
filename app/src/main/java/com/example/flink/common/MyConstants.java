@@ -22,4 +22,9 @@ public class MyConstants {
     public static final String KEY_NOW_DATE = "key_now_date";
 
     public static final String ENABLE_24HOURS_FORMAT = "enable_24hours_format";
+
+    //okhttp拦截器使用常量
+    public static final String CONNECT_TIMEOUT_FLAG = "connectTimeoutFlag";
+    public static final String READ_TIMEOUT_FLAG = "readTimeoutFlag";
+    public static final String WRITE_TIMEOUT_FLAG = "writeTimeoutFlag";
 }

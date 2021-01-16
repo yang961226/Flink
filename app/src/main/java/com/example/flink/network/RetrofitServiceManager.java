@@ -1,6 +1,7 @@
 package com.example.flink.network;
 
 import com.example.flink.network.interceptor.CommonParamInterceptor;
+import com.example.flink.network.interceptor.SingleRequestConfigInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +72,11 @@ public class RetrofitServiceManager {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        SingleRequestConfigInterceptor singleRequestConfigInterceptor = new SingleRequestConfigInterceptor();
+
         interceptorList.add(httpLoggingInterceptor);
         interceptorList.add(commonParamInterceptor);
+        interceptorList.add(singleRequestConfigInterceptor);
 
         return interceptorList;
     }

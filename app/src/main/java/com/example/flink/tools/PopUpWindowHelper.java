@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import com.example.flink.common.MyException;
 
 /**
  * 通用PopupWindow工具,https://github.com/jzmanu/MPopupWindow
@@ -36,8 +35,6 @@ public class PopUpWindowHelper {
     private PopUpWindowHelper() {
         //屏蔽
     }
-
-    ;
 
     public void showPopupWindow(View v, LocationType type) {
         if (mView != null) {
@@ -223,13 +220,13 @@ public class PopUpWindowHelper {
 
         private void setPopupWindowConfig(PopUpWindowHelper popUpWindowHelper) {
             if (contentView != null && layoutId != -1) {
-                throw new MyException("setContentView and setLayoutId can't be used together.");
+                throw new RuntimeException("setContentView and setLayoutId can't be used together.");
             } else if (contentView == null && layoutId == -1) {
-                throw new MyException("contentView or layoutId can't be null.");
+                throw new RuntimeException("contentView or layoutId can't be null.");
             }
 
             if (context == null) {
-                throw new MyException("context can't be null.");
+                throw new RuntimeException("context can't be null.");
             } else {
                 popUpWindowHelper.mContext = this.context;
             }

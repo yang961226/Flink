@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.flink.R;
-import com.example.flink.common.MyConstants;
-import com.example.flink.common.MyException;
 import com.example.flink.layout.NavigationBarLayout;
 import com.example.flink.layout.NoteViewPagerBaseLayout;
 
@@ -35,7 +33,7 @@ public class ViewTools {
             topLeftView.setLayoutParams(layoutParams);
 
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR + "错误描述：" + e.toString());
+            throw new RuntimeException(e);
         }
         return topLeftView;
     }
@@ -54,7 +52,7 @@ public class ViewTools {
             topRightView = (ViewGroup) constructor.newInstance(context, null);
             topRightView.setLayoutParams(layoutParams);
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR + "错误描述：" + e.toString());
+            throw new RuntimeException(e);
         }
         return topRightView;
     }
@@ -74,7 +72,7 @@ public class ViewTools {
             viewGroup = (ViewGroup) constructor.newInstance(context, null);
             viewGroup.setLayoutParams(layoutParams);
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new RuntimeException(e);
         }
         return viewGroup;
     }
@@ -105,7 +103,7 @@ public class ViewTools {
                 arrayList.add((NoteViewPagerBaseLayout) buildViewGroup(context, (Class<? extends ViewGroup>) Class.forName(function)));
             }
         } catch (Exception e) {
-            throw new MyException(MyConstants.CLASS_CONFIG_ERROR);
+            throw new RuntimeException(e);
         }
 
         return arrayList;
