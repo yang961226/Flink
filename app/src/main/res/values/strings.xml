@@ -10,8 +10,8 @@
     </string-array>
 
     <!--  这里面写需要反射的类名  -->
-    <string name="ClockLayout">com.example.flink.layout.ClockLayout</string>
-    <string name="CalendarLayout">com.example.flink.layout.FoxizzCalendarLayout</string>
+    <string name="ClockView">com.example.flink.view.ClockView</string>
+    <string name="CalendarView">com.example.flink.view.CalendarView</string>
     <string name="CalendarSelectLayout">com.example.flink.layout.CalendarSelectLayout</string>
 
     <!--  字符串映射  -->

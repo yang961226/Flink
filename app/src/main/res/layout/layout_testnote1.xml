@@ -41,7 +41,7 @@
 
     </LinearLayout>
 
-    <com.example.flink.view.ExpandableLayout
+    <com.example.flink.layout.ExpandableLayout
         android:id="@+id/el"
         android:background="@color/silver"
         android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-    </com.example.flink.view.ExpandableLayout>
+    </com.example.flink.layout.ExpandableLayout>
 
     <LinearLayout
         android:orientation="vertical"

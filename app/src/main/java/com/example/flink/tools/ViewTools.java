@@ -26,7 +26,7 @@ public class ViewTools {
     public static ViewGroup buildCalendarLayout(Context context) {
         ViewGroup topLeftView;
         try {
-            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarLayout));
+            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.CalendarView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             topLeftView = (ViewGroup) constructor.newInstance(context, null);
@@ -46,7 +46,7 @@ public class ViewTools {
     public static ViewGroup buildClockLayout(Context context) {
         ViewGroup topRightView;
         try {
-            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockLayout));
+            Class<?> clazz = Class.forName(CommonTools.getString(context, R.string.ClockView));
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, AttributeSet.class);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             topRightView = (ViewGroup) constructor.newInstance(context, null);

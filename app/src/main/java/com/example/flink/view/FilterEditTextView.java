@@ -15,20 +15,20 @@ import java.util.regex.Pattern;
 /**
  * 计算字符的方式为中文2个字符，其余1个字符
  */
-public class FilterEditText extends androidx.appcompat.widget.AppCompatEditText {
+public class FilterEditTextView extends androidx.appcompat.widget.AppCompatEditText {
 
     private int maxWordNum = 20;
     private OnWordNumChangeListener onWordNumChangeListener;
 
-    public FilterEditText(Context context) {
+    public FilterEditTextView(Context context) {
         super(context);
     }
 
-    public FilterEditText(Context context, AttributeSet attrs) {
+    public FilterEditTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FilterEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FilterEditTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

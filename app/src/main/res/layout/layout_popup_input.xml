@@ -43,7 +43,7 @@
             tools:text="18/20" />
     </LinearLayout>
 
-    <com.example.flink.view.ExpandableLayout
+    <com.example.flink.layout.ExpandableLayout
         android:id="@+id/el"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -53,9 +53,9 @@
             android:background="@color/red"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
-    </com.example.flink.view.ExpandableLayout>
+    </com.example.flink.layout.ExpandableLayout>
 
-    <com.example.flink.view.FilterEditText
+    <com.example.flink.view.FilterEditTextView
         android:padding="7dp"
         android:id="@+id/fet_note_content"
         android:background="@drawable/editor_selector"

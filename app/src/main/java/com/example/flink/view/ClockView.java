@@ -1,10 +1,9 @@
-package com.example.flink.layout;
+package com.example.flink.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +19,6 @@ import com.example.flink.mInterface.DataInterface;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.data.DataManager;
-import com.example.flink.view.AdaptationTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 @SuppressLint("NonConstantResourceId")
-public class ClockLayout extends LinearLayout implements Unregister {
+public class ClockView extends LinearLayout implements Unregister {
 
     private static Bitmap imageNum0;
     private static Bitmap imageNum1;
@@ -74,7 +72,7 @@ public class ClockLayout extends LinearLayout implements Unregister {
 
     private final DataInterface dataInterface;
 
-    public ClockLayout(Context context, @Nullable AttributeSet attrs) {
+    public ClockView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_clock, this);
 

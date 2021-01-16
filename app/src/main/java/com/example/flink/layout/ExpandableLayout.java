@@ -1,4 +1,4 @@
-package com.example.flink.view;
+package com.example.flink.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;

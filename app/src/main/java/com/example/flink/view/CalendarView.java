@@ -1,4 +1,4 @@
-package com.example.flink.layout;
+package com.example.flink.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,7 +11,6 @@ import com.example.flink.R;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
-import com.example.flink.view.AdaptationTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,14 +21,14 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoxizzCalendarLayout extends LinearLayout implements Unregister {
+public class CalendarView extends LinearLayout implements Unregister {
 
     @BindView(R.id.day_of_week)
     AdaptationTextView dayOfWeek;
     @BindView(R.id.day_month_year)
     AdaptationTextView dayMonthYear;
 
-    public FoxizzCalendarLayout(Context context, @Nullable AttributeSet attrs) {
+    public CalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View.inflate(context, R.layout.layout_foxizz_calendar, this);
         //绑定处理

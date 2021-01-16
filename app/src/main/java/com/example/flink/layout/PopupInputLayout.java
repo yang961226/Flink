@@ -10,8 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.flink.R;
-import com.example.flink.view.ExpandableLayout;
-import com.example.flink.view.FilterEditText;
+import com.example.flink.view.FilterEditTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +23,7 @@ public class PopupInputLayout extends LinearLayout {
     @BindView(R.id.tv_progress)
     TextView tvProgress;
     @BindView(R.id.fet_note_content)
-    FilterEditText fetNoteContent;
+    FilterEditTextView fetNoteContent;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
     @BindView(R.id.iv_expand)
@@ -76,7 +75,7 @@ public class PopupInputLayout extends LinearLayout {
         this.confirmBtnClickListener = confirmBtnClickListener;
     }
 
-    public FilterEditText getFEtNoteContent() {
+    public FilterEditTextView getFEtNoteContent() {
         return fetNoteContent;
     }
 
