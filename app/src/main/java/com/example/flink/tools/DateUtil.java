@@ -92,6 +92,10 @@ public class DateUtil {
         return new Date();
     }
 
+    public static long getNowMillis() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
+
     public static Calendar getNowCalendar() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(getNowDate());

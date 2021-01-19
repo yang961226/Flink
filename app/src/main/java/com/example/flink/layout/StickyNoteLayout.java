@@ -20,7 +20,6 @@ import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.adapter.base.BaseRecyclerViewHolder;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.SchemeChangeEvent;
-import com.example.flink.greendao.gen.DaoSession;
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.mInterface.StickyNoteItemClickListener;
@@ -28,6 +27,7 @@ import com.example.flink.mInterface.StickyNoteItemDrag;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.GreenDaoManager;
+import com.example.flink.tools.greendao.greendaoHelper.DbHelper;
 import com.example.flink.tools.notify.ToastUtil;
 import com.haibin.calendarview.Calendar;
 
@@ -69,8 +69,10 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     private Date mDate;
 
-    private DaoSession daoSession;
+    private DbHelper<StickyNoteItemDao, StickyNoteItem> stickyNoteDbHelper;
+
     private StickyNoteItemDao stickyNoteItemDao;
+
     private int currentSelectItemIndex = -1;//当前选择的item的index，切换日期会自动设置为-1
 
     public StickyNoteLayout(Context context, @Nullable AttributeSet attrs) {
@@ -107,8 +109,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         mDate = DateUtil.getNowSelectedDate();
-        daoSession = GreenDaoManager.getDaoSession(context);
-        stickyNoteItemDao = daoSession.getStickyNoteItemDao();
+        stickyNoteItemDao = GreenDaoManager.getDaoSession(getContext()).getStickyNoteItemDao();
+        stickyNoteDbHelper = new DbHelper<>(stickyNoteItemDao);
 
         initStickyNoteRv();
 
@@ -145,13 +147,11 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             String inputContent = popupInputLayout.getInputContent();
             StickyNoteItem item = StickyNoteItem.builder()
                     .setNoteContent(inputContent)
-                    .setNoteDate(mDate)
-                    .setOrder(1)
                     .build();
             //当天的笔记是不是空的，需要插入新的标记
             boolean needAddScheme = insertDatehasNoNote();
 
-            GreenDaoManager.getDaoSession(context).getStickyNoteItemDao().insert(item);
+            stickyNoteDbHelper.insertOrReplace(item, false);
             popupInputHelper.dismiss();
             popupInputLayout.clearInputContent();
             Toast.makeText(context, "新建笔记成功", Toast.LENGTH_SHORT).show();
@@ -182,6 +182,12 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setFocusable(false)
                 .setOutsideTouchable(true)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
+                .setOnDismissListener(() -> {
+                    if (currentSelectItemIndex != -1) {
+                        mNoteItemList.get(currentSelectItemIndex).setSelected(false);
+                    }
+                    stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
+                })
                 .build();
     }
 
@@ -198,11 +204,10 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private List<StickyNoteItem> getSelectedDayStickyNoteList() {
         Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
         Date endDate = DateUtil.clearDateHMS(new Date(mDate.getTime() + DateUtil.DAY_IN_MILLIS));
-        return new ArrayList<>(daoSession
-                .getStickyNoteItemDao().queryBuilder()
+        return stickyNoteDbHelper.query(queryBuilder -> queryBuilder
                 .where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
-                        , StickyNoteItemDao.Properties.NoteDate.lt(endDate))
-                .list());
+                        , StickyNoteItemDao.Properties.NoteDate.lt(endDate)));
+
     }
 
     private void initStickyNoteRv() {
@@ -210,14 +215,14 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         stickyNoteAdapter = new StickyNoteAdapter(getContext(), mNoteItemList);
         stickyNoteRecyclerView.setAdapter(stickyNoteAdapter);
         stickyNoteRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag());
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag(getContext(), mNoteItemList));
         itemTouchHelper.attachToRecyclerView(stickyNoteRecyclerView);
         stickyNoteAdapter.setStickyNoteItemClickListener(new StickyNoteItemClickListener() {
             @Override
             public void onItemClickListener(View view, BaseRecyclerViewHolder viewHolder, int position) {
                 StickyNoteItem item = mNoteItemList.get(position);
                 item.moveToNextStatu();
-                daoSession.getStickyNoteItemDao().insertOrReplace(item);
+                stickyNoteDbHelper.insertOrReplace(item, true);
                 stickyNoteAdapter.notifyItemChanged(position);
             }
 
@@ -232,11 +237,19 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 if (currentSelectItemIndex >= 0 && currentSelectItemIndex < stickyNoteAdapter.getItemCount()) {
                     mNoteItemList.get(currentSelectItemIndex).setSelected(false);
                 }
-                mNoteItemList.get(position).setSelected(true);
-                stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
-                currentSelectItemIndex = position;
-                stickyNoteAdapter.notifyItemChanged(position);
-                editStickyNoteItem(stickyNoteItemDao, position);
+                if (currentSelectItemIndex == position) {
+                    mNoteItemList.get(position).setSelected(false);
+                    stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
+                    currentSelectItemIndex = -1;
+                    editPopUpHelper.dismiss();
+                } else {
+                    mNoteItemList.get(position).setSelected(true);
+                    stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
+                    currentSelectItemIndex = position;
+                    stickyNoteAdapter.notifyItemChanged(position);
+                    editStickyNoteItem(stickyNoteItemDao, position);
+                }
+
             }
 
             @Override
@@ -266,18 +279,16 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，刷新笔记页面
      */
     private void refreshData() {
-        if (mNoteItemList == null || stickyNoteAdapter == null || daoSession == null) {
+        if (mNoteItemList == null || stickyNoteAdapter == null || stickyNoteItemDao == null) {
             return;
         }
         currentSelectItemIndex = -1;
         Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
         Date endDate = DateUtil.clearDateHMS(new Date(mDate.getTime() + DateUtil.DAY_IN_MILLIS));
         mNoteItemList.clear();
-        mNoteItemList.addAll(daoSession
-                .getStickyNoteItemDao().queryBuilder()
-                .where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
-                        , StickyNoteItemDao.Properties.NoteDate.lt(endDate))
-                .list());
+        mNoteItemList.addAll(stickyNoteDbHelper.query(queryBuilder ->
+                queryBuilder.where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
+                        , StickyNoteItemDao.Properties.NoteDate.lt(endDate))));
         stickyNoteAdapter.notifyDataSetChanged();
     }
 
@@ -285,7 +296,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，查出所有笔记，并生成日历标记
      */
     private void refreshScheme() {
-        List<StickyNoteItem> allNoteList = new ArrayList<>(daoSession.getStickyNoteItemDao().loadAll());
+        List<StickyNoteItem> allNoteList = new ArrayList<>(stickyNoteDbHelper.loadAll());
         Map<String, Calendar> map = new HashMap<>();
         for (StickyNoteItem noteItem : allNoteList) {
             Calendar calendar = DateUtil.calendarTrans(DateUtil.getCalendarByDate(noteItem.getNoteDate()));

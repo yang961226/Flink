@@ -88,7 +88,7 @@ public class StickyNoteItem {
             return this;
         }
 
-        public Builder setOrder(int order) {
+        public Builder setOrder(long order) {
             this.order = order;
             return this;
         }
