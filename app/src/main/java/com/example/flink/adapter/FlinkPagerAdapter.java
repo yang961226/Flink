@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.example.flink.layout.NoteViewPagerBaseLayout;
+import com.example.flink.layout.note.NoteViewPagerBaseLayout;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.example.flink.common.MyConstants;
-import com.example.flink.note.NoteActivity;
+import com.example.flink.layout.note.NoteActivity;
 import com.example.flink.tools.CommonTools;
 
 import java.util.List;

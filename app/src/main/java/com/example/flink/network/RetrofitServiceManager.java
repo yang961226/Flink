@@ -16,7 +16,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitServiceManager {
 
-    private static final String BASE_URL = "http://106.75.236.98:8080/learn/api/learn/";
+    private static final String BASE_URL = "http://106.75.236.98:8080/flink/test/";
     private static final int DEFAULT_TIME_OUT = 5;//超时时间
     private static final int DEFAULT_READ_TIME_OUT = 10;
 

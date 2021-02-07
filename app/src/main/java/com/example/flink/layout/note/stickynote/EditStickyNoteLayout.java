@@ -1,4 +1,4 @@
-package com.example.flink.layout;
+package com.example.flink.layout.note.stickynote;
 
 import android.content.Context;
 import android.view.View;
@@ -43,7 +43,6 @@ public class EditStickyNoteLayout extends LinearLayout {
     public void setCurPosition(int curPosition) {
         tmpPosition = curPosition;
         this.curPosition = curPosition;
-        LogUtil.e("setCurPosition = " + curPosition);
     }
 
     public void setStickyNoteItemDao(StickyNoteItemDao stickyNoteItemDao) {

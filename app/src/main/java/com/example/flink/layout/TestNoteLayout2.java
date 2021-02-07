@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.flink.R;
 import com.example.flink.event.DateChangeEvent;
+import com.example.flink.layout.note.NoteViewPagerBaseLayout;
 import com.example.flink.network.RetrofitServiceManager;
 import com.example.flink.network.api.TestApi;
 
@@ -42,7 +43,7 @@ public class TestNoteLayout2 extends NoteViewPagerBaseLayout {
     @OnClick(R.id.btn_test_api)
     public void onViewClicked() {
         TestApi testApi = RetrofitServiceManager.getInstance().create(TestApi.class);
-        testApi.getResult("test", new HashMap<>())
+        testApi.getResult("flink", new HashMap<>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

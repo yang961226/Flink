@@ -1,4 +1,4 @@
-package com.example.flink.layout;
+package com.example.flink.layout.note;
 
 import android.content.Context;
 import android.util.AttributeSet;

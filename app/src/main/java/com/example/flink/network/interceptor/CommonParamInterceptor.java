@@ -1,5 +1,8 @@
 package com.example.flink.network.interceptor;
 
+import com.example.flink.network.anno.ConnectionTime;
+import com.example.flink.tools.notify.LogUtil;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +11,7 @@ import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Invocation;
 
 public class CommonParamInterceptor implements Interceptor {
     private static final String METHOD_GET = "GET";
@@ -17,6 +21,9 @@ public class CommonParamInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
+
+        LogUtil.d("超时时间" + request.tag(Invocation.class).method().getAnnotation(ConnectionTime.class).connectionTime());
+
         Request.Builder requestBuilder = request.newBuilder();
 
         if (METHOD_POST.equals(request.method())) {

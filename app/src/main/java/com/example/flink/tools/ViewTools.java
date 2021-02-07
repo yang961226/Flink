@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import com.example.flink.R;
 import com.example.flink.layout.NavigationBarLayout;
-import com.example.flink.layout.NoteViewPagerBaseLayout;
+import com.example.flink.layout.note.NoteViewPagerBaseLayout;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

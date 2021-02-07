@@ -1,4 +1,4 @@
-package com.example.flink.note;
+package com.example.flink.layout.note;
 
 import android.content.Intent;
 import android.os.Message;
@@ -18,7 +18,6 @@ import com.example.flink.common.MyConstants;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
 import com.example.flink.layout.NavigationBarLayout;
-import com.example.flink.layout.NoteViewPagerBaseLayout;
 import com.example.flink.layout.SwitchDateLayout;
 import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
