@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +21,6 @@ import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.adapter.base.BaseRecyclerViewHolder;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.SchemeChangeEvent;
-import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.layout.CalendarSelectLayout;
 import com.example.flink.layout.PopupInputLayout;
@@ -200,17 +200,15 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * @return true:不存在笔记 false:存在笔记
      */
     private boolean insertDatehasNoNote() {
-        return getSelectedDayStickyNoteList().isEmpty();
-    }
-
-    private List<StickyNoteItem> getSelectedDayStickyNoteList() {
-        return stickyNoteDaoHelper.queryNotesOfOneDay(mDate);
+        return stickyNoteDaoHelper.queryNotesOfOneDay(mDate).isEmpty();
     }
 
     private void initStickyNoteRv() {
         mNoteItemList = new ArrayList<>();
         stickyNoteAdapter = new StickyNoteAdapter(getContext(), mNoteItemList);
         stickyNoteRecyclerView.setAdapter(stickyNoteAdapter);
+        stickyNoteRecyclerView.addItemDecoration(new DividerItemDecoration(getContext()
+                , DividerItemDecoration.VERTICAL));
         stickyNoteRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag(mNoteItemList));
         itemTouchHelper.attachToRecyclerView(stickyNoteRecyclerView);
@@ -239,7 +237,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                     mNoteItemList.get(position).setSelected(true);
                     stickyNoteAdapter.notifyItemChanged(position);
                     currentSelectItemIndex = position;
-//                    editStickyNoteItem(stickyNoteItemDao, position);
+                    editStickyNoteItem(position);
                 }
 
             }
@@ -252,23 +250,17 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         });
     }
 
-
-    private void editStickyNoteItem(StickyNoteItemDao dao, int i) {
+    private void editStickyNoteItem(int i) {
         if (isPopupCalendar) {
             popupCalendar();
         }
         editPopUpHelper.showPopupWindow(((Activity) getContext()).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
-        editStickyNoteLayout.setStickyNoteItemDao(dao);
         editStickyNoteLayout.setCurPosition(i);
         editStickyNoteLayout.setStickyNoteItemList(mNoteItemList);
-        editStickyNoteLayout.setOnCompleteListener(new EditStickyNoteLayout.OnCompleteListener() {
-            @Override
-            public void onComplete(List<StickyNoteItem> list, boolean isDelete) {
-                mNoteItemList = list;
-                stickyNoteAdapter.notifyDataSetChanged();
-                if (isDelete) {
-                    currentSelectItemIndex = -1;//原来选中的item已经被删除了
-                }
+        editStickyNoteLayout.setOnCompleteListener((changePosition, isDelete) -> {
+            stickyNoteAdapter.notifyItemRemoved(changePosition);
+            if (isDelete) {
+                currentSelectItemIndex = -1;//原来选中的item已经被删除了
             }
         });
     }

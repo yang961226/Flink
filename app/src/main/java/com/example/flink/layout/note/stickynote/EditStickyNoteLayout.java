@@ -5,11 +5,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.flink.R;
-import com.example.flink.greendao.gen.StickyNoteItemDao;
+import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.item.StickyNoteItem;
-import com.example.flink.tools.notify.LogUtil;
+import com.example.flink.tools.greendao.dataHelper.StickyNoteDaoHelper;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -24,14 +23,16 @@ import butterknife.OnClick;
  */
 public class EditStickyNoteLayout extends LinearLayout {
 
+    private StickyNoteAdapter stickyNoteAdapter;
+    private StickyNoteDaoHelper stickyNoteDaoHelper;
     private List<StickyNoteItem> stickyNoteItemList;
-    private StickyNoteItemDao stickyNoteItemDao;
     private int curPosition;
     private int tmpPosition;
 
     public EditStickyNoteLayout(Context context) {
         super(context);
         View.inflate(context, R.layout.layout_edit_note, this);
+        stickyNoteDaoHelper = StickyNoteDaoHelper.getInstance();
         //绑定处理
         ButterKnife.bind(this);
     }
@@ -45,8 +46,8 @@ public class EditStickyNoteLayout extends LinearLayout {
         this.curPosition = curPosition;
     }
 
-    public void setStickyNoteItemDao(StickyNoteItemDao stickyNoteItemDao) {
-        this.stickyNoteItemDao = stickyNoteItemDao;
+    public void setStickyNoteAdapter(StickyNoteAdapter stickyNoteAdapter) {
+        this.stickyNoteAdapter = stickyNoteAdapter;
     }
 
     @OnClick({
@@ -65,7 +66,6 @@ public class EditStickyNoteLayout extends LinearLayout {
 //                break;
             case R.id.rl_delete:
                 deleteItem();
-                onCompleteListener.onComplete(stickyNoteItemList, true);
                 break;
             case R.id.rl_sub:
                 break;
@@ -76,44 +76,43 @@ public class EditStickyNoteLayout extends LinearLayout {
         }
     }
 
-    private void moveDown() {
-        tmpPosition++;
-        if (tmpPosition < stickyNoteItemList.size() && stickyNoteItemList != null && curPosition < stickyNoteItemList.size()) {
-            Collections.swap(stickyNoteItemList, curPosition, tmpPosition);
-            curPosition++;
-            tmpPosition = curPosition;
-        } else {
-            tmpPosition = curPosition;
-        }
-
-        LogUtil.d("moveDown: curPosition = " + curPosition + "  tmpPosition = " + tmpPosition);
-    }
-
-    private void moveUp() {
-        tmpPosition--;
-        if (tmpPosition >= 0 && stickyNoteItemList != null && curPosition >= 0) {
-            Collections.swap(stickyNoteItemList, curPosition, tmpPosition);
-            curPosition--;
-            tmpPosition = curPosition;
-        } else {
-            tmpPosition = curPosition;
-        }
-
-        LogUtil.d("moveUp: curPosition = " + curPosition + "  tmpPosition = " + tmpPosition);
-    }
+//    private void moveDown() {
+//        tmpPosition++;
+//        if (tmpPosition < stickyNoteItemList.size() && stickyNoteItemList != null && curPosition < stickyNoteItemList.size()) {
+//            Collections.swap(stickyNoteItemList, curPosition, tmpPosition);
+//            curPosition++;
+//            tmpPosition = curPosition;
+//        } else {
+//            tmpPosition = curPosition;
+//        }
+//
+//        LogUtil.d("moveDown: curPosition = " + curPosition + "  tmpPosition = " + tmpPosition);
+//    }
+//
+//    private void moveUp() {
+//        tmpPosition--;
+//        if (tmpPosition >= 0 && stickyNoteItemList != null && curPosition >= 0) {
+//            Collections.swap(stickyNoteItemList, curPosition, tmpPosition);
+//            curPosition--;
+//            tmpPosition = curPosition;
+//        } else {
+//            tmpPosition = curPosition;
+//        }
+//
+//        LogUtil.d("moveUp: curPosition = " + curPosition + "  tmpPosition = " + tmpPosition);
+//    }
 
     private void deleteItem() {
-        if (stickyNoteItemDao != null || stickyNoteItemList != null) {
-            stickyNoteItemDao.delete(stickyNoteItemList.get(curPosition));
-            stickyNoteItemList.remove(curPosition);
-        }
+        stickyNoteDaoHelper.delete(stickyNoteItemList.get(curPosition));
+        stickyNoteItemList.remove(curPosition);
+        onCompleteListener.onComplete(curPosition, true);
     }
 
     /*内部回调*/
     private OnCompleteListener onCompleteListener;
 
     public interface OnCompleteListener {
-        void onComplete(List<StickyNoteItem> list, boolean isDelete);
+        void onComplete(int changePosition, boolean isDelete);
     }
 
     public void setOnCompleteListener(OnCompleteListener onCompleteListener) {

@@ -41,6 +41,10 @@ public class StickyNoteDaoHelper {
         stickyNoteItemDao.insertOrReplace(item);
     }
 
+    public void delete(StickyNoteItem stickyNoteItem) {
+        stickyNoteItemDao.delete(stickyNoteItem);
+    }
+
     /**
      * 查询某天的所有笔记
      *
