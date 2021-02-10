@@ -55,12 +55,15 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     RecyclerView stickyNoteRecyclerView;
     private List<StickyNoteItem> mNoteItemList;
 
+    //日历选择器
     private CalendarSelectLayout calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
 
+    //编辑条弹窗
     private PopUpWindowHelper editPopUpHelper;
     private EditStickyNoteLayout editStickyNoteLayout;
 
+    //新建弹窗
     private PopUpWindowHelper popupInputHelper;
     private PopupInputLayout popupInputLayout;
 
@@ -110,7 +113,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         mDate = DateUtil.getNowSelectedDate();
-        stickyNoteDaoHelper = new StickyNoteDaoHelper(getContext());
+        stickyNoteDaoHelper = StickyNoteDaoHelper.getInstance();
         initStickyNoteRv();
 
         //初始化3个弹窗
@@ -209,7 +212,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         stickyNoteAdapter = new StickyNoteAdapter(getContext(), mNoteItemList);
         stickyNoteRecyclerView.setAdapter(stickyNoteAdapter);
         stickyNoteRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag(getContext(), mNoteItemList));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag(mNoteItemList));
         itemTouchHelper.attachToRecyclerView(stickyNoteRecyclerView);
         stickyNoteAdapter.setStickyNoteItemClickListener(new StickyNoteItemClickListener() {
             @Override
@@ -222,7 +225,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
             @Override
             public boolean onItemLongClickListener(View view, BaseRecyclerViewHolder viewHolder, int position) {
-                itemTouchHelper.startDrag(viewHolder);
                 return true;
             }
 

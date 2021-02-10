@@ -34,8 +34,8 @@ public class FlinkApplication extends Application {
     }
 
     private void initGreenDao() {
-        GreenDaoManager.getInstance(this);
-        GreenDaoManager.getDaoMaster(this);
+        GreenDaoManager.getInstance();//初始化
+        GreenDaoManager.getDaoMaster();//初始化
     }
 
     private void init() {

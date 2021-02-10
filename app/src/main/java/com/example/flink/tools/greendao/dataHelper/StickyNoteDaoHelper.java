@@ -1,7 +1,5 @@
 package com.example.flink.tools.greendao.dataHelper;
 
-import android.content.Context;
-
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.tools.DateUtil;
@@ -15,10 +13,23 @@ import java.util.List;
  */
 public class StickyNoteDaoHelper {
 
+    private static volatile StickyNoteDaoHelper singleTon;
+
     private StickyNoteItemDao stickyNoteItemDao;
 
-    public StickyNoteDaoHelper(Context context) {
-        stickyNoteItemDao = GreenDaoManager.getDaoSession(context).getStickyNoteItemDao();
+    public static StickyNoteDaoHelper getInstance() {
+        if (singleTon == null) {
+            synchronized (StickyNoteDaoHelper.class) {
+                if (singleTon == null) {
+                    singleTon = new StickyNoteDaoHelper();
+                }
+            }
+        }
+        return singleTon;
+    }
+
+    private StickyNoteDaoHelper() {
+        stickyNoteItemDao = GreenDaoManager.getDaoSession().getStickyNoteItemDao();
     }
 
     /**
