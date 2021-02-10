@@ -52,7 +52,19 @@ public class StickyNoteItem {
         return new Builder();
     }
 
-    public static class Builder{
+    @Override
+    public String toString() {
+        return "StickyNoteItem{" +
+                "statu=" + statu +
+                ", noteContent='" + noteContent + '\'' +
+                ", noteDate=" + noteDate +
+                ", order=" + order +
+                ", id=" + id +
+                ", isSelected=" + isSelected +
+                '}';
+    }
+
+    public static class Builder {
         private int statu;//状态
 
         private String noteContent;//笔记内容

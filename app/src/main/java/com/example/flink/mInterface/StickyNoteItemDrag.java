@@ -11,6 +11,7 @@ import com.example.flink.greendao.gen.DaoSession;
 import com.example.flink.greendao.gen.StickyNoteItemDao;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.tools.greendao.GreenDaoManager;
+import com.example.flink.tools.notify.LogUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +66,8 @@ public class StickyNoteItemDrag extends ItemTouchHelper.Callback {
         toItem.setOrder(tmpOrder);
         stickyNoteItemDao.insertOrReplace(fromItem);
         stickyNoteItemDao.insertOrReplace(toItem);
+        LogUtil.d("拖拽交换测试：", String.format("内容：%s，order：%s  交换  内容：%s，order：%s", fromItem.getNoteContent()
+                , fromItem.getOrder(), toItem.getNoteContent(), toItem.getOrder()));
         return true;
     }
 

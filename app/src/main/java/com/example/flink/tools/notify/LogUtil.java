@@ -15,7 +15,7 @@ public class LogUtil {
 
     public static void e(String tag, String tip) {
         if (CommonTools.isDebugMode()) {
-            Log.e(TAG + tag, "错误：" + tip);
+            Log.e(TAG + tag, tip);
         }
     }
 
@@ -25,7 +25,7 @@ public class LogUtil {
 
     public static void d(String tag, String tip) {
         if (CommonTools.isDebugMode()) {
-            Log.d(TAG + tag, "调试：" + tip);
+            Log.d(TAG + tag, tip);
         }
     }
 
@@ -35,7 +35,7 @@ public class LogUtil {
 
     public static void w(String tag, String tip) {
         if (CommonTools.isDebugMode()) {
-            Log.w(TAG + tag, "警告：" + tip);
+            Log.w(TAG + tag, tip);
         }
     }
 }

@@ -29,7 +29,8 @@ import com.example.flink.mInterface.StickyNoteItemClickListener;
 import com.example.flink.mInterface.StickyNoteItemDrag;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
-import com.example.flink.tools.greendao.GreenDaoManager;
+import com.example.flink.tools.greendao.dataHelper.StickyNoteDaoHelper;
+import com.example.flink.tools.notify.LogUtil;
 import com.example.flink.tools.notify.ToastUtil;
 import com.haibin.calendarview.Calendar;
 
@@ -69,11 +70,11 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     private InputMethodManager imm;
 
-    private Date mDate;
-
-    private StickyNoteItemDao stickyNoteItemDao;
+    private Date mDate;//当前的日期
 
     private int currentSelectItemIndex = -1;//当前选择的item的index，切换日期会自动设置为-1
+
+    private StickyNoteDaoHelper stickyNoteDaoHelper;
 
     public StickyNoteLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -109,7 +110,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         mDate = DateUtil.getNowSelectedDate();
-        stickyNoteItemDao = GreenDaoManager.getDaoSession(getContext()).getStickyNoteItemDao();
+        stickyNoteDaoHelper = new StickyNoteDaoHelper(getContext());
         initStickyNoteRv();
 
         //初始化3个弹窗
@@ -149,7 +150,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             //当天的笔记是不是空的，需要插入新的标记
             boolean needAddScheme = insertDatehasNoNote();
 
-            stickyNoteItemDao.insertOrReplace(item);
+            stickyNoteDaoHelper.insertOrReplace(item);
             popupInputHelper.dismiss();
             popupInputLayout.clearInputContent();
             Toast.makeText(context, "新建笔记成功", Toast.LENGTH_SHORT).show();
@@ -200,10 +201,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     }
 
     private List<StickyNoteItem> getSelectedDayStickyNoteList() {
-        Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
-        Date endDate = DateUtil.clearDateHMS(new Date(mDate.getTime() + DateUtil.DAY_IN_MILLIS));
-        return stickyNoteItemDao.queryBuilder().where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
-                , StickyNoteItemDao.Properties.NoteDate.lt(endDate)).list();
+        return stickyNoteDaoHelper.queryNotesOfOneDay(mDate);
     }
 
     private void initStickyNoteRv() {
@@ -218,7 +216,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             public void onItemClickListener(View view, BaseRecyclerViewHolder viewHolder, int position) {
                 StickyNoteItem item = mNoteItemList.get(position);
                 item.moveToNextStatu();
-                stickyNoteItemDao.insertOrReplace(item);
+                stickyNoteDaoHelper.insertOrReplace(item);
                 stickyNoteAdapter.notifyItemChanged(position);
             }
 
@@ -230,20 +228,16 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
             @Override
             public void onMoreBtnClickListener(View view, BaseRecyclerViewHolder viewHolder, int position) {
-                if (currentSelectItemIndex >= 0 && currentSelectItemIndex < stickyNoteAdapter.getItemCount()) {
-                    mNoteItemList.get(currentSelectItemIndex).setSelected(false);
-                }
-                if (currentSelectItemIndex == position) {
+                if (currentSelectItemIndex == position) {//选中的是已经选中的，则反选
                     mNoteItemList.get(position).setSelected(false);
                     stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
                     currentSelectItemIndex = -1;
                     editPopUpHelper.dismiss();
                 } else {
                     mNoteItemList.get(position).setSelected(true);
-                    stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
-                    currentSelectItemIndex = position;
                     stickyNoteAdapter.notifyItemChanged(position);
-                    editStickyNoteItem(stickyNoteItemDao, position);
+                    currentSelectItemIndex = position;
+//                    editStickyNoteItem(stickyNoteItemDao, position);
                 }
 
             }
@@ -265,9 +259,15 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         editStickyNoteLayout.setStickyNoteItemDao(dao);
         editStickyNoteLayout.setCurPosition(i);
         editStickyNoteLayout.setStickyNoteItemList(mNoteItemList);
-        editStickyNoteLayout.setOnCompleteListener(list -> {
-            mNoteItemList = list;
-            stickyNoteAdapter.notifyDataSetChanged();
+        editStickyNoteLayout.setOnCompleteListener(new EditStickyNoteLayout.OnCompleteListener() {
+            @Override
+            public void onComplete(List<StickyNoteItem> list, boolean isDelete) {
+                mNoteItemList = list;
+                stickyNoteAdapter.notifyDataSetChanged();
+                if (isDelete) {
+                    currentSelectItemIndex = -1;//原来选中的item已经被删除了
+                }
+            }
         });
     }
 
@@ -275,15 +275,16 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，刷新笔记页面
      */
     private void refreshData() {
-        if (mNoteItemList == null || stickyNoteAdapter == null || stickyNoteItemDao == null) {
+        if (mNoteItemList == null || stickyNoteAdapter == null) {
             return;
         }
         currentSelectItemIndex = -1;
-        Date startDate = DateUtil.clearDateHMS(new Date(mDate.getTime()));
-        Date endDate = DateUtil.clearDateHMS(new Date(mDate.getTime() + DateUtil.DAY_IN_MILLIS));
+
         mNoteItemList.clear();
-        mNoteItemList.addAll(stickyNoteItemDao.queryBuilder().where(StickyNoteItemDao.Properties.NoteDate.ge(startDate)
-                , StickyNoteItemDao.Properties.NoteDate.lt(endDate)).list());
+        mNoteItemList.addAll(stickyNoteDaoHelper.queryNotesOfOneDay(mDate));
+        for (int i = 0; i < mNoteItemList.size(); i++) {
+            LogUtil.d("测试", mNoteItemList.get(i).toString() + "\n");
+        }
         stickyNoteAdapter.notifyDataSetChanged();
     }
 
@@ -291,7 +292,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * 查询数据库，查出所有笔记，并生成日历标记
      */
     private void refreshScheme() {
-        List<StickyNoteItem> allNoteList = new ArrayList<>(stickyNoteItemDao.loadAll());
+        List<StickyNoteItem> allNoteList = new ArrayList<>(stickyNoteDaoHelper.loadAllNotes());
         Map<String, Calendar> map = new HashMap<>();
         for (StickyNoteItem noteItem : allNoteList) {
             Calendar calendar = DateUtil.calendarTrans(DateUtil.getCalendarByDate(noteItem.getNoteDate()));

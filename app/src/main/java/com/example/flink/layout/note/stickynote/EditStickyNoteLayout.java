@@ -55,17 +55,17 @@ public class EditStickyNoteLayout extends LinearLayout {
     })
     protected void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_arrow_down:
-                moveDown();
-                onCompleteListener.onComplete(stickyNoteItemList);
-                break;
-            case R.id.iv_arrow_up:
-                moveUp();
-                onCompleteListener.onComplete(stickyNoteItemList);
-                break;
+//            case R.id.iv_arrow_down:
+//                moveDown();
+//                onCompleteListener.onComplete(stickyNoteItemList);
+//                break;
+//            case R.id.iv_arrow_up:
+//                moveUp();
+//                onCompleteListener.onComplete(stickyNoteItemList);
+//                break;
             case R.id.rl_delete:
                 deleteItem();
-                onCompleteListener.onComplete(stickyNoteItemList);
+                onCompleteListener.onComplete(stickyNoteItemList, true);
                 break;
             case R.id.rl_sub:
                 break;
@@ -113,7 +113,7 @@ public class EditStickyNoteLayout extends LinearLayout {
     private OnCompleteListener onCompleteListener;
 
     public interface OnCompleteListener {
-        void onComplete(List<StickyNoteItem> list);
+        void onComplete(List<StickyNoteItem> list, boolean isDelete);
     }
 
     public void setOnCompleteListener(OnCompleteListener onCompleteListener) {
