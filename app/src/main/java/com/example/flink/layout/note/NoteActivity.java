@@ -207,35 +207,35 @@ public class NoteActivity extends NoteBaseActivity {
             public void onLastDayBtnClick() {
                 Date tmpDate = DateUtil.addDay(getNowDateFromDataManager(), -1);
                 DateUtil.saveDateAsSelectedDate(tmpDate);
-                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
+                EventBus.getDefault().post(new DateChangeEvent(getClass().getName()));
             }
 
             @Override
             public void onLastMonthBtnClick() {
                 Date tmpDate = DateUtil.addMonth(getNowDateFromDataManager(), -1);
                 DateUtil.saveDateAsSelectedDate(tmpDate);
-                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
+                EventBus.getDefault().post(new DateChangeEvent(getClass().getName()));
             }
 
             @Override
             public void onTodayBtnClick() {
                 Date tmpDate = DateUtil.getNowDate();
                 DateUtil.saveDateAsSelectedDate(tmpDate);
-                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
+                EventBus.getDefault().post(new DateChangeEvent(getClass().getName()));
             }
 
             @Override
             public void onNextDayBtnClick() {
                 Date tmpDate = DateUtil.addDay(getNowDateFromDataManager(), 1);
                 DateUtil.saveDateAsSelectedDate(tmpDate);
-                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
+                EventBus.getDefault().post(new DateChangeEvent(getClass().getName()));
             }
 
             @Override
             public void onNextMonthBtnClick() {
                 Date tmpDate = DateUtil.addMonth(getNowDateFromDataManager(), 1);
                 DateUtil.saveDateAsSelectedDate(tmpDate);
-                EventBus.getDefault().post(new DateChangeEvent(tmpDate));
+                EventBus.getDefault().post(new DateChangeEvent(getClass().getName()));
             }
         });
     }

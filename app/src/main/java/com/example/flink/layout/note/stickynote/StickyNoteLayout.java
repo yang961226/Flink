@@ -39,7 +39,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +55,8 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     private List<StickyNoteItem> mNoteItemList;
 
     //日历选择器
-    private CalendarSelectLayout calendarSelectLayout;
     private PopUpWindowHelper calenderPopUpHelper;
+    private CalendarSelectLayout calendarSelectLayout;
 
     //编辑条弹窗
     private PopUpWindowHelper editPopUpHelper;
@@ -69,11 +68,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     private StickyNoteAdapter stickyNoteAdapter;
 
-    private boolean isPopupCalendar = false;//日期选择器是否弹出来
-
     private InputMethodManager imm;
-
-    private Date mDate;//当前的日期
 
     private int currentSelectItemIndex = -1;//当前选择的item的index，切换日期会自动设置为-1
 
@@ -90,7 +85,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDateChange(DateChangeEvent dateChangeEvent) {
-        mDate = dateChangeEvent.getDate();
         refreshData();
     }
 
@@ -112,7 +106,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     protected void init(Context context) {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-        mDate = DateUtil.getNowSelectedDate();
         stickyNoteDaoHelper = StickyNoteDaoHelper.getInstance();
         initStickyNoteRv();
 
@@ -148,6 +141,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             }
             String inputContent = popupInputLayout.getInputContent();
             StickyNoteItem item = StickyNoteItem.builder()
+                    .setNoteDate(DateUtil.getNowSelectedDate())
                     .setNoteContent(inputContent)
                     .build();
             //当天的笔记是不是空的，需要插入新的标记
@@ -159,7 +153,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             Toast.makeText(context, "新建笔记成功", Toast.LENGTH_SHORT).show();
 
             if (needAddScheme) {
-                EventBus.getDefault().post(new SchemeChangeEvent(mDate, true));
+                EventBus.getDefault().post(new SchemeChangeEvent(DateUtil.getNowSelectedDate(), true));
             }
             refreshData();
         });
@@ -200,7 +194,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
      * @return true:不存在笔记 false:存在笔记
      */
     private boolean insertDatehasNoNote() {
-        return stickyNoteDaoHelper.queryNotesOfOneDay(mDate).isEmpty();
+        return stickyNoteDaoHelper.queryNotesOfOneDay(DateUtil.getNowSelectedDate()).isEmpty();
     }
 
     private void initStickyNoteRv() {
@@ -226,6 +220,9 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
             @Override
             public void onMoreBtnClickListener(View view, BaseRecyclerViewHolder viewHolder, int position) {
+                if (calenderPopUpHelper.isShowing()) {
+                    calenderPopUpHelper.dismiss();
+                }
                 if (currentSelectItemIndex == position) {//选中的是已经选中的，则反选
                     mNoteItemList.get(position).setSelected(false);
                     stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
@@ -252,9 +249,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     }
 
     private void editStickyNoteItem(int i) {
-        if (isPopupCalendar) {
-            popupCalendar();
-        }
+
         editPopUpHelper.showPopupWindow(((Activity) getContext()).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
         editStickyNoteLayout.setCurPosition(i);
         editStickyNoteLayout.setStickyNoteItemList(mNoteItemList);
@@ -276,7 +271,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         currentSelectItemIndex = -1;
 
         mNoteItemList.clear();
-        mNoteItemList.addAll(stickyNoteDaoHelper.queryNotesOfOneDay(mDate));
+        mNoteItemList.addAll(stickyNoteDaoHelper.queryNotesOfOneDay(DateUtil.getNowSelectedDate()));
         for (int i = 0; i < mNoteItemList.size(); i++) {
             LogUtil.d("测试", mNoteItemList.get(i).toString() + "\n");
         }
@@ -298,36 +293,34 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
 
     private void popupCalendar() {
-        if (isPopupCalendar) {
-            calenderPopUpHelper.dismiss();
-        } else {
-            calenderPopUpHelper.showPopupWindow(((Activity) getContext()).findViewById(R.id.switchDateLayout)
-                    , PopUpWindowHelper.LocationType.TOP_TEST);
-        }
-        isPopupCalendar = !isPopupCalendar;
+        calenderPopUpHelper.showPopupWindow(((Activity) getContext()).findViewById(R.id.switchDateLayout)
+                , PopUpWindowHelper.LocationType.TOP_TEST);
     }
 
     @Override
     public void onClickFunction() {
-        if (isPopupCalendar) {//如果在日历选择window打开的情况下，轻点也是隐藏
-            popupCalendar();
-        } else {
-            popupInputHelper.showPopupWindow(((Activity) getContext()).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
-            popupInputLayout.getFEtNoteContent().requestFocus();
-            imm.toggleSoftInput(1000, InputMethodManager.HIDE_NOT_ALWAYS);
+        if (calenderPopUpHelper.isShowing()) {
+            calenderPopUpHelper.dismiss();
         }
+        popupInputHelper.showPopupWindow(((Activity) getContext()).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
+        popupInputLayout.getFEtNoteContent().requestFocus();
+        imm.toggleSoftInput(1000, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
     public void onLongClickFunction() {
+        if (calenderPopUpHelper.isShowing()) {
+            calenderPopUpHelper.dismiss();
+            return;
+        }
         popupCalendar();
     }
 
     @Override
     public void onViewPagerScorll() {
-        if (isPopupCalendar) {
-            popupCalendar();
-        }
+//        if (isPopupCalendar) {
+//            popupCalendar();
+//        }
     }
 
 }

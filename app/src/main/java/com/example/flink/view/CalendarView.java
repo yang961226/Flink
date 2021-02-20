@@ -41,7 +41,7 @@ public class CalendarView extends LinearLayout implements Unregister {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDateChange(DateChangeEvent dateChangeEvent) {
-        setDateText(dateChangeEvent.getDate());
+        setDateText(DateUtil.getNowSelectedDate());
     }
 
     private void setDateText(Date date) {

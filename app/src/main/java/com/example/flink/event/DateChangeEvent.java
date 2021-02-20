@@ -1,25 +1,18 @@
 package com.example.flink.event;
 
-import java.util.Date;
-
+/**
+ * 日期改变事件已经不再传对应的日期，因为当前选中的日期已经通过DateUtil的getNowSelectedDate()方法获取
+ */
 public class DateChangeEvent {
-
-    private final Date mDate;
 
     private final String originClassName;//发送这个事件的对象的类名（用于拒收自己发出的事件）
 
-    public DateChangeEvent(Date date) {
-        mDate = date;
+    public DateChangeEvent() {
         originClassName = "";
     }
 
-    public DateChangeEvent(Date date, String originClassName) {
-        mDate = date;
+    public DateChangeEvent(String originClassName) {
         this.originClassName = originClassName;
-    }
-
-    public Date getDate() {
-        return mDate;
     }
 
     public String getOriginClassName() {

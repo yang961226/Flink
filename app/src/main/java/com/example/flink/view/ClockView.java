@@ -136,7 +136,7 @@ public class ClockView extends LinearLayout implements Unregister {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDateChange(DateChangeEvent dateChangeEvent) {
-        Date date = dateChangeEvent.getDate();
+        Date date = DateUtil.getNowSelectedDate();
         if (DateUtil.format(date).equals(DateUtil.format(new Date())))
             isToday.setVisibility(VISIBLE);
         else isToday.setVisibility(INVISIBLE);

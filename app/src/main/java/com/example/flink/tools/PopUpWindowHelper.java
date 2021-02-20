@@ -36,6 +36,10 @@ public class PopUpWindowHelper {
         //屏蔽
     }
 
+    public boolean isShowing() {
+        return mPopupWindow.isShowing();
+    }
+
     public void showPopupWindow(View v, LocationType type) {
         if (mView != null) {
             mPopupWindow.setContentView(mView);

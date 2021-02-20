@@ -74,7 +74,7 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
             return;
         }
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateChangeEvent.getDate());
+        calendar.setTime(DateUtil.getNowSelectedDate());
         calendarview.scrollToCalendar(calendar.get(Calendar.YEAR)
                 , calendar.get(Calendar.MONTH) + 1
                 , calendar.get(Calendar.DAY_OF_MONTH), true);
@@ -83,9 +83,8 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
     @Override
     public void onCalendarSelect(com.haibin.calendarview.Calendar calendar, boolean isClick) {
         if (isClick) {
-            EventBus.getDefault().post(new DateChangeEvent(
-                    getDateByYMD(calendar.getYear(), calendar.getMonth(), calendar.getDay()), getClass().getName()));
             DateUtil.saveDateAsSelectedDate(getDateByCalendar(calendar));
+            EventBus.getDefault().post(new DateChangeEvent(getClass().getName()));
         }
     }
 
