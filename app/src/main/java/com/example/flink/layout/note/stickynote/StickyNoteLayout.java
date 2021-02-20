@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.adapter.base.BaseRecyclerViewHolder;
+import com.example.flink.common.StickyNoteItemDrag;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.SchemeChangeEvent;
 import com.example.flink.item.StickyNoteItem;
@@ -26,7 +27,6 @@ import com.example.flink.layout.CalendarSelectLayout;
 import com.example.flink.layout.PopupInputLayout;
 import com.example.flink.layout.note.NoteViewPagerBaseLayout;
 import com.example.flink.mInterface.StickyNoteItemClickListener;
-import com.example.flink.mInterface.StickyNoteItemDrag;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.dataHelper.StickyNoteDaoHelper;
@@ -210,8 +210,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         stickyNoteRecyclerView.addItemDecoration(new DividerItemDecoration(getContext()
                 , DividerItemDecoration.VERTICAL));
         stickyNoteRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag(mNoteItemList));
-        itemTouchHelper.attachToRecyclerView(stickyNoteRecyclerView);
         stickyNoteAdapter.setStickyNoteItemClickListener(new StickyNoteItemClickListener() {
             @Override
             public void onItemClickListener(View view, BaseRecyclerViewHolder viewHolder, int position) {
@@ -248,6 +246,9 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 return true;
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new StickyNoteItemDrag(mNoteItemList, stickyNoteAdapter));
+        itemTouchHelper.attachToRecyclerView(stickyNoteRecyclerView);
     }
 
     private void editStickyNoteItem(int i) {
