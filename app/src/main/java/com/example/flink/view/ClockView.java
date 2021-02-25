@@ -15,7 +15,6 @@ import com.example.flink.R;
 import com.example.flink.common.MyConstants;
 import com.example.flink.event.DateChangeEvent;
 import com.example.flink.event.TickEvent;
-import com.example.flink.mInterface.DataInterface;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.data.DataManager;
@@ -29,6 +28,8 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.example.flink.tools.data.DataManager.DataManagerEnum.SP_DATA_MANAGER;
 
 @SuppressLint("NonConstantResourceId")
 public class ClockView extends LinearLayout implements Unregister {
@@ -70,7 +71,7 @@ public class ClockView extends LinearLayout implements Unregister {
 
     private final Unbinder unbinder;
 
-    private final DataInterface dataInterface;
+    private DataManager dataManager;
 
     public ClockView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -80,7 +81,7 @@ public class ClockView extends LinearLayout implements Unregister {
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        dataInterface = DataManager.getDataManager(DataManager.DataManagerEnum.SP_DATA_MANAGER);
+        dataManager = new DataManager(SP_DATA_MANAGER);
 
         initNumberImage();
     }
@@ -91,7 +92,7 @@ public class ClockView extends LinearLayout implements Unregister {
         //发生变化时改变数字图片
         String numbers = DateUtil.format(tickEvent.getDate(), DateUtil.FORMAT_Hms);
 
-        if (dataInterface.getBoolean(MyConstants.ENABLE_24HOURS_FORMAT)) {//24小时格式
+        if (dataManager.getBoolean(MyConstants.ENABLE_24HOURS_FORMAT)) {//24小时格式
             am_or_pm.setVisibility(INVISIBLE);
         } else {//12小时格式
             am_or_pm.setVisibility(VISIBLE);

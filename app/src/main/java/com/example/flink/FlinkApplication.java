@@ -9,6 +9,8 @@ import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.data.DataManager;
 import com.example.flink.tools.greendao.GreenDaoManager;
 
+import static com.example.flink.tools.data.DataManager.DataManagerEnum.RAM_DATA_MANAGER;
+
 /**
  * MyApplication
  */
@@ -42,7 +44,6 @@ public class FlinkApplication extends Application {
         context = getApplicationContext();
         initGreenDao();
         //初始化程序的当前选择日期
-        DataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER)
-                .saveObject(MyConstants.KEY_NOW_DATE, DateUtil.getNowDate());
+        new DataManager(RAM_DATA_MANAGER).saveObject(MyConstants.KEY_NOW_DATE, DateUtil.getNowDate());
     }
 }

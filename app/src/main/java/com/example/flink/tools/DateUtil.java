@@ -3,7 +3,6 @@ package com.example.flink.tools;
 import android.text.TextUtils;
 
 import com.example.flink.common.MyConstants;
-import com.example.flink.mInterface.DataInterface;
 import com.example.flink.tools.data.DataManager;
 
 import java.text.ParseException;
@@ -11,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.example.flink.tools.data.DataManager.DataManagerEnum.RAM_DATA_MANAGER;
 
 public class DateUtil {
 
@@ -67,6 +68,8 @@ public class DateUtil {
     public static final long DAY_IN_MILLIS = 86400000L;
     public static final long WEEK_IN_MILLIS = 604800000L;
     public static final long YEAR_IN_MILLIS = 31449600000L;
+
+    private static DataManager dataManager = new DataManager(RAM_DATA_MANAGER);
 
     /**
      * 获得默认的 date pattern
@@ -309,12 +312,11 @@ public class DateUtil {
      * @return 日期
      */
     public static Date getNowSelectedDate() {
-        DataInterface ramDataManager = DataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER);
-        if (ramDataManager.getObject(MyConstants.KEY_NOW_DATE) == null
-                || !(ramDataManager.getObject(MyConstants.KEY_NOW_DATE) instanceof Date)) {
+        if (dataManager.getObject(MyConstants.KEY_NOW_DATE) == null
+                || !(dataManager.getObject(MyConstants.KEY_NOW_DATE) instanceof Date)) {
             return DateUtil.getNowDate();
         } else {
-            return (Date) ramDataManager.getObject(MyConstants.KEY_NOW_DATE);
+            return (Date) dataManager.getObject(MyConstants.KEY_NOW_DATE);
         }
     }
 
@@ -324,7 +326,7 @@ public class DateUtil {
      * @param date 需要保存的日期
      */
     public static void saveDateAsSelectedDate(Date date) {
-        DataManager.getDataManager(DataManager.DataManagerEnum.RAM_DATA_MANAGER).saveObject(MyConstants.KEY_NOW_DATE, date);
+        dataManager.saveObject(MyConstants.KEY_NOW_DATE, date);
     }
 
     /**
