@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.example.flink.common.MyConstants;
 import com.example.flink.tools.DateUtil;
+import com.example.flink.tools.data.ConfigurationHelper;
 import com.example.flink.tools.data.DataManager;
 import com.example.flink.tools.greendao.GreenDaoManager;
 
@@ -43,7 +44,9 @@ public class FlinkApplication extends Application {
     private void init() {
         context = getApplicationContext();
         initGreenDao();
-        //初始化程序的当前选择日期
+        //初始化程序的当前选择日期（今天）
         new DataManager(RAM_DATA_MANAGER).saveObject(MyConstants.KEY_NOW_DATE, DateUtil.getNowDate());
+        //初始化配置（复制SP配置到RAM中）
+        ConfigurationHelper.initRamConfig();
     }
 }

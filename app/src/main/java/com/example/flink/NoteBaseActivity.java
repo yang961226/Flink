@@ -1,7 +1,5 @@
 package com.example.flink;
 
-import android.view.View;
-
 /**
  * 日记页面的基类
  */
@@ -20,8 +18,6 @@ public abstract class NoteBaseActivity extends FlinkBaseActivity {
         initBottom();
         initOther();
     }
-
-    protected abstract void onBtnClick(View view);
 
     protected abstract void initTop();
 

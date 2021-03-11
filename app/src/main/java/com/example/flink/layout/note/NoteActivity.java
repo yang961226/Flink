@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.viewpager.widget.PagerAdapter;
@@ -23,6 +22,7 @@ import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.ViewTools;
+import com.example.flink.view.BottomBar;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.TimerTask;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
 
 public class NoteActivity extends NoteBaseActivity {
 
@@ -52,11 +50,8 @@ public class NoteActivity extends NoteBaseActivity {
     @BindView(R.id.switchDateLayout)
     SwitchDateLayout switchDateLayout;
 
-    @BindView(R.id.btn_setting)
-    ImageView btnSetting;
-
-    @BindView(R.id.btn_function)
-    ImageView btn_function;
+    @BindView(R.id.bottom_bar)
+    BottomBar bottomBar;
 
     private static final int VIEW_PAGER_ID = 5242;
 
@@ -76,25 +71,25 @@ public class NoteActivity extends NoteBaseActivity {
         noteViewList = new ArrayList<>();
     }
 
-    @OnClick({R.id.btn_setting, R.id.btn_function})
-    @Override
-    protected void onBtnClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.btn_function:
-                onFunctionClick(false);
-                break;
-        }
-    }
-
-    @OnLongClick({R.id.btn_function})
-    protected void onBtnLongClick(View view) {
-        if (view.getId() == R.id.btn_function) {
-            onFunctionClick(true);
-        }
-    }
+//    @OnClick({R.id.btn_setting, R.id.btn_function})
+//    @Override
+//    protected void onBtnClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.btn_setting:
+//                startActivity(new Intent(this, SettingsActivity.class));
+//                break;
+//            case R.id.btn_function:
+//                onFunctionClick(false);
+//                break;
+//        }
+//    }
+//
+//    @OnLongClick({R.id.btn_function})
+//    protected void onBtnLongClick(View view) {
+//        if (view.getId() == R.id.btn_function) {
+//            onFunctionClick(true);
+//        }
+//    }
 
     private void onFunctionClick(boolean isLongClick) {
         View view = noteViewList.get(vpIndex);
@@ -160,7 +155,14 @@ public class NoteActivity extends NoteBaseActivity {
 
     @Override
     protected void initBottom() {
+        bottomBar.setLeftBtnOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
 
+        bottomBar.setRightBtnOnClickListener(v -> onFunctionClick(false));
+
+        bottomBar.setRightBtnOnLongClickListener(v -> {
+            onFunctionClick(true);
+            return true;
+        });
     }
 
     private void initViewPager() {

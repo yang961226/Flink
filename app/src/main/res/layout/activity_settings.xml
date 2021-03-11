@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="10dp">
 
     <LinearLayout
+        android:padding="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -28,16 +29,30 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5">
 
-        <LinearLayout
-            android:id="@+id/ll_content"
-            android:orientation="vertical"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <com.example.flink.view.BottomBar
+            android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </ScrollView>
+    </LinearLayout>
+
 
 </LinearLayout>
