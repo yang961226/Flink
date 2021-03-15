@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.flink.FlinkApplication;
 import com.example.flink.FlinkBaseActivity;
@@ -36,6 +38,28 @@ public class CommonTools {
 
     public static void redirect(Activity from, Class<? extends FlinkBaseActivity> to) {
         redirect(from, to, new Bundle());
+    }
+
+    public static ImageView buildIconImageView(Context context,
+                                               int resId) {
+        ImageView imageView = new ImageView(context);
+        imageView.setImageResource(resId);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(CommonTools.dip2px(context, 5)
+                , CommonTools.dip2px(context, 5)
+                , CommonTools.dip2px(context, 5)
+                , CommonTools.dip2px(context, 5));
+        imageView.setLayoutParams(lp);
+
+//        if(!TextUtils.isEmpty(clickMsg)){
+//            imageView.setOnClickListener(v -> {
+//                MessageDialogHelper messageDialogHelper=new MessageDialogHelper(context);
+//                messageDialogHelper.showMsgDialog(view,"图标含义",clickMsg,onDialogButtonClickListener);
+//            });
+//        }
+
+        return imageView;
     }
 
     /**

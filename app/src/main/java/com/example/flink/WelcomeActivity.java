@@ -52,19 +52,10 @@ public class WelcomeActivity extends FlinkBaseActivity implements EasyPermission
     private void initIconImageView() {
         TypedArray array = this.getResources().obtainTypedArray(R.array.sticky_note_res);
         for (int i = 0; i < array.length(); i++) {
-            ImageView imageView = new ImageView(this);
-            imageView.setImageResource(array.getResourceId(i, R.drawable.circle_common2));
+            ImageView imageView = CommonTools.buildIconImageView(this, array.getResourceId(i, R.drawable.circle_common2));
             llIcons.addView(imageView);
-
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) imageView.getLayoutParams();
-            lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
-            lp.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            lp.setMargins(CommonTools.dip2px(this, 5)
-                    , CommonTools.dip2px(this, 5)
-                    , CommonTools.dip2px(this, 5)
-                    , CommonTools.dip2px(this, 5));
-
         }
+        array.recycle();
     }
 
     @Override

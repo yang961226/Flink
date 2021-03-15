@@ -30,5 +30,8 @@
     <string name="tactile_feedback">触觉反馈</string>
     <string name="about_flink">关于子弹笔记</string>
 
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_cancle">取消</string>
+
     <dimen name="sticky_note_font_size">18sp</dimen>
 </resources>

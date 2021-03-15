@@ -33,7 +33,7 @@ public class SettingLine extends ConstraintLayout {
     private boolean switchToButton;//开关是否退化成单纯的按钮
     private OnClickListener onClickListener;//切换成按钮之后用到的回调
 
-    private boolean switchState;//开关状态，如果是自定义布局的状态下，这个属性没用
+    private boolean switchState;//开关状态，如果是自定义布局和纯按钮的状态下，这个属性没用
 
     private OnSwitchListener onSwitchListener;
 
@@ -65,6 +65,17 @@ public class SettingLine extends ConstraintLayout {
         this.onClickListener = onClickListener;
         ibtnSwitch.setImageResource(R.drawable.ic_button_hand);
         ibtnSwitch.setBackgroundResource(R.drawable.button_selector);
+    }
+
+    /**
+     * 添加自定义布局
+     *
+     * @param view 自定义布局
+     */
+    public void addViewInContent(View view) {
+        ibtnSwitch.setVisibility(GONE);
+        llClickableContent.setVisibility(VISIBLE);
+        llClickableContent.addView(view);
     }
 
     /**

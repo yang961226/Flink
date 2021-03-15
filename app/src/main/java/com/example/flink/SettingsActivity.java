@@ -1,14 +1,19 @@
 package com.example.flink;
 
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
 import com.example.flink.layout.note.SettingLine;
+import com.example.flink.tools.CommonTools;
+import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.data.ConfigurationHelper;
+import com.example.flink.tools.notify.MessageDialogHelper;
 import com.example.flink.tools.notify.ToastUtil;
 import com.example.flink.view.BottomBar;
 
@@ -26,8 +31,11 @@ public class SettingsActivity extends FlinkBaseActivity {
     LinearLayout llContent;
     @BindView(R.id.bottom_bar)
     BottomBar bottomBar;
+    @BindView(R.id.ll_root)
+    LinearLayout llRoot;
 
     private Map<String, SettingLine> keyValueLineMap;
+    private MessageDialogHelper messageDialogHelper;
 
     @Override
     protected int getLayoutId() {
@@ -60,6 +68,8 @@ public class SettingsActivity extends FlinkBaseActivity {
     @Override
     protected void initView() {
         keyValueLineMap = new HashMap<>();
+
+        addCustomizeSettingLine("笔记标志含义", getIconsLinearlayout());
         addSwitchSettingLine("12/24小时制", switchOpen -> {
             ToastUtil.show(SettingsActivity.this, switchOpen ? "24小时" : "12小时");
             ConfigurationHelper.setBooleanValue(KEY_12_24_SYS, switchOpen);
@@ -80,11 +90,56 @@ public class SettingsActivity extends FlinkBaseActivity {
         bottomBar.setLeftBtnImg(R.drawable.ic_back);
     }
 
-    /**
-     * 构建一个切换的设置行
-     *
-     * @param title 标题
-     */
+    private View getIconsLinearlayout() {
+        LinearLayout ll = new LinearLayout(this);
+        LinearLayout.LayoutParams llLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        ll.setLayoutParams(llLp);
+        TypedArray array = this.getResources().obtainTypedArray(R.array.sticky_note_res);
+        for (int i = 0; i < array.length(); i++) {
+            ImageView imageView = CommonTools.buildIconImageView(this, array.getResourceId(i, R.drawable.circle_common2));
+            ll.addView(imageView);
+            final int tmp = i;
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (messageDialogHelper == null) {
+                        messageDialogHelper = new MessageDialogHelper(SettingsActivity.this);
+                    }
+
+                    messageDialogHelper.showMsgDialog(
+                            llRoot
+                            , "符号含义"
+                            , "含义内容含义内容含义内容含义内容含义内容" + tmp
+                            , new MessageDialogHelper.OnDialogButtonClickListener() {
+                                @Override
+                                public void onOkClick(PopUpWindowHelper popUpWindowHelper, View v) {
+                                    popUpWindowHelper.dismiss();
+                                }
+
+                                @Override
+                                public void onCancleClick(PopUpWindowHelper popUpWindowHelper, View v) {
+                                    popUpWindowHelper.dismiss();
+                                }
+                            });
+                }
+            });
+        }
+        array.recycle();
+        return ll;
+    }
+
+    //添加一个自定义的设置行
+    private void addCustomizeSettingLine(String title, View view) {
+        SettingLine settingLine = new SettingLine(this);
+        settingLine.setTitle(title);
+        settingLine.addViewInContent(view);
+        llContent.addView(settingLine);
+    }
+
+    //添加一个切换功能的设置行
     private void addSwitchSettingLine(String title, SettingLine.OnSwitchListener onSwitchListener) {
         SettingLine settingLine = new SettingLine(this);
         settingLine.setTitle(title);
@@ -93,11 +148,18 @@ public class SettingsActivity extends FlinkBaseActivity {
         keyValueLineMap.put(title, settingLine);
     }
 
+    //添加一个纯点击功能的设置行
     private void addNormalSettingLine(String title, View.OnClickListener onClickListener) {
         SettingLine settingLine = new SettingLine(this);
         settingLine.setTitle(title);
         settingLine.makeSwitchToButton(onClickListener);
         llContent.addView(settingLine);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        messageDialogHelper.dismissDialog();
     }
 
     @Override
