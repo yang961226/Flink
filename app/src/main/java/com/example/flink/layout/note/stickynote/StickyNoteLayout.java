@@ -127,7 +127,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
                 .setTouchable(true)
                 .setFocusable(false)
-                .setOutsideTouchable(false)
+                .setOutsideTouchable(true)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
     }
@@ -179,6 +179,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setOutsideTouchable(true)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .setOnDismissListener(() -> {
+                    //对话框消失后，currentSelectItemIndex为-1的情景是是item已被删除
                     if (currentSelectItemIndex != -1 && !mNoteItemList.isEmpty()) {
                         mNoteItemList.get(currentSelectItemIndex).setSelected(false);
                         stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
@@ -249,7 +250,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     }
 
     private void editStickyNoteItem(int i) {
-
         editPopUpHelper.showPopupWindow(((Activity) getContext()).findViewById(R.id.switchDateLayout), PopUpWindowHelper.LocationType.TOP_TEST);
         editStickyNoteLayout.setCurPosition(i);
         editStickyNoteLayout.setStickyNoteItemList(mNoteItemList);

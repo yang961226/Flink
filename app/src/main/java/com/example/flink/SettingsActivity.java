@@ -159,7 +159,9 @@ public class SettingsActivity extends FlinkBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        messageDialogHelper.dismissDialog();
+        if (messageDialogHelper != null) {
+            messageDialogHelper.dismissDialog();
+        }
     }
 
     @Override

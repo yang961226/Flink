@@ -19,6 +19,7 @@
     <string name="buton_function">功能按钮</string>
     <string name="pleast_input_sticky_note">请输入笔记内容</string>
     <string name="add_sticky_note">新增笔记</string>
+    <string name="edit_sticky_note">编辑笔记</string>
     <string name="confirm">确认</string>
     <string name="welcome_content">每一天都是新的一天</string>
     <string name="app_state">beta</string>
