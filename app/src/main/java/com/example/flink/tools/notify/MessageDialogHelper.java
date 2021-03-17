@@ -1,5 +1,6 @@
 package com.example.flink.tools.notify;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,9 +30,7 @@ public class MessageDialogHelper {
         popUpWindowHelper.dismiss();
     }
 
-    public void showMsgDialog(
-            View view,
-            String title
+    public void showMsgDialog(String title
             , String msg
             , OnDialogButtonClickListener onDialogButtonClickListener) {
         if (popUpWindowHelper == null) {
@@ -45,7 +44,7 @@ public class MessageDialogHelper {
                     .setTouchable(true)
                     .setFocusable(false)
                     .setOutsideTouchable(true)
-                    .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
+                    .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT))
                     .build();
             TextView tvOk = (TextView) messageDialogLayout.findView(R.id.tv_ok);
             tvOk.setOnClickListener(v -> {
@@ -63,7 +62,7 @@ public class MessageDialogHelper {
         }
         messageDialogLayout.setTitle(title);
         messageDialogLayout.setMessage(msg);
-        popUpWindowHelper.showPopupWindow(view, PopUpWindowHelper.LocationType.CENTER);
+        popUpWindowHelper.showPopupWindow(((Activity) context).getWindow().getDecorView(), PopUpWindowHelper.LocationType.CENTER);
     }
 
     public interface OnDialogButtonClickListener {

@@ -7,7 +7,9 @@ import android.widget.LinearLayout;
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
 import com.example.flink.item.StickyNoteItem;
+import com.example.flink.tools.PopUpWindowHelper;
 import com.example.flink.tools.greendao.dataHelper.StickyNoteDaoHelper;
+import com.example.flink.tools.notify.MessageDialogHelper;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class EditStickyNoteLayout extends LinearLayout {
     private List<StickyNoteItem> stickyNoteItemList;
     private int curPosition;
     private int tmpPosition;
+    MessageDialogHelper messageDialogHelper;//删除提示
 
     public EditStickyNoteLayout(Context context) {
         super(context);
@@ -103,9 +106,27 @@ public class EditStickyNoteLayout extends LinearLayout {
 //    }
 
     private void deleteItem() {
-        stickyNoteDaoHelper.delete(stickyNoteItemList.get(curPosition));
-        stickyNoteItemList.remove(curPosition);
-        onCompleteListener.onComplete(curPosition, true);
+        if (messageDialogHelper == null) {
+            messageDialogHelper = new MessageDialogHelper(getContext());
+        }
+        messageDialogHelper.showMsgDialog(
+                "通知",
+                "是否删除该笔记：" + stickyNoteItemList.get(curPosition).getNoteContent()
+                , new MessageDialogHelper.OnDialogButtonClickListener() {
+                    @Override
+                    public void onOkClick(PopUpWindowHelper popUpWindowHelper, View v) {
+                        stickyNoteDaoHelper.delete(stickyNoteItemList.get(curPosition));
+                        stickyNoteItemList.remove(curPosition);
+                        onCompleteListener.onComplete(curPosition, true);
+                        messageDialogHelper.dismissDialog();
+                    }
+
+                    @Override
+                    public void onCancleClick(PopUpWindowHelper popUpWindowHelper, View v) {
+                        messageDialogHelper.dismissDialog();
+                    }
+                });
+
     }
 
     /*内部回调*/

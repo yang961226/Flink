@@ -102,29 +102,24 @@ public class SettingsActivity extends FlinkBaseActivity {
             ImageView imageView = CommonTools.buildIconImageView(this, array.getResourceId(i, R.drawable.circle_common2));
             ll.addView(imageView);
             final int tmp = i;
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (messageDialogHelper == null) {
-                        messageDialogHelper = new MessageDialogHelper(SettingsActivity.this);
-                    }
-
-                    messageDialogHelper.showMsgDialog(
-                            llRoot
-                            , "符号含义"
-                            , "含义内容含义内容含义内容含义内容含义内容" + tmp
-                            , new MessageDialogHelper.OnDialogButtonClickListener() {
-                                @Override
-                                public void onOkClick(PopUpWindowHelper popUpWindowHelper, View v) {
-                                    popUpWindowHelper.dismiss();
-                                }
-
-                                @Override
-                                public void onCancleClick(PopUpWindowHelper popUpWindowHelper, View v) {
-                                    popUpWindowHelper.dismiss();
-                                }
-                            });
+            imageView.setOnClickListener(v -> {
+                if (messageDialogHelper == null) {
+                    messageDialogHelper = new MessageDialogHelper(SettingsActivity.this);
                 }
+                messageDialogHelper.showMsgDialog(
+                        "符号含义"
+                        , "含义内容含义内容含义内容含义内容含义内容" + tmp
+                        , new MessageDialogHelper.OnDialogButtonClickListener() {
+                            @Override
+                            public void onOkClick(PopUpWindowHelper popUpWindowHelper, View v) {
+                                popUpWindowHelper.dismiss();
+                            }
+
+                            @Override
+                            public void onCancleClick(PopUpWindowHelper popUpWindowHelper, View v) {
+                                popUpWindowHelper.dismiss();
+                            }
+                        });
             });
         }
         array.recycle();

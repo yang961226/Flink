@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -127,7 +128,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setAnimationStyle(R.style.PopupWindowTranslateThemeFromBottom)
                 .setTouchable(true)
                 .setFocusable(false)
-                .setOutsideTouchable(true)
+                .setOutsideTouchable(false)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
                 .build();
     }
@@ -178,11 +179,14 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
                 .setFocusable(false)
                 .setOutsideTouchable(true)
                 .setBackgroundDrawable(new ColorDrawable(Color.WHITE))
-                .setOnDismissListener(() -> {
-                    //对话框消失后，currentSelectItemIndex为-1的情景是是item已被删除
-                    if (currentSelectItemIndex != -1 && !mNoteItemList.isEmpty()) {
-                        mNoteItemList.get(currentSelectItemIndex).setSelected(false);
-                        stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
+                .setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        //对话框消失后，currentSelectItemIndex为-1的情景是是item已被删除
+                        if (currentSelectItemIndex != -1 && !mNoteItemList.isEmpty()) {
+                            mNoteItemList.get(currentSelectItemIndex).setSelected(false);
+                            stickyNoteAdapter.notifyItemChanged(currentSelectItemIndex);
+                        }
                     }
                 })
                 .build();
@@ -257,6 +261,7 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
             stickyNoteAdapter.notifyItemRemoved(changePosition);
             if (isDelete) {
                 currentSelectItemIndex = -1;//原来选中的item已经被删除了
+                editPopUpHelper.dismiss();
             }
         });
     }
