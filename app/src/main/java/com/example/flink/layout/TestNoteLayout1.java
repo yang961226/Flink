@@ -3,7 +3,6 @@ package com.example.flink.layout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,28 +16,31 @@ import com.example.flink.tools.notify.ToastUtil;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
-
-
-    @BindView(R.id.btn_expand)
-    Button btnExpand;
-    @BindView(R.id.el)
-    ExpandableLayout el;
-    @BindView(R.id.tv_expand_percent)
-    TextView tvExpandPercent;
-    @BindView(R.id.tv_expand_range)
-    TextView tvExpandRange;
+    private ExpandableLayout el;
+    private TextView tvExpandPercent;
+    private TextView tvExpandRange;
 
     public TestNoteLayout1(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDateChange(DateChangeEvent dateChangeEvent) {
+        //占位
+    }
+
     @Override
     protected void init(Context context) {
         super.init(context);
+        initViewById();
+    }
+
+    private void initViewById() {
+        el = rootView.findViewById(R.id.el);
+        tvExpandPercent = rootView.findViewById(R.id.tv_expand_percent);
+        tvExpandRange = rootView.findViewById(R.id.tv_expand_range);
         el.setDuration(1500);
         el.setInterpolator(new AccelerateDecelerateInterpolator());
         el.setChangeAplhaWhileExpanding(true);
@@ -63,12 +65,9 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
 
             }
         });
+        rootView.findViewById(R.id.btn_expand).setOnClickListener(view -> el.expand());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDateChange(DateChangeEvent dateChangeEvent) {
-
-    }
 
     @Override
     protected int getLayoutResId() {
@@ -88,10 +87,5 @@ public class TestNoteLayout1 extends NoteViewPagerBaseLayout {
     @Override
     public void onViewPagerScorll() {
 
-    }
-
-    @OnClick(R.id.btn_expand)
-    public void onViewClicked() {
-        el.expand();
     }
 }

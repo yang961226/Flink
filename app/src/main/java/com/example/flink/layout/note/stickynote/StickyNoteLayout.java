@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -44,15 +45,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
-    @BindView(R.id.rv)
-    RecyclerView stickyNoteRecyclerView;
+    private LinearLayout llEmpty;
+    private RecyclerView stickyNoteRecyclerView;
     private List<StickyNoteItem> mNoteItemList;
 
     //日历选择器
@@ -108,15 +107,23 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
         super.init(context);
         imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         stickyNoteDaoHelper = StickyNoteDaoHelper.getInstance();
-        initStickyNoteRv();
+
+        initViewById(context);
+
+        refreshData();
+        refreshScheme();
+    }
+
+    private void initViewById(Context context) {
+        stickyNoteRecyclerView = rootView.findViewById(R.id.rv);
+        llEmpty = rootView.findViewById(R.id.ll_empty);
 
         //初始化3个弹窗
         initCalenderSelect(context);
         initPopupInput(context);
         initEdit(context);
 
-        refreshData();
-        refreshScheme();
+        initStickyNoteRv();
     }
 
     private void initCalenderSelect(Context context) {

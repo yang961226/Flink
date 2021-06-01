@@ -9,28 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.flink.R;
-import com.example.flink.mInterface.Unregister;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 通用的对话框布局
  */
-public class MessageDialogLayout extends LinearLayout implements Unregister {
-
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.tv_msg)
-    TextView tvMsg;
-    @BindView(R.id.tv_ok)
-    TextView tvOk;
-    @BindView(R.id.tv_cancle)
-    TextView tvCancle;
+public class MessageDialogLayout extends LinearLayout {
     private Context context;
-    private Unbinder unbinder;
     private View view;
+    private TextView tvTitle;
+    private TextView tvMsg;
 
     public MessageDialogLayout(Context context) {
         super(context);
@@ -50,8 +37,8 @@ public class MessageDialogLayout extends LinearLayout implements Unregister {
 
     private void init() {
         view = View.inflate(context, R.layout.layout_common_dialog, this);
-        //绑定处理
-        unbinder = ButterKnife.bind(this);
+        tvTitle = view.findViewById(R.id.tv_title);
+        tvMsg = view.findViewById(R.id.tv_msg);
     }
 
     public void setTitle(String title) {
@@ -60,11 +47,6 @@ public class MessageDialogLayout extends LinearLayout implements Unregister {
 
     public void setMessage(String msg) {
         tvMsg.setText(msg);
-    }
-
-    @Override
-    public void unregister() {
-        unbinder.unbind();
     }
 
 }

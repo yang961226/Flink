@@ -14,21 +14,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.flink.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 设置页中的一行，右边默认是点击按钮，也可以自己设置自定义布局
  */
 public class SettingLine extends ConstraintLayout {
 
-    @BindView(R.id.ll_clickable_content)
-    LinearLayout llClickableContent;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.ibtn_switch)
-    ImageButton ibtnSwitch;
+    private LinearLayout llClickableContent;
+    private TextView tvTitle;
+    private ImageButton ibtnSwitch;
 
     private boolean switchToButton;//开关是否退化成单纯的按钮
     private OnClickListener onClickListener;//切换成按钮之后用到的回调
@@ -54,7 +47,21 @@ public class SettingLine extends ConstraintLayout {
 
     private void init() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_setting_line, this);
-        ButterKnife.bind(this, view);
+        findViewById(view);
+    }
+
+    private void findViewById(View view) {
+        llClickableContent = view.findViewById(R.id.ll_clickable_content);
+        tvTitle = view.findViewById(R.id.tv_title);
+        ibtnSwitch = view.findViewById(R.id.ibtn_switch);
+        ibtnSwitch.setOnClickListener(view1 -> {
+            //如果已经是按钮状态的话，就不响应swtich事件了，而是响应点击事件
+            if (switchToButton) {
+                clickButton();
+                return;
+            }
+            clickSwitch();
+        });
     }
 
     /**
@@ -114,15 +121,5 @@ public class SettingLine extends ConstraintLayout {
 
     public void setTitle(String title) {
         tvTitle.setText(title);
-    }
-
-    @OnClick(R.id.ibtn_switch)
-    public void onViewClicked() {
-        //如果已经是按钮状态的话，就不响应swtich事件了，而是响应点击事件
-        if (switchToButton) {
-            clickButton();
-            return;
-        }
-        clickSwitch();
     }
 }

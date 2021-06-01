@@ -1,7 +1,6 @@
 package com.example.flink.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import butterknife.ButterKnife;
 
 /**
  * 本项目通用的碎片（懒加载）
@@ -27,7 +24,6 @@ public abstract class FlinkBaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
-        ButterKnife.bind(this, view);
         return view;
     }
 

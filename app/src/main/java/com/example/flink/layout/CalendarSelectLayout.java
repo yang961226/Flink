@@ -19,20 +19,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * 显示日历
  */
 public class CalendarSelectLayout extends LinearLayout implements CalendarView.OnCalendarSelectListener, Unregister {
-
-    @BindView(R.id.calendarview)
-    CalendarView calendarview;
-
-    private Unbinder unbinder;
+    private CalendarView calendarview;
 
     public CalendarSelectLayout(Context context) {
         super(context);
@@ -45,12 +36,15 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
     }
 
     private void init(Context context) {
-        View.inflate(context, R.layout.layout_calendar_select, this);
-        //绑定处理
-        unbinder = ButterKnife.bind(this);
+        View view = View.inflate(context, R.layout.layout_calendar_select, this);
+        findViewById(view);
         EventBus.getDefault().register(this);
 
         initCalendarView();
+    }
+
+    private void findViewById(View view) {
+        calendarview = view.findViewById(R.id.calendarview);
     }
 
     private void initCalendarView() {
@@ -98,7 +92,6 @@ public class CalendarSelectLayout extends LinearLayout implements CalendarView.O
 
     @Override
     public void unregister() {
-        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
 }

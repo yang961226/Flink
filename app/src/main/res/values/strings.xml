@@ -33,6 +33,7 @@
 
     <string name="dialog_ok">确定</string>
     <string name="dialog_cancle">取消</string>
+    <string name="ask_for_create_note">暂无笔记，是否新建？</string>
 
     <dimen name="sticky_note_font_size">18sp</dimen>
 </resources>

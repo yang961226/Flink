@@ -2,6 +2,7 @@ package com.example.flink.layout.note;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -12,12 +13,10 @@ import com.example.flink.mInterface.Unregister;
 
 import org.greenrobot.eventbus.EventBus;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Unregister, NoteFunctionClickListener {
 
-    private Unbinder unbinder;
+    protected View rootView;
 
     public NoteViewPagerBaseLayout(Context context) {
         super(context);
@@ -35,9 +34,7 @@ public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Un
     }
 
     protected void init(Context context) {
-        View.inflate(context, getLayoutResId(), this);
-        //绑定处理
-        unbinder = ButterKnife.bind(this);
+        rootView = LayoutInflater.from(context).inflate(getLayoutResId(), this);
         EventBus.getDefault().register(this);
     }
 
@@ -45,7 +42,6 @@ public abstract class NoteViewPagerBaseLayout extends LinearLayout implements Un
 
     @Override
     public void unregister() {
-        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
 }

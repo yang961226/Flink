@@ -10,20 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.flink.R;
-import com.example.flink.mInterface.Unregister;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+public class BottomBar extends ConstraintLayout {
 
-public class BottomBar extends ConstraintLayout implements Unregister {
-
-    @BindView(R.id.btn_left)
-    ImageView btnLeft;
-    @BindView(R.id.btn_right)
-    ImageView btnRight;
-
-    private Unbinder unbinder;
+    private ImageView btnLeft;
+    private ImageView btnRight;
 
     public BottomBar(@NonNull Context context) {
         super(context);
@@ -68,13 +59,8 @@ public class BottomBar extends ConstraintLayout implements Unregister {
     }
 
     private void init() {
-        View.inflate(getContext(), R.layout.layout_bottom_bar, this);
-        //绑定处理
-        unbinder = ButterKnife.bind(this);
-    }
-
-    @Override
-    public void unregister() {
-        unbinder.unbind();
+        View view = View.inflate(getContext(), R.layout.layout_bottom_bar, this);
+        btnLeft = view.findViewById(R.id.btn_left);
+        btnRight = view.findViewById(R.id.btn_right);
     }
 }

@@ -1,0 +1,10 @@
+
+n
+java:S1450*"YRemove the "isEditMode" field and declare it as a local variable in the relevant methods.(•Ïq
+V	java:S125_"<This block of commented-out lines of code should be removed.(ä¶ãøÿÿÿÿ
+E
+java:S1068'"/Remove this unused "SRC_PLUS_ID" private field.(±şğ†
+G
+java:S1068("1Remove this unused "SRC_REDUCE_ID" private field.(ÉäóÊ
+C
+java:S1068*".Remove this unused "isEditMode" private field.(•Ïq

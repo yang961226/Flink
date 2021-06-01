@@ -3,7 +3,6 @@ package com.example.flink.layout;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,46 +10,45 @@ import android.widget.Toast;
 import com.example.flink.R;
 import com.example.flink.view.FilterEditTextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class PopupInputLayout extends LinearLayout {
 
-    @BindView(R.id.tv_date)
-    TextView tvDate;
-    @BindView(R.id.tv_progress)
-    TextView tvProgress;
-    @BindView(R.id.fet_note_content)
-    FilterEditTextView fetNoteContent;
-    @BindView(R.id.iv_expand)
-    ImageView ivExpand;
-    @BindView(R.id.el)
-    ExpandableLayout el;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.tv_confirm)
-    TextView tvConfirm;
+    private TextView tvProgress;
+    private FilterEditTextView fetNoteContent;
+    private TextView tvTitle;
 
-    private int maxWordNum;//默认值
+    private int maxWordNum = getResources().getInteger(R.integer.sticky_note_popup_input_max_length);//默认值
 
     private ConfirmBtnClickListener confirmBtnClickListener;
 
-    private static final int SRC_PLUS_ID = R.drawable.ic_plus_circle_gray;
-    private static final int SRC_REDUCE_ID = R.drawable.ic_reduce_circle_gray;
+//    private static final int SRC_PLUS_ID = R.drawable.ic_plus_circle_gray;
+//    private static final int SRC_REDUCE_ID = R.drawable.ic_reduce_circle_gray;
 
     private boolean isEditMode;//是否是编辑模式
 
     public PopupInputLayout(Context context) {
         super(context);
-        View.inflate(context, R.layout.layout_popup_input, this);
-        //绑定处理
-        ButterKnife.bind(this);
-        maxWordNum = getResources().getInteger(R.integer.sticky_note_popup_input_max_length);
+        View view = View.inflate(context, R.layout.layout_popup_input, this);
+        findViewById(view);
         tvProgress.setText(0 + "/" + maxWordNum);
         fetNoteContent.init(maxWordNum);
         fetNoteContent.setOnWordNumChangeListener(wordNumAfterChange -> tvProgress.setText(wordNumAfterChange + "/" + maxWordNum));
 
+    }
+
+
+    private void findViewById(View rootView) {
+        fetNoteContent = rootView.findViewById(R.id.fet_note_content);
+        tvProgress = rootView.findViewById(R.id.tv_progress);
+        tvTitle = rootView.findViewById(R.id.tv_title);
+        TextView tvConfirm = rootView.findViewById(R.id.tv_confirm);
+        tvConfirm.setOnClickListener(view -> {
+            if (confirmBtnClickListener == null) {
+                Toast.makeText(getContext(), "监听器未配置", Toast.LENGTH_LONG).show();
+            } else {
+                confirmBtnClickListener.onConfirmBtnClick();
+            }
+        });
     }
 
     /**
@@ -88,24 +86,6 @@ public class PopupInputLayout extends LinearLayout {
 
     public FilterEditTextView getFEtNoteContent() {
         return fetNoteContent;
-    }
-
-    @OnClick(R.id.iv_expand)
-    public void onExpandClicked() {
-//        if(el.isPlayingAnim()){
-//            return;
-//        }
-//        el.expand();
-//        ivExpand.setImageResource(el.isExpand()?SRC_REDUCE_ID:SRC_PLUS_ID);
-    }
-
-    @OnClick(R.id.tv_confirm)
-    public void onViewClicked() {
-        if (confirmBtnClickListener == null) {
-            Toast.makeText(getContext(), "监听器未配置", Toast.LENGTH_LONG).show();
-        } else {
-            confirmBtnClickListener.onConfirmBtnClick();
-        }
     }
 
     public interface ConfirmBtnClickListener {

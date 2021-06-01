@@ -13,8 +13,6 @@ import com.example.flink.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 底部导航条
@@ -29,21 +27,22 @@ public class NavigationBarLayout extends LinearLayout {
 
     private static final String HAS_INIT = "控件已经初始化，禁止再次初始化";
     private static final String OVER_NUM = "页数不可以超过" + MAX_ITEM_NUM;
-
-    @BindView(R.id.ll_root)
-    LinearLayout llRoot;
+    private LinearLayout llRoot;
 
     public NavigationBarLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_navigation_bar, this);
-        //绑定处理
-        ButterKnife.bind(this);
+        View view = View.inflate(context, R.layout.layout_navigation_bar, this);
+        findViewById(view);
     }
 
     public void selectTo(int selectIndex) {
         ivNavItems.get(this.selectIndex).setImageResource(getUnSelectedNavItemResId());
         ivNavItems.get(selectIndex).setImageResource(getSelectedNavItemResId());
         this.selectIndex = selectIndex;
+    }
+
+    private void findViewById(View view) {
+        llRoot = view.findViewById(R.id.ll_root);
     }
 
     /**

@@ -18,25 +18,24 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class CalendarView extends LinearLayout implements Unregister {
 
-    @BindView(R.id.day_of_week)
-    AdaptationTextView dayOfWeek;
-    @BindView(R.id.day_month_year)
-    AdaptationTextView dayMonthYear;
+    private AdaptationTextView dayOfWeek;
+    private AdaptationTextView dayMonthYear;
 
     public CalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_foxizz_calendar, this);
-        //绑定处理
-        ButterKnife.bind(this);
+        View rootView = View.inflate(context, R.layout.layout_foxizz_calendar, this);
+        initViewById(rootView);
 
         setDateText(DateUtil.getNowSelectedDate());
 
         EventBus.getDefault().register(this);
+    }
+
+    private void initViewById(View rootView) {
+        dayOfWeek = rootView.findViewById(R.id.day_of_week);
+        dayMonthYear = rootView.findViewById(R.id.day_month_year);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -19,20 +19,15 @@ import com.example.flink.view.BottomBar;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import butterknife.BindView;
+import java.util.Objects;
 
 import static com.example.flink.tools.data.ConfigurationHelper.KEY_12_24_SYS;
 import static com.example.flink.tools.data.ConfigurationHelper.KEY_TACTILE_FEEDBACK;
 
 public class SettingsActivity extends FlinkBaseActivity {
 
-    @BindView(R.id.ll_content)
-    LinearLayout llContent;
-    @BindView(R.id.bottom_bar)
-    BottomBar bottomBar;
-    @BindView(R.id.ll_root)
-    LinearLayout llRoot;
+    private LinearLayout llContent;
+    private BottomBar bottomBar;
 
     private Map<String, SettingLine> keyValueLineMap;
     private MessageDialogHelper messageDialogHelper;
@@ -44,7 +39,7 @@ public class SettingsActivity extends FlinkBaseActivity {
 
     @Override
     protected void initData() {
-        super.initData();
+        initViewById();
     }
 
     @Override
@@ -53,12 +48,17 @@ public class SettingsActivity extends FlinkBaseActivity {
         resetSettingState();
     }
 
+    private void initViewById() {
+        llContent = findViewById(R.id.ll_content);
+        bottomBar = findViewById(R.id.bottom_bar);
+    }
+
     /**
      * 恢复设置的状态：从配置信息中读取，然后恢复各个开关的默认状态
      */
     private void resetSettingState() {
         if (ConfigurationHelper.getBooleanValue(KEY_12_24_SYS)) {
-            keyValueLineMap.get("12/24小时制").refreshSwitchState(true);
+            Objects.requireNonNull(keyValueLineMap.get("12/24小时制")).refreshSwitchState(true);
         }
         if (ConfigurationHelper.getBooleanValue(KEY_TACTILE_FEEDBACK)) {
             keyValueLineMap.get("触觉反馈").refreshSwitchState(true);

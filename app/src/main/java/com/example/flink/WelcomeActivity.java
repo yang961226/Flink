@@ -14,15 +14,13 @@ import com.example.flink.tools.CommonTools;
 
 import java.util.List;
 
-import butterknife.BindView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class WelcomeActivity extends FlinkBaseActivity implements EasyPermissions.PermissionCallbacks {
 
-    @BindView(R.id.ll_icons)
-    LinearLayout llIcons;
+    private LinearLayout llIcons;
 
     private static final int REQUEST_CODE = 5242;
     private static final String PERMISSIONS_TIPS = "正在请求的是必要权限，请授予，否则无法使用APP";
@@ -34,6 +32,7 @@ public class WelcomeActivity extends FlinkBaseActivity implements EasyPermission
         requestPermissions();
     }
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_welcome;
@@ -41,6 +40,7 @@ public class WelcomeActivity extends FlinkBaseActivity implements EasyPermission
 
     @Override
     protected void initView() {
+        llIcons = findViewById(R.id.ll_icons);
         initIconImageView();
     }
 

@@ -17,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.flink.tools.ActivityControl;
 import com.example.flink.tools.HandlerUtils;
 
-import butterknife.ButterKnife;
-
 /**
  * 此项目所有Activity的基类
  */
@@ -71,8 +69,6 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
 
         //设置布局
         setContentView(getLayoutId());
-        //绑定处理
-        ButterKnife.bind(this);
         //设置屏幕是否可旋转
         if (isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -107,6 +103,10 @@ public abstract class FlinkBaseActivity extends AppCompatActivity implements Han
      * 初始化数据
      */
     protected void initData() {
+
+    }
+
+    protected void findViewById() {
 
     }
 

@@ -3,6 +3,7 @@ package com.example.flink.layout.note.stickynote;
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
@@ -12,10 +13,6 @@ import com.example.flink.tools.greendao.dataHelper.StickyNoteDaoHelper;
 import com.example.flink.tools.notify.MessageDialogHelper;
 
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /***
  * Created by : 村长只会去森林打野
  * Created on : <com.example.flink.layout>
@@ -25,19 +22,25 @@ import butterknife.OnClick;
  */
 public class EditStickyNoteLayout extends LinearLayout {
 
-    private StickyNoteAdapter stickyNoteAdapter;
-    private StickyNoteDaoHelper stickyNoteDaoHelper;
+    private final StickyNoteDaoHelper stickyNoteDaoHelper;
     private List<StickyNoteItem> stickyNoteItemList;
     private int curPosition;
-    private int tmpPosition;
-    MessageDialogHelper messageDialogHelper;//删除提示
+    private MessageDialogHelper messageDialogHelper;//删除提示
 
     public EditStickyNoteLayout(Context context) {
         super(context);
-        View.inflate(context, R.layout.layout_edit_note, this);
+        View view = View.inflate(context, R.layout.layout_edit_note, this);
+        findViewById(view);
         stickyNoteDaoHelper = StickyNoteDaoHelper.getInstance();
-        //绑定处理
-        ButterKnife.bind(this);
+    }
+
+    private void findViewById(View view) {
+//        ImageView ivArrowDown = view.findViewById(R.id.iv_arrow_down);
+//        ImageView ivArrowUp = view.findViewById(R.id.iv_arrow_up);
+//        RelativeLayout rlSub = view.findViewById(R.id.rl_sub);
+//        RelativeLayout rlEdit = view.findViewById(R.id.rl_edit);
+        RelativeLayout rlDelete = view.findViewById(R.id.rl_delete);
+        rlDelete.setOnClickListener(view1 -> deleteItem());
     }
 
     public void setStickyNoteItemList(List<StickyNoteItem> stickyNoteItemList) {
@@ -45,38 +48,10 @@ public class EditStickyNoteLayout extends LinearLayout {
     }
 
     public void setCurPosition(int curPosition) {
-        tmpPosition = curPosition;
         this.curPosition = curPosition;
     }
 
     public void setStickyNoteAdapter(StickyNoteAdapter stickyNoteAdapter) {
-        this.stickyNoteAdapter = stickyNoteAdapter;
-    }
-
-    @OnClick({
-            R.id.iv_arrow_down, R.id.iv_arrow_up,
-            R.id.rl_delete, R.id.rl_sub, R.id.rl_edit,
-    })
-    protected void onClick(View view) {
-        switch (view.getId()) {
-//            case R.id.iv_arrow_down:
-//                moveDown();
-//                onCompleteListener.onComplete(stickyNoteItemList);
-//                break;
-//            case R.id.iv_arrow_up:
-//                moveUp();
-//                onCompleteListener.onComplete(stickyNoteItemList);
-//                break;
-            case R.id.rl_delete:
-                deleteItem();
-                break;
-            case R.id.rl_sub:
-                break;
-            case R.id.rl_edit:
-                break;
-            default:
-                break;
-        }
     }
 
 //    private void moveDown() {

@@ -25,10 +25,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 import static com.example.flink.tools.data.DataManager.DataManagerEnum.SP_DATA_MANAGER;
 
 @SuppressLint("NonConstantResourceId")
@@ -52,41 +48,40 @@ public class ClockView extends LinearLayout implements Unregister {
     private static String number5 = "0";
     private static String number6 = "0";
 
-    @BindView(R.id.is_today)
-    AdaptationTextView isToday;
-    @BindView(R.id.am_or_pm)
-    AdaptationTextView am_or_pm;
-    @BindView(R.id.number_1)
-    ImageView number1_image;
-    @BindView(R.id.number_2)
-    ImageView number2_image;
-    @BindView(R.id.number_3)
-    ImageView number3_image;
-    @BindView(R.id.number_4)
-    ImageView number4_image;
-    @BindView(R.id.number_5)
-    ImageView number5_image;
-    @BindView(R.id.number_6)
-    ImageView number6_image;
-
-    private final Unbinder unbinder;
-
+    private AdaptationTextView isToday;
+    private AdaptationTextView am_or_pm;
+    private ImageView number1_image;
+    private ImageView number2_image;
+    private ImageView number3_image;
+    private ImageView number4_image;
+    private ImageView number5_image;
+    private ImageView number6_image;
     private DataManager dataManager;
 
     public ClockView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(context, R.layout.layout_clock, this);
+        init(context);
+    }
 
-        //绑定处理
-        unbinder = ButterKnife.bind(this);
+    private void init(Context context) {
+        View view = View.inflate(context, R.layout.layout_clock, this);
+        findViewById(view);
         EventBus.getDefault().register(this);
-
         dataManager = new DataManager(SP_DATA_MANAGER);
-
         initNumberImage();
     }
 
-    @SuppressLint("SetTextI18n")
+    private void findViewById(View view) {
+        isToday = view.findViewById(R.id.is_today);
+        am_or_pm = view.findViewById(R.id.am_or_pm);
+        number1_image = view.findViewById(R.id.number_1);
+        number2_image = view.findViewById(R.id.number_2);
+        number3_image = view.findViewById(R.id.number_3);
+        number4_image = view.findViewById(R.id.number_4);
+        number5_image = view.findViewById(R.id.number_5);
+        number6_image = view.findViewById(R.id.number_6);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTick(TickEvent tickEvent) {
         //发生变化时改变数字图片
@@ -145,9 +140,9 @@ public class ClockView extends LinearLayout implements Unregister {
 
     @Override
     public void unregister() {
-        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
+
 
     //初始化数字图片
     private void initNumberImage() {

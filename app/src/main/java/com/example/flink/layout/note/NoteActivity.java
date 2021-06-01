@@ -22,6 +22,7 @@ import com.example.flink.mInterface.NoteFunctionClickListener;
 import com.example.flink.mInterface.Unregister;
 import com.example.flink.tools.DateUtil;
 import com.example.flink.tools.ViewTools;
+import com.example.flink.tools.notify.LogUtil;
 import com.example.flink.view.BottomBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,27 +32,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-
 public class NoteActivity extends NoteBaseActivity {
-
-    @BindView(R.id.ll_root)
-    LinearLayout llRoot;
-
-    @BindView(R.id.ll_top)
-    LinearLayout llTop;
-
-    @BindView(R.id.ll_center)
-    LinearLayout llCenter;
-
-    @BindView(R.id.ll_bottom)
-    LinearLayout llBottom;
-
-    @BindView(R.id.switchDateLayout)
-    SwitchDateLayout switchDateLayout;
-
-    @BindView(R.id.bottom_bar)
-    BottomBar bottomBar;
+    private LinearLayout llTop;
+    private LinearLayout llCenter;
+    private SwitchDateLayout switchDateLayout;
+    private BottomBar bottomBar;
 
     private static final int VIEW_PAGER_ID = 5242;
 
@@ -71,7 +56,16 @@ public class NoteActivity extends NoteBaseActivity {
         noteViewList = new ArrayList<>();
     }
 
-//    @OnClick({R.id.btn_setting, R.id.btn_function})
+    @Override
+    protected void initView() {
+        llTop = findViewById(R.id.ll_top);
+        llCenter = findViewById(R.id.ll_center);
+        switchDateLayout = findViewById(R.id.switchDateLayout);
+        bottomBar = findViewById(R.id.bottom_bar);
+        super.initView();
+    }
+
+    //    @OnClick({R.id.btn_setting, R.id.btn_function})
 //    @Override
 //    protected void onBtnClick(View view) {
 //        switch (view.getId()) {
@@ -170,6 +164,7 @@ public class NoteActivity extends NoteBaseActivity {
         mViewPager.setId(VIEW_PAGER_ID);
 
         noteViewList = ViewTools.buildNoteViewFunctions(this);
+        LogUtil.d("临时测试", noteViewList.size() + "");
         PagerAdapter mPagerAdapter = new FlinkPagerAdapter(noteViewList);
 
         mViewPager.setAdapter(mPagerAdapter);

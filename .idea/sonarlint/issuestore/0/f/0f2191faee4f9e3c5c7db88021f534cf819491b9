@@ -1,0 +1,11 @@
+
+{
+java:S1450"`Remove the "stickyNoteAdapter" field and declare it as a local variable in the relevant methods.(ÿéóûøÿÿÿÿ
+o
+java:S1450 "ZRemove the "tmpPosition" field and declare it as a local variable in the relevant methods.(Õâ•
+V	java:S125?"<This block of commented-out lines of code should be removed.(„„‹¶ùÿÿÿÿ
+Q	java:S125R"<This block of commented-out lines of code should be removed.(µĞï
+P
+java:S1068"5Remove this unused "stickyNoteAdapter" private field.(ÿéóûøÿÿÿÿ
+D
+java:S1068 "/Remove this unused "tmpPosition" private field.(Õâ•
