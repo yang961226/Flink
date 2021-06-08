@@ -8,15 +8,15 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.flink.R;
 import com.example.flink.adapter.StickyNoteAdapter;
@@ -27,6 +27,7 @@ import com.example.flink.event.SchemeChangeEvent;
 import com.example.flink.item.StickyNoteItem;
 import com.example.flink.layout.CalendarSelectLayout;
 import com.example.flink.layout.PopupInputLayout;
+import com.example.flink.layout.RecyclerViewWithEmptyView;
 import com.example.flink.layout.note.NoteViewPagerBaseLayout;
 import com.example.flink.mInterface.StickyNoteItemClickListener;
 import com.example.flink.tools.DateUtil;
@@ -50,8 +51,6 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
-    private LinearLayout llEmpty;
-    private RecyclerView stickyNoteRecyclerView;
     private List<StickyNoteItem> mNoteItemList;
 
     //日历选择器
@@ -115,9 +114,6 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     }
 
     private void initViewById(Context context) {
-        stickyNoteRecyclerView = rootView.findViewById(R.id.rv);
-        llEmpty = rootView.findViewById(R.id.ll_empty);
-
         //初始化3个弹窗
         initCalenderSelect(context);
         initPopupInput(context);
@@ -210,6 +206,14 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
     }
 
     private void initStickyNoteRv() {
+        RecyclerViewWithEmptyView stickyNoteRecyclerView = rootView.findViewById(R.id.rv);
+
+        RelativeLayout rlEmpty = rootView.findViewById(R.id.rl_empty);
+        stickyNoteRecyclerView.setEmptyView(rlEmpty);
+
+        ImageView ivCreateNote = rootView.findViewById(R.id.iv_create_note);
+        ivCreateNote.setOnClickListener(v -> showCreateNoteDialog());
+
         mNoteItemList = new ArrayList<>();
         stickyNoteAdapter = new StickyNoteAdapter(getContext(), mNoteItemList);
         stickyNoteRecyclerView.setAdapter(stickyNoteAdapter);
@@ -311,6 +315,10 @@ public class StickyNoteLayout extends NoteViewPagerBaseLayout {
 
     @Override
     public void onClickFunction() {
+        showCreateNoteDialog();
+    }
+
+    private void showCreateNoteDialog() {
         if (calenderPopUpHelper.isShowing()) {
             calenderPopUpHelper.dismiss();
         }
