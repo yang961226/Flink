@@ -11,16 +11,15 @@ import static com.example.flink.tools.data.DataManager.DataManagerEnum.SP_DATA_M
 /**
  * 配置存储器，保存数据的时候SP和内存都保存一份数据，每次APP启动的时候，从SP里面取数据复制到内存中，因为访问的时候
  * 是访问内存那部分的数据，如果频繁访问SP性能会很差
- * <p>
  * 注：所有配置都以字符串的形式存储，布尔值为true和false（或则空值）
  */
 public class ConfigurationHelper {
 
-    public static final String KEY_12_24_SYS = "12/24小时制";
+    public static final String KEY_USE_24_SYS = "使用24小时制";
     public static final String KEY_TACTILE_FEEDBACK = "触觉反馈";
 
-    private static DataManager spDataManager = new DataManager(SP_DATA_MANAGER);
-    private static DataManager ramDataManager = new DataManager(RAM_DATA_MANAGER);
+    private static final DataManager spDataManager = new DataManager(SP_DATA_MANAGER);
+    private static final DataManager ramDataManager = new DataManager(RAM_DATA_MANAGER);
 
     private ConfigurationHelper() {
     }
@@ -28,7 +27,7 @@ public class ConfigurationHelper {
     //所有配置Key都在这里实现
     private static List<String> getKeyList() {
         List<String> keyList = new ArrayList<>();
-        keyList.add(KEY_12_24_SYS);
+        keyList.add(KEY_USE_24_SYS);
         keyList.add(KEY_TACTILE_FEEDBACK);
         return keyList;
     }

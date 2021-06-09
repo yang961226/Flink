@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  便签的资源文件  -->
+    <!--  便签的图标文件id  -->
     <array name="sticky_note_res">
         <item>@drawable/circle_common2</item>
         <item>@drawable/circle_finish</item>
         <item>@drawable/circle_half</item>
         <item>@drawable/circle_star</item>
         <item>@drawable/delay</item>
+    </array>
+
+    <!--  便签的图标文件名字  -->
+    <array name="sticky_note_icon_name">
+        <item>新建立</item>
+        <item>已完成</item>
+        <item>有进度</item>
+        <item>星标</item>
+        <item>延期</item>
+    </array>
+
+    <array name="sticky_note_icon_desc">
+        <item>该图标表示当前的工作是新建的</item>
+        <item>该图标表示当前的工作已完成</item>
+        <item>该图标表示当前的工作已经完成了一半以上</item>
+        <item>该图标表示当前的工作非常重要，需要特别关注</item>
+        <item>该图标表示当前的工作未完成且需要延期</item>
     </array>
 
     <!--  日历顶部bar  -->

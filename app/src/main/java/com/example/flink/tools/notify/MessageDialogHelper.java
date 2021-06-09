@@ -17,7 +17,7 @@ import com.example.flink.tools.PopUpWindowHelper;
  */
 public class MessageDialogHelper {
 
-    private Context context;
+    private final Context context;
     private PopUpWindowHelper popUpWindowHelper;
     private MessageDialogLayout messageDialogLayout;
     private OnDialogButtonClickListener onDialogButtonClickListener;
@@ -33,6 +33,10 @@ public class MessageDialogHelper {
     public void showMsgDialog(String title
             , String msg
             , OnDialogButtonClickListener onDialogButtonClickListener) {
+        showMsgDialog(title, -1, msg, onDialogButtonClickListener);
+    }
+
+    public void showMsgDialog(String title, int titleIconSrcId, String msg, OnDialogButtonClickListener onDialogButtonClickListener) {
         if (popUpWindowHelper == null) {
             messageDialogLayout = new MessageDialogLayout(context);
             TextView tvCancle = (TextView) messageDialogLayout.findView(R.id.tv_cancle);
@@ -59,6 +63,9 @@ public class MessageDialogHelper {
                 }
                 onDialogButtonClickListener.onCancleClick(popUpWindowHelper, v);
             });
+        }
+        if (titleIconSrcId != -1) {
+            messageDialogLayout.setTitleIcon(titleIconSrcId);
         }
         messageDialogLayout.setTitle(title);
         messageDialogLayout.setMessage(msg);

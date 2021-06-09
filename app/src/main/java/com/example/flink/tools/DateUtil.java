@@ -15,7 +15,15 @@ import static com.example.flink.tools.data.DataManager.DataManagerEnum.RAM_DATA_
 
 public class DateUtil {
 
+    /**
+     * 24小时制时分秒
+     */
     public static String FORMAT_Hms = "HHmmss";
+
+    /**
+     * 12小时制时分秒
+     */
+    public static String FORMAT_hms = "hhmmss";
 
     /**
      * 英文简写（默认）如：2010-12-01
@@ -69,7 +77,7 @@ public class DateUtil {
     public static final long WEEK_IN_MILLIS = 604800000L;
     public static final long YEAR_IN_MILLIS = 31449600000L;
 
-    private static DataManager dataManager = new DataManager(RAM_DATA_MANAGER);
+    private static final DataManager dataManager = new DataManager(RAM_DATA_MANAGER);
 
     /**
      * 获得默认的 date pattern
@@ -242,6 +250,19 @@ public class DateUtil {
 
     public static String getWeekOfDateStr(Date date) {
         return getWeekOfDateStr(date, getDefaultWeekDaysStr());
+    }
+
+    /**
+     * 判断时间是上午还是下午
+     *
+     * @param date 日期
+     * @return true：上午
+     */
+    public static boolean isAM(Date date) {
+        long time = date.getTime();
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTimeInMillis(time);
+        return mCalendar.get(Calendar.AM_PM) == Calendar.AM;
     }
 
     /**

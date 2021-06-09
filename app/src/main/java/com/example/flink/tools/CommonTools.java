@@ -52,13 +52,6 @@ public class CommonTools {
                 , CommonTools.dip2px(context, 5));
         imageView.setLayoutParams(lp);
 
-//        if(!TextUtils.isEmpty(clickMsg)){
-//            imageView.setOnClickListener(v -> {
-//                MessageDialogHelper messageDialogHelper=new MessageDialogHelper(context);
-//                messageDialogHelper.showMsgDialog(view,"图标含义",clickMsg,onDialogButtonClickListener);
-//            });
-//        }
-
         return imageView;
     }
 

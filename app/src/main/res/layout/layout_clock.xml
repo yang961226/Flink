@@ -1,148 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
     android:layout_margin="6dp"
-    android:gravity="right"
-    tools:ignore="RtlHardcoded">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical|end"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <com.example.flink.view.AdaptationTextView
         android:id="@+id/is_today"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="right"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:textSize="24sp"
-        android:text="TODAY"
         app:adaptive_type="height_adaptive"
-        tools:ignore="HardcodedText" />
+        android:gravity="center_vertical|end"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:text="@string/today_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
 
     <LinearLayout
-        android:layout_width="150dp"
-        android:layout_height="0dp"
-        android:layout_weight="3"
         android:padding="6dp"
+        android:gravity="center_vertical"
         android:background="@drawable/shape_clock_round_bg"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+
 
         <com.example.flink.view.AdaptationTextView
+            android:text="@string/am_text"
             android:id="@+id/am_or_pm"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="top|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="12sp"
-            app:adaptive_type="height_adaptive"/>
+            app:adaptive_type="height_adaptive" />
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/number_1"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="-6dp"
+            android:layout_marginEnd="-6dp"
+            android:src="@drawable/number_a_0"
+            android:contentDescription="@null" />
 
-            <ImageView
-                android:id="@+id/number_1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:src="@drawable/number_a_0"
-                android:contentDescription="@null" />
+        <ImageView
+            android:id="@+id/number_2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-6dp"
+            android:layout_marginEnd="-3dp"
+            android:src="@drawable/number_a_0"
+            android:contentDescription="@null" />
 
-            <ImageView
-                android:id="@+id/number_2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:src="@drawable/number_a_0"
-                android:contentDescription="@null" />
-        </LinearLayout>
-
-        <com.example.flink.view.AdaptationTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="20sp"
+        <TextView
             android:textStyle="bold"
-            app:adaptive_type="height_adaptive"
-            tools:ignore="HardcodedText" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/number_3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:src="@drawable/number_a_0"
-                android:contentDescription="@null" />
-
-            <ImageView
-                android:id="@+id/number_4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:src="@drawable/number_a_0"
-                android:contentDescription="@null" />
-        </LinearLayout>
-
-        <com.example.flink.view.AdaptationTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:adaptive_type="height_adaptive"
-            tools:ignore="HardcodedText" />
+            android:text=":"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/number_3"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="-3dp"
+            android:layout_marginEnd="-6dp"
+            android:src="@drawable/number_a_0"
+            android:contentDescription="@null" />
 
-            <ImageView
-                android:id="@+id/number_5"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:src="@drawable/number_a_0"
-                android:contentDescription="@null" />
+        <ImageView
+            android:id="@+id/number_4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-6dp"
+            android:layout_marginEnd="-3dp"
+            android:src="@drawable/number_a_0"
+            android:contentDescription="@null" />
 
-            <ImageView
-                android:id="@+id/number_6"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:src="@drawable/number_a_0"
-                android:contentDescription="@null" />
-        </LinearLayout>
+        <TextView
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text=":"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/number_5"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-3dp"
+            android:layout_marginEnd="-6dp"
+            android:src="@drawable/number_a_0"
+            android:contentDescription="@null" />
+
+        <ImageView
+            android:id="@+id/number_6"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-6dp"
+            android:layout_marginEnd="-6dp"
+            android:src="@drawable/number_a_0"
+            android:contentDescription="@null" />
+
+
     </LinearLayout>
 
-</LinearLayout>
+</LinearLayout><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    android:orientation="vertical"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_gravity="bottom"-->
+    <!--    android:layout_margin="6dp"-->
+    <!--    android:gravity="end">-->
+
+    <!--    <com.example.flink.view.AdaptationTextView-->
+    <!--        android:id="@+id/is_today"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_weight="2"-->
+    <!--        android:gravity="end"-->
+    <!--        android:paddingTop="3dp"-->
+    <!--        android:paddingBottom="3dp"-->
+    <!--        android:paddingLeft="12dp"-->
+    <!--        android:paddingRight="12dp"-->
+    <!--        android:textSize="24sp"-->
+    <!--        android:text="TODAY"-->
+    <!--        app:adaptive_type="height_adaptive"-->
+    <!--        tools:ignore="HardcodedText" />-->
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="6dp"-->
+    <!--        android:background="@drawable/shape_clock_round_bg"-->
+    <!--        android:orientation="horizontal">-->
+
+    <!--        <com.example.flink.view.AdaptationTextView-->
+    <!--            android:id="@+id/am_or_pm"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="top|end"-->
+    <!--            android:textSize="12sp"-->
+    <!--            app:adaptive_type="height_adaptive"/>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:gravity="center"-->
+    <!--            android:orientation="horizontal">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/number_1"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginLeft="-6dp"-->
+    <!--                android:layout_marginRight="-6dp"-->
+    <!--                android:src="@drawable/number_a_0"-->
+    <!--                android:contentDescription="@null" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/number_2"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginLeft="-6dp"-->
+    <!--                android:layout_marginRight="-6dp"-->
+    <!--                android:src="@drawable/number_a_0"-->
+    <!--                android:contentDescription="@null" />-->
+    <!--        </LinearLayout>-->
+
+    <!--        <com.example.flink.view.AdaptationTextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text=":"-->
+    <!--            android:textSize="20sp"-->
+    <!--            android:textStyle="bold"-->
+    <!--            app:adaptive_type="height_adaptive"-->
+    <!--            tools:ignore="HardcodedText" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_weight="3"-->
+    <!--            android:gravity="center"-->
+    <!--            android:orientation="horizontal">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/number_3"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginLeft="-6dp"-->
+    <!--                android:layout_marginRight="-6dp"-->
+    <!--                android:src="@drawable/number_a_0"-->
+    <!--                android:contentDescription="@null" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/number_4"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginLeft="-6dp"-->
+    <!--                android:layout_marginRight="-6dp"-->
+    <!--                android:src="@drawable/number_a_0"-->
+    <!--                android:contentDescription="@null" />-->
+    <!--        </LinearLayout>-->
+
+    <!--        <com.example.flink.view.AdaptationTextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text=":"-->
+    <!--            android:textSize="20sp"-->
+    <!--            android:textStyle="bold"-->
+    <!--            app:adaptive_type="height_adaptive"-->
+    <!--            tools:ignore="HardcodedText" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_weight="3"-->
+    <!--            android:gravity="center"-->
+    <!--            android:orientation="horizontal">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/number_5"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginLeft="-6dp"-->
+    <!--                android:layout_marginRight="-6dp"-->
+    <!--                android:src="@drawable/number_a_0"-->
+    <!--                android:contentDescription="@null" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/number_6"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginLeft="-6dp"-->
+    <!--                android:layout_marginRight="-6dp"-->
+    <!--                android:src="@drawable/number_a_0"-->
+    <!--                android:contentDescription="@null" />-->
+    <!--        </LinearLayout>-->
+    <!--    </LinearLayout>-->
+
+    <!--</LinearLayout>-->

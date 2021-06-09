@@ -21,15 +21,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.example.flink.tools.data.ConfigurationHelper.KEY_12_24_SYS;
 import static com.example.flink.tools.data.ConfigurationHelper.KEY_TACTILE_FEEDBACK;
+import static com.example.flink.tools.data.ConfigurationHelper.KEY_USE_24_SYS;
 
 public class SettingsActivity extends FlinkBaseActivity {
 
     private LinearLayout llContent;
     private BottomBar bottomBar;
 
-    private Map<String, SettingLine> keyValueLineMap;
+    private static final Map<String, SettingLine> KEY_VALUE_LINE_MAP = new HashMap<>();
     private MessageDialogHelper messageDialogHelper;
 
     @Override
@@ -57,24 +57,21 @@ public class SettingsActivity extends FlinkBaseActivity {
      * 恢复设置的状态：从配置信息中读取，然后恢复各个开关的默认状态
      */
     private void resetSettingState() {
-        if (ConfigurationHelper.getBooleanValue(KEY_12_24_SYS)) {
-            Objects.requireNonNull(keyValueLineMap.get("12/24小时制")).refreshSwitchState(true);
+        if (ConfigurationHelper.getBooleanValue(KEY_USE_24_SYS)) {
+            Objects.requireNonNull(KEY_VALUE_LINE_MAP.get(KEY_USE_24_SYS)).refreshSwitchState(true);
         }
         if (ConfigurationHelper.getBooleanValue(KEY_TACTILE_FEEDBACK)) {
-            keyValueLineMap.get("触觉反馈").refreshSwitchState(true);
+            Objects.requireNonNull(KEY_VALUE_LINE_MAP.get(KEY_TACTILE_FEEDBACK)).refreshSwitchState(true);
         }
     }
 
     @Override
     protected void initView() {
-        keyValueLineMap = new HashMap<>();
-
         addCustomizeSettingLine("笔记标志含义", getIconsLinearlayout());
-        addSwitchSettingLine("12/24小时制", switchOpen -> {
-            ToastUtil.show(SettingsActivity.this, switchOpen ? "24小时" : "12小时");
-            ConfigurationHelper.setBooleanValue(KEY_12_24_SYS, switchOpen);
+        addSwitchSettingLine(KEY_USE_24_SYS, switchOpen -> {
+            ConfigurationHelper.setBooleanValue(KEY_USE_24_SYS, switchOpen);
         });
-        addSwitchSettingLine("触觉反馈", switchOpen -> {
+        addSwitchSettingLine(KEY_TACTILE_FEEDBACK, switchOpen -> {
             ToastUtil.show(SettingsActivity.this, switchOpen ? "触觉反馈开启" : "触觉反馈关闭");
             ConfigurationHelper.setBooleanValue(KEY_TACTILE_FEEDBACK, switchOpen);
         });
@@ -98,17 +95,25 @@ public class SettingsActivity extends FlinkBaseActivity {
         );
         ll.setLayoutParams(llLp);
         TypedArray array = this.getResources().obtainTypedArray(R.array.sticky_note_res);
+        int[] srcId = new int[array.length()];
         for (int i = 0; i < array.length(); i++) {
-            ImageView imageView = CommonTools.buildIconImageView(this, array.getResourceId(i, R.drawable.circle_common2));
+            srcId[i] = array.getResourceId(i, R.drawable.circle_common2);
+        }
+        array.recycle();
+        String[] iconName = getResources().getStringArray(R.array.sticky_note_icon_name);
+        String[] iconDesc = getResources().getStringArray(R.array.sticky_note_icon_desc);
+        for (int i = 0; i < iconName.length; i++) {
+            ImageView imageView = CommonTools.buildIconImageView(this, srcId[i]);
             ll.addView(imageView);
-            final int tmp = i;
+            int finalI = i;
             imageView.setOnClickListener(v -> {
                 if (messageDialogHelper == null) {
                     messageDialogHelper = new MessageDialogHelper(SettingsActivity.this);
                 }
                 messageDialogHelper.showMsgDialog(
-                        "符号含义"
-                        , "含义内容含义内容含义内容含义内容含义内容" + tmp
+                        iconName[finalI]
+                        , srcId[finalI]
+                        , iconDesc[finalI]
                         , new MessageDialogHelper.OnDialogButtonClickListener() {
                             @Override
                             public void onOkClick(PopUpWindowHelper popUpWindowHelper, View v) {
@@ -122,7 +127,7 @@ public class SettingsActivity extends FlinkBaseActivity {
                         });
             });
         }
-        array.recycle();
+
         return ll;
     }
 
@@ -140,7 +145,7 @@ public class SettingsActivity extends FlinkBaseActivity {
         settingLine.setTitle(title);
         settingLine.setOnSwitchListener(onSwitchListener);
         llContent.addView(settingLine);
-        keyValueLineMap.put(title, settingLine);
+        KEY_VALUE_LINE_MAP.put(title, settingLine);
     }
 
     //添加一个纯点击功能的设置行
